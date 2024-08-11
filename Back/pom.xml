@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pucminas</groupId>
-	<artifactId>BackEndProjMatricula</artifactId>
+	<artifactId>back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BackEndProjMatricula</name>
 	<description>BackEndProjMatricula</description>
