@@ -1,0 +1,37 @@
+name: projeto_matricula_application
+description: "A new Flutter project."
+
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+  
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  dio: ^5.2.1+1
+  shared_preferences: ^2.3.1
+  build_runner: ^2.4.5
+  injectable: ^2.1.1
+  get_it: ^7.2.0
+  injectable_generator: ^2.1.6
+  flutter_gen_runner: ^5.3.1
+  retrofit_generator: ^8.0.5
+  json_annotation: ^4.8.1
+  json_serializable: ^6.7.0
+  flutter_bloc: ^8.1.6
+  equatable: ^2.0.5
+  nested: ^1.0.0
+  flutter_phoenix: ^1.1.1
+  http: ^1.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
