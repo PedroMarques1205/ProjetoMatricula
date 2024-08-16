@@ -17,4 +17,10 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDTO> salvaNovoUsuario(@RequestBody @Valid Usuario usuario) {
         return ResponseEntity.ok(salvarNovoUsuarioUseCase.salvarNovoUsuario(usuario));
     }
+
+    @DeleteMapping("/deletarUsuario")
+    public ResponseEntity<UsuarioDTO> deletarUsuario(@RequestBody @Valid Usuario usuario) {
+        return ResponseEntity.ok(salvarNovoUsuarioUseCase.deletarUsuario(usuario));
+    }
+
 }

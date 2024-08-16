@@ -14,4 +14,11 @@ public class UsuarioService {
     public Usuario salvarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    // deletar usuario
+    public Usuario deletarUsuario(Usuario usuario) {
+        usuarioRepository.delete(usuario);
+
+        return usuario;
+    }
 }

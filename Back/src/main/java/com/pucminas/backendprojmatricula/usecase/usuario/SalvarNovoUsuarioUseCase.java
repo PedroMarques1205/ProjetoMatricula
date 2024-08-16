@@ -21,4 +21,9 @@ public class SalvarNovoUsuarioUseCase {
         return mapper.generalMapper(usuarioSalvo,
                 UsuarioDTO.class);
     }
+
+    public UsuarioDTO deletarUsuario(Usuario usuario){
+        Usuario usuarioSalvo = usuarioService.deletarUsuario(usuario);
+        return mapper.generalMapper(usuarioSalvo,UsuarioDTO.class);
+    }
 }
