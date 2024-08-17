@@ -28,34 +28,57 @@ class LoginPage extends StatelessWidget {
               return MaterialApp(
                 navigatorKey: appNavigatorKey,
                 onGenerateRoute: navigator.onGenerateRoute,
-                builder: (_, child) {
-                  return Scaffold(
-                      appBar: AppBar(title: const Text("Test")),
-                      body: BlocConsumer<LoginBloc, LoginState>(
-                        listener: (context, state) {
-                          if (state is LoggedInState) {
-                            // ir para a home com usuário atual já definido no sistema
-                          }
-                          if (state is LoginErrorState) {
-                            // exibir mensagem de erro no login
-                          }
-                        },
-                        builder: (context, state) {
-                          return Center(
-                            child: TextButton(
+                home: Scaffold(
+                  appBar: AppBar(
+                    title: const Text("Login"),
+                    backgroundColor: Color.fromARGB(255, 80, 80, 80),
+                  ),
+                  body: BlocConsumer<LoginBloc, LoginState>(
+                    listener: (context, state) {
+                      if (state is LoggedInState) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                          (route) => false,
+                        );
+                      }
+                     //if (state is LoginErrorState) {
+                        //ScaffoldMessenger.of(context).showSnackBar(
+                          //SnackBar(content: Text('Erro de login: ${state.errorMessage}')),
+                        //);
+                      //}
+                    },
+                    builder: (context, state) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Campos de entrada de usuário e senha
+                            TextField(
+                              decoration: InputDecoration(labelText: 'Usuário'),
+                            ),
+                            TextField(
+                              decoration: InputDecoration(labelText: 'Senha'),
+                              obscureText: true,
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
                               onPressed: () {
-                                Navigator.push(
+                                // Verifica credenciais e redireciona para a HomePage
+                                Navigator.pushAndRemoveUntil(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
+                                  MaterialPageRoute(builder: (context) => HomePage()),
+                                  (route) => false,
                                 );
                               },
-                              child: const Text("PressMe"),
+                              child: const Text("Login"),
                             ),
-                          );
-                        },
-                      ));
-                },
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
               );
             },
           ),
