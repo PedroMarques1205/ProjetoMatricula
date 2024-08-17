@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../professor/professor_page.dart'; // Importa a página ProfessorPage
-import '../secretaria/secretaria_page.dart'; // Importa a página SecretariaPage
-import '../aluno/aluno_page.dart'; // Importa a página AlunoPage
+import '../professor/professor_page.dart'; 
+import '../secretaria/secretaria_page.dart'; 
+import '../aluno/aluno_page.dart'; 
 
 class HomePage extends StatelessWidget {
   @override
@@ -51,11 +51,11 @@ class HomePage extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(255, 92, 24, 33), // Fundo vermelho
-        foregroundColor: Colors.white, // Texto branco
+        backgroundColor: Color.fromARGB(255, 92, 24, 33), 
+        foregroundColor: Colors.white, 
         padding: EdgeInsets.symmetric(vertical: 20),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero, // Sem bordas arredondadas
+          borderRadius: BorderRadius.zero, 
         ),
       ),
       child: Text(

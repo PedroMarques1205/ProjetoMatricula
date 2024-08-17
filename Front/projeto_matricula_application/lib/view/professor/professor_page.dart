@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../home/home_page.dart'; // Importa a página HomePage
+import '../home/home_page.dart'; 
 
 class Subject {
   final String name;
@@ -47,13 +47,13 @@ class _ProfessorPageState extends State<ProfessorPage> {
       drawer: Drawer(
         child: Column(
           children: [
-            // Área de perfil no topo do Drawer
+         
             Container(
               color: Colors.grey[200],
               padding: EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  // Círculo cinza com ícone de perfil
+                  
                   Container(
                     width: 50,
                     height: 50,
@@ -79,7 +79,7 @@ class _ProfessorPageState extends State<ProfessorPage> {
                 ],
               ),
             ),
-            // Barra lateral com cor específica
+           
             Expanded(
               child: Container(
                 color: const Color.fromARGB(255, 92, 24, 33),
@@ -95,20 +95,20 @@ class _ProfessorPageState extends State<ProfessorPage> {
                               onTap: () {
                                 setState(() {
                                   selectedSubject = subjects[index];
-                                  Navigator.of(context).pop(); // Fechar o drawer ao selecionar uma matéria
+                                  Navigator.of(context).pop(); 
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
-                                  borderRadius: BorderRadius.circular(8), // Canto quadrado com leve arredondamento
+                                  borderRadius: BorderRadius.circular(8), 
                                 ),
                                 padding: const EdgeInsets.all(16.0),
                                 child: Center(
                                   child: Text(
                                     subjects[index].name,
                                     style: TextStyle(
-                                      color: const Color.fromARGB(255, 255, 255, 255), // Texto branco
+                                      color: const Color.fromARGB(255, 255, 255, 255), 
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -121,21 +121,21 @@ class _ProfessorPageState extends State<ProfessorPage> {
                         },
                       ),
                     ),
-                    // Botão Voltar com fundo branco
+                    
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(builder: (context) => HomePage()),
-                            (route) => false, // Remove todas as rotas anteriores
+                            (route) => false, 
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white, // Fundo branco
-                          foregroundColor: Colors.black, // Texto preto
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black, 
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero, // Sem bordas arredondadas
+                            borderRadius: BorderRadius.zero, 
                           ),
                         ),
                         child: Text('Voltar'),

@@ -46,13 +46,13 @@ class _SecretariaPageState extends State<SecretariaPage> {
       drawer: Drawer(
         child: Column(
           children: [
-            // Área de perfil no topo do Drawer
+          
             Container(
               color: Colors.grey[200],
               padding: EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  // Círculo cinza com ícone de perfil
+                  
                   Container(
                     width: 50,
                     height: 50,
@@ -67,7 +67,7 @@ class _SecretariaPageState extends State<SecretariaPage> {
                     ),
                   ),
                   SizedBox(width: 16.0),
-                  // Nome do usuário
+               
                   Text(
                     'Usuário',
                     style: TextStyle(
@@ -78,7 +78,7 @@ class _SecretariaPageState extends State<SecretariaPage> {
                 ],
               ),
             ),
-            // Barra lateral azul claro para as matérias
+            
             Expanded(
               child: Container(
                 color: const Color.fromARGB(255, 92, 24, 33),
@@ -91,13 +91,13 @@ class _SecretariaPageState extends State<SecretariaPage> {
                         onTap: () {
                           setState(() {
                             selectedSubject = subjects[index];
-                            Navigator.of(context).pop(); // Fechar o drawer ao selecionar uma matéria
+                            Navigator.of(context).pop(); 
                           });
                         },
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
-                            borderRadius: BorderRadius.circular(8), // Canto quadrado com leve arredondamento
+                            borderRadius: BorderRadius.circular(8), 
                           ),
                           padding: const EdgeInsets.all(16.0),
                           child: Center(
@@ -123,7 +123,7 @@ class _SecretariaPageState extends State<SecretariaPage> {
       ),
       body: Row(
         children: [
-          // Exibição dos alunos da matéria selecionada
+         
           Expanded(
             child: selectedSubject == null
                 ? Center(child: Text('Selecione uma matéria'))
