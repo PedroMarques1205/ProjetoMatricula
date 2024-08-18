@@ -48,13 +48,11 @@ class _AlunoPageState extends State<AlunoPage> {
       drawer: Drawer(
         child: Column(
           children: [
-            
             Container(
               color: Colors.grey[200],
               padding: EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                 
                   Container(
                     width: 50,
                     height: 50,
