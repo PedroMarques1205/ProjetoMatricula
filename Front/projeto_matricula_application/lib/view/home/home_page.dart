@@ -8,8 +8,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pru Minas'),
-        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
+        title: Text('Pru Minas'),
+        backgroundColor: Color.fromARGB(255, 80, 80, 80),
         centerTitle: true,
       ),
       body: Padding(
