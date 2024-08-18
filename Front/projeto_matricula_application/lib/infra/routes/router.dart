@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/view/login/login_page.dart';
+import 'package:projeto_matricula_application/view/teste/teste_page.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -46,7 +48,7 @@ class NavigationService {
 
   Future<dynamic> push(Widget page) async {
     return await Navigator.push(
-      appNavigatorKey.currentContext!,  
+      appNavigatorKey.currentContext!,
       MaterialPageRoute(
         builder: (context) => page,
       ),
@@ -62,11 +64,8 @@ class NavigationService {
   }
 
   Future<dynamic> pushPageAndRemoveAll(Widget page) async {
-    await Navigator.pushAndRemoveUntil(
-      appNavigatorKey.currentContext!,  
-      MaterialPageRoute<void>(builder: (context) => page), 
-      (route) => false
-    );
+    await Navigator.pushAndRemoveUntil(appNavigatorKey.currentContext!,
+        MaterialPageRoute<void>(builder: (context) => page), (route) => false);
   }
 
   static NavigationService of(BuildContext context) =>
@@ -75,4 +74,50 @@ class NavigationService {
 
 class Routes {
   static const app = 'home';
+}
+
+class NavDestinationModel {
+  final Widget? screen;
+  final String? label;
+  final Widget? icon;
+  final Widget? selectedIcon;
+  final Widget? child;
+
+  NavDestinationModel({
+    this.screen,
+    this.label,
+    this.icon,
+    this.selectedIcon,
+    this.child,
+  });
+
+  static List<NavDestinationModel> destinations = [
+    NavDestinationModel(
+      label: 'Um',
+      icon: const HeroIcon(HeroIcons.chatBubbleBottomCenter,
+          color: Colors.blue, size: 30, style: HeroIconStyle.outline),
+      selectedIcon: const HeroIcon(HeroIcons.chatBubbleBottomCenterText,
+          color: Colors.purple, size: 30, style: HeroIconStyle.solid),
+      screen: TestePage(),
+    ),
+    NavDestinationModel(
+      label: 'Dois',
+      icon: const HeroIcon(HeroIcons.users,
+          color: Colors.blue, size: 30, style: HeroIconStyle.outline),
+      selectedIcon: const HeroIcon(HeroIcons.users,
+          color: Colors.purple, size: 30, style: HeroIconStyle.solid),
+      screen: TestePage(),
+    ),
+    NavDestinationModel(
+        label: 'Tres',
+        icon: const HeroIcon(HeroIcons.cog8Tooth,
+            color: Colors.blue, size: 30, style: HeroIconStyle.outline),
+        selectedIcon: const HeroIcon(HeroIcons.cog8Tooth,
+            color: Colors.purple, size: 30, style: HeroIconStyle.solid),
+        screen: TestePage()),
+  ];
+
+  List<NavDestinationModel> getDestinations() {
+    return destinations;
+  }
 }

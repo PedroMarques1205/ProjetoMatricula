@@ -1,54 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_matricula_application/view/aluno/aluno_page.dart';
+import 'package:projeto_matricula_application/view/scretaria/secretaria_page.dart';
+import '../professor/professor_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => HomePageState();
-}
-
-class HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: const [
-          Center(child: Text('Conteúdo da Tab Home')),
-          Center(child: Text('Conteúdo da Tab Dois')),
-          Center(child: Text('Conteúdo da Tab Tres')),
-        ],
+      appBar: AppBar(
+        title: const Text('Pru Minas'),
+        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
+        centerTitle: true,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.looks_two),
-            label: 'Dois',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.looks_3),
-            label: 'Tres',
-          ),
-        ],
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        showSelectedLabels: true,
-        type: BottomNavigationBarType.fixed,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildButton(
+              context,
+              'Professor',
+              () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ProfessorPage()),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            _buildButton(
+              context,
+              'Secretaria',
+              () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => SecretariaPage()),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            _buildButton(
+              context,
+              'Aluno',
+              () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => AlunoPage()),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(
+      BuildContext context, String text, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color.fromARGB(255, 92, 24, 33),
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
