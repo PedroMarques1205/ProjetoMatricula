@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SalvarNovoUsuarioUseCase {
+public class ObterUsuarioUseCase {
 
     @Autowired
     UsuarioService usuarioService;
@@ -16,11 +16,7 @@ public class SalvarNovoUsuarioUseCase {
     @Autowired
     Mapper mapper;
 
-    public UsuarioDTO salvarNovoUsuario(Usuario usuario) {
-        Usuario usuarioSalvo = usuarioService.salvarUsuario(usuario);
-        return mapper.generalMapper(usuarioSalvo,
-                UsuarioDTO.class);
+    public Usuario obterUsuarioPorId(String matricula) {
+        return usuarioService.buscarUsuarioPorMatricula(matricula);
     }
-
-
 }

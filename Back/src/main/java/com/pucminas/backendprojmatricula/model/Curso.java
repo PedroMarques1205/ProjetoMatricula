@@ -1,6 +1,5 @@
 package com.pucminas.backendprojmatricula.model;
 
-import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,21 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@Entity(name = "Usuarios")
-public class Usuario {
+@Entity(name = "Cursos")
+public class Curso {
+
     @Id
-    @NotEmpty
-    private String Matricula;
+    @NotNull
+    private Long id;
 
     @NotEmpty
     private String nome;
 
     @NotEmpty
-    private String senha;
+    private String descricao;
 
-    @NotEmpty
-    TipoUsuario tipoAcesso;
-
-    @NotNull
-    boolean ativo = true;
 }
