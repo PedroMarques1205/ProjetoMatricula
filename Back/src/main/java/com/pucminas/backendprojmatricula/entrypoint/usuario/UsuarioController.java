@@ -1,7 +1,6 @@
 package com.pucminas.backendprojmatricula.entrypoint.usuario;
 import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
-import com.pucminas.backendprojmatricula.dataprovider.usuario.IUsuarioRepository;
-import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarDTO;
+import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarUsuarioDTO;
 import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.UsuarioDTO;
 import com.pucminas.backendprojmatricula.model.Usuario;
 import com.pucminas.backendprojmatricula.usecase.usuario.DeletarUsuarioUseCase;
@@ -41,7 +40,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/editarUsuario")
-    public ResponseEntity<UsuarioDTO> editarUsuario(@RequestBody RequestEditarDTO params) {
+    public ResponseEntity<UsuarioDTO> editarUsuario(@RequestBody RequestEditarUsuarioDTO params) {
         return ResponseEntity.ok(editarUsuarioUseCase.editarUsuario(params));
     }
 

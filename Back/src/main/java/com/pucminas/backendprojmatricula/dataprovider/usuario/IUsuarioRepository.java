@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface IUsuarioRepository extends JpaRepository<Usuario, String> {
-
     List<Usuario> findByTipoAcesso(TipoUsuario tipoUsuario);
+
+
 }

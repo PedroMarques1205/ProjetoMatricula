@@ -4,7 +4,7 @@ import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
 import lombok.Data;
 
 @Data
-public class RequestEditarDTO {
+public class RequestEditarUsuarioDTO {
     String matricula;
     String nome;
     String senha;

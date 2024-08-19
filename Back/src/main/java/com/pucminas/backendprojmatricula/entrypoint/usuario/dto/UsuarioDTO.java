@@ -9,4 +9,5 @@ import lombok.*;
 public class UsuarioDTO {
     private String matricula;
     private String nome;
+    private boolean ativo;
 }

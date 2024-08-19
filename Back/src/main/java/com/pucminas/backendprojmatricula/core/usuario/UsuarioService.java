@@ -2,7 +2,8 @@ package com.pucminas.backendprojmatricula.core.usuario;
 
 import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
 import com.pucminas.backendprojmatricula.dataprovider.usuario.IUsuarioRepository;
-import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarDTO;
+import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarUsuarioDTO;
+import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.UsuarioDTO;
 import com.pucminas.backendprojmatricula.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UsuarioService {
         return null;
     }
 
-    public Usuario editarUsuario(RequestEditarDTO params) {
+    public Usuario editarUsuario(RequestEditarUsuarioDTO params) {
         if(usuarioRepository.findById(params.getMatricula()).isPresent()) {
             Usuario usuario = usuarioRepository.findById(params.getMatricula()).get();
 
@@ -57,6 +58,8 @@ public class UsuarioService {
     }
 
     public List<Usuario> buscarUsuarioPorTipoAcesso(TipoUsuario acesso) {
-        return usuarioRepository.findByTipoAcesso(acesso);
+        return usuarioRepository.findByTipoAcesso(acesso).stream()
+                .filter(Usuario::isAtivo)
+                .toList();
     }
 }

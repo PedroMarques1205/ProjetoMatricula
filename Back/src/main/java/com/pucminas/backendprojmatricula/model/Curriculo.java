@@ -1,9 +1,6 @@
 package com.pucminas.backendprojmatricula.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -13,5 +10,16 @@ public class Curriculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "ordinal"),
+            @JoinColumn(name = "curso_id")
+    })
+    Semestre semestre;
+
+    @ManyToOne
+    @JoinColumn(name = "disciplina_id")
+    Disciplina disciplina;
 
 }
