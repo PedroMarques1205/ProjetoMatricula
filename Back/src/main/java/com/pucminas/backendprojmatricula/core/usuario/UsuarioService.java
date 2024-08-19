@@ -7,6 +7,8 @@ import com.pucminas.backendprojmatricula.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuarioService {
 
@@ -52,5 +54,9 @@ public class UsuarioService {
             return usuarioRepository.findById(matricula).get();
         }
         return null;
+    }
+
+    public List<Usuario> buscarUsuarioPorTipoAcesso(TipoUsuario acesso) {
+        return usuarioRepository.findByTipoAcesso(acesso);
     }
 }

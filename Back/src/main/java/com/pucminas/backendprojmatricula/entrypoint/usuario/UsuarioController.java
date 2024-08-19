@@ -1,5 +1,6 @@
 package com.pucminas.backendprojmatricula.entrypoint.usuario;
 import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
+import com.pucminas.backendprojmatricula.dataprovider.usuario.IUsuarioRepository;
 import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarDTO;
 import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.UsuarioDTO;
 import com.pucminas.backendprojmatricula.model.Usuario;
@@ -11,6 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -45,5 +48,10 @@ public class UsuarioController {
     @GetMapping("/obterUsuarioPorMatricula")
     public ResponseEntity<Usuario> obterUsuario(@RequestParam String usuario) {
         return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorId(usuario));
+    }
+
+    @GetMapping("/obterUsuariosPorTipoAcesso")
+    public ResponseEntity<List<Usuario>> obterUsuarioPorAcesso(@RequestParam TipoUsuario usuario) {
+        return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorTipoAcesso(usuario));
     }
 }
