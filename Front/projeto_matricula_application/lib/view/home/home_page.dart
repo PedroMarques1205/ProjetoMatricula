@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_matricula_application/view/aluno/aluno_page.dart';
-import 'package:projeto_matricula_application/view/scretaria/secretaria_page.dart';
+import 'package:projeto_matricula_application/view/secretaria/secretaria_page.dart';
 import '../professor/professor_page.dart';
 
 class HomePage extends StatelessWidget {
