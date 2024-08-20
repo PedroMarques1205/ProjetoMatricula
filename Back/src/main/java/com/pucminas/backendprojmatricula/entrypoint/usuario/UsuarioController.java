@@ -44,9 +44,9 @@ public class UsuarioController {
         return ResponseEntity.ok(editarUsuarioUseCase.editarUsuario(params));
     }
 
-    @GetMapping("/obterUsuarioPorMatricula")
-    public ResponseEntity<Usuario> obterUsuario(@RequestParam String usuario) {
-        return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorId(usuario));
+    @GetMapping("/login")
+    public ResponseEntity<Usuario> obterUsuario(@RequestParam String usuario, @RequestParam String senha) {
+        return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorId(usuario, senha));
     }
 
     @GetMapping("/obterUsuariosPorTipoAcesso")

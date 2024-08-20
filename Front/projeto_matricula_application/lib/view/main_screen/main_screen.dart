@@ -5,6 +5,11 @@ import 'package:projeto_matricula_application/view/main_screen/widgets/main_side
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_state.dart';
 
+//outras paginas
+import '../professor/professor_page.dart';
+import '../aluno/aluno_page.dart';
+import '../secretaria/secretaria_page.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -108,7 +113,7 @@ class NavDestinationModel {
         label: 'Funcionalidades',
         icon: Icons.build,
         selectedIcon: Icons.build_circle,
-        screen: const FuncionalidadesScreen(),
+        screen: FuncionalidadesScreen(),
       ),
       NavigationItem(
         label: 'Configs',
@@ -148,22 +153,21 @@ class _ConfigScreenState extends State<ConfigScreen> {
   @override
   void initState() {
     super.initState();
-    // Inicializando com valores de exemplo
+    //iniciando valores
     _loginController.text = "lucio.alves";
     _passwordController.text = "********";
   }
 
   @override
   Widget build(BuildContext context) {
-    // Simulando dados do usuário
+    // simulando dados 
     const String userName = "Lúcio Alves";
-    const String userProfilePicture =
-        "https://www.example.com/user_profile_picture.jpg"; // URL da foto de perfil
+    const String userProfilePicture = "https://www.example.com/user_profile_picture.jpg"; 
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Configurações'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -174,7 +178,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundImage: const NetworkImage(userProfilePicture),
+                backgroundImage: NetworkImage(userProfilePicture),
                 backgroundColor: Colors.grey[200],
               ),
               const SizedBox(height: 20),
@@ -203,11 +207,14 @@ class _ConfigScreenState extends State<ConfigScreen> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
+                  // logica para salvar ou atualizar informações
                   String updatedLogin = _loginController.text;
                   String updatedPassword = _passwordController.text;
+                  // Aqui pode implementar a lógica para salvar os dados
+                  // Exemplo: print("Login: $updatedLogin, Senha: $updatedPassword");
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: const Color.fromARGB(255, 92, 24, 33),
                   foregroundColor: Colors.white,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -263,16 +270,81 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class FuncionalidadesScreen extends StatelessWidget {
-  const FuncionalidadesScreen({super.key});
-
+  class FuncionalidadesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Funcionalidades',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Funcionalidades'),
+        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildCustomButton(
+              context: context,
+              label: 'Ir para Professor',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfessorPage()),
+                );
+              },
+            ),
+            const SizedBox(height: 16.0),
+            _buildCustomButton(
+              context: context,
+              label: 'Ir para Secretaria',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SecretariaPage()),
+                );
+              },
+            ),
+            const SizedBox(height: 16.0),
+            _buildCustomButton(
+              context: context,
+              label: 'Ir para Aluno',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AlunoPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCustomButton({
+    required BuildContext context,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(16.0),
+        backgroundColor: const Color.fromARGB(255, 92, 24, 33),
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: const BorderSide(
+            color: Colors.black,
+            width: 2,
+          ),
+        ),
+      ),
+      child: Center(child: Text(label)),
     );
   }
 }

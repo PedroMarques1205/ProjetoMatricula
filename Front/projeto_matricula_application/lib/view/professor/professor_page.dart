@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_matricula_application/view/home/home_page.dart';
+import '../main_screen/main_screen.dart';
 
 class Subject {
   final String name;
@@ -127,7 +127,7 @@ class _ProfessorPageState extends State<ProfessorPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => HomePage()),
+                            MaterialPageRoute(builder: (context) => MainScreen()),
                             (route) => false,
                           );
                         },
