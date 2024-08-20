@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/view/login/login_page.dart';
-import 'package:projeto_matricula_application/view/teste/teste_page.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -98,7 +97,7 @@ class NavDestinationModel {
           color: Colors.blue, size: 30, style: HeroIconStyle.outline),
       selectedIcon: const HeroIcon(HeroIcons.chatBubbleBottomCenterText,
           color: Colors.purple, size: 30, style: HeroIconStyle.solid),
-      screen: TestePage(),
+      screen: Container(),
     ),
     NavDestinationModel(
       label: 'Dois',
@@ -106,7 +105,7 @@ class NavDestinationModel {
           color: Colors.blue, size: 30, style: HeroIconStyle.outline),
       selectedIcon: const HeroIcon(HeroIcons.users,
           color: Colors.purple, size: 30, style: HeroIconStyle.solid),
-      screen: TestePage(),
+      screen: Container(),
     ),
     NavDestinationModel(
         label: 'Tres',
@@ -114,7 +113,7 @@ class NavDestinationModel {
             color: Colors.blue, size: 30, style: HeroIconStyle.outline),
         selectedIcon: const HeroIcon(HeroIcons.cog8Tooth,
             color: Colors.purple, size: 30, style: HeroIconStyle.solid),
-        screen: TestePage()),
+        screen: Container()),
   ];
 
   List<NavDestinationModel> getDestinations() {

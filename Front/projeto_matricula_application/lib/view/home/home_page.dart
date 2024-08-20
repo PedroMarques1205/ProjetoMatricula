@@ -7,44 +7,47 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pru Minas'),
-        backgroundColor: Color.fromARGB(255, 80, 80, 80),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        appBar: AppBar(
+          title: const Text('Pru Minas'),
+          backgroundColor: const Color.fromARGB(255, 80, 80, 80),
+          centerTitle: true,
+        ),
+        body: ListView(
           children: [
-            _buildButton(
-              context,
-              'Professor',
-              () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ProfessorPage()),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            _buildButton(
-              context,
-              'Secretaria',
-              () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => SecretariaPage()),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            _buildButton(
-              context,
-              'Aluno',
-              () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => AlunoPage()),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildButton(
+                    context,
+                    'Professor',
+                    () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProfessorPage()),
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  _buildButton(
+                    context,
+                    'Secretaria',
+                    () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SecretariaPage()),
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  _buildButton(
+                    context,
+                    'Aluno',
+                    () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AlunoPage()),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 
   Widget _buildButton(

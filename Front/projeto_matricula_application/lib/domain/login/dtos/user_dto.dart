@@ -5,10 +5,12 @@ import 'package:json_annotation/json_annotation.dart';
 class UserDTO {
   String? name;
   UserTypeEnum? type;
+  String? accessToken;
 
   UserDTO({
     this.name,
     this.type,
+    this.accessToken,
   });
 }
 

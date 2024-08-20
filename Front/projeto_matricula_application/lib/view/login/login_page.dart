@@ -7,7 +7,6 @@ import 'package:projeto_matricula_application/viewmodel/blocs/login_bloc/login_b
 import 'package:projeto_matricula_application/viewmodel/blocs/login_bloc/login_state.dart';
 
 import '../main_screen/main_screen.dart';
-import '../home/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

@@ -1,3 +1,3 @@
 class BaseUrl {
-  static const baseUrl = '';
+  static const baseUrl = 'http://localhost:8080/';
 }

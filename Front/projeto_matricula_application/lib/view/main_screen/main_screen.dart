@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:projeto_matricula_application/infra/routes/router.dart';
+import 'package:heroicons/heroicons.dart';
+import 'package:projeto_matricula_application/view/main_screen/widgets/main_side_bar.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_state.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<MainScreen> createState() => MainScreenWidgetState();
@@ -36,59 +37,59 @@ class MainScreenWidgetState extends State<MainScreen> {
         return BlocBuilder<MainScreenBloc, MainScreenState>(
             bloc: bloc,
             builder: (BuildContext context, state) {
-          final allowedDestinations = nav.getDestinations();
+              final allowedDestinations = nav.getDestinations();
 
-          final destinations = allowedDestinations
-              .map((e) => NavigationDestination(
-                  icon: Icon(e.icon!),
-                  selectedIcon: Icon(e.selectedIcon),
-                  label: e.label!))
-              .toList();
+              final destinations = allowedDestinations
+                  .map((e) => NavigationDestination(
+                      icon: Icon(e.icon!),
+                      selectedIcon: Icon(e.selectedIcon),
+                      label: e.label!))
+                  .toList();
 
-          return Scaffold(
-            body: GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-              child: allowedDestinations.isNotEmpty
-                  ? allowedDestinations[currentIndex].screen
-                  : null,
-            ),
-            bottomNavigationBar: allowedDestinations.isEmpty
-                ? Container()
-                : NavigationBarTheme(
-                    data: NavigationBarThemeData(
-                      labelTextStyle:
-                          MaterialStateProperty.resolveWith<TextStyle>(
-                        (Set<MaterialState> states) =>
-                            states.contains(MaterialState.selected)
-                                ? const TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.w600)
-                                : const TextStyle(
-                                    color: Colors.purple,
-                                    fontWeight: FontWeight.w600),
+              return Scaffold(
+                body: GestureDetector(
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                  child: allowedDestinations.isNotEmpty
+                      ? allowedDestinations[currentIndex].screen
+                      : null,
+                ),
+                bottomNavigationBar: allowedDestinations.isEmpty
+                    ? Container()
+                    : NavigationBarTheme(
+                        data: NavigationBarThemeData(
+                          labelTextStyle:
+                              WidgetStateProperty.resolveWith<TextStyle>(
+                            (Set<WidgetState> states) =>
+                                states.contains(WidgetState.selected)
+                                    ? const TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w600)
+                                    : const TextStyle(
+                                        color: Colors.purple,
+                                        fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        child: PreferredSize(
+                          preferredSize: const Size.fromHeight(61),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Divider(height: 1, color: Colors.grey[300]),
+                              NavigationBar(
+                                height: 60,
+                                indicatorColor: Colors.purple.withOpacity(0),
+                                surfaceTintColor: Colors.grey[100],
+                                backgroundColor: Colors.grey[100],
+                                destinations: destinations,
+                                selectedIndex: currentIndex,
+                                onDestinationSelected: onSelected,
+                              )
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                    child: PreferredSize(
-                      preferredSize: const Size.fromHeight(61),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Divider(height: 1, color: Colors.grey[300]),
-                          NavigationBar(
-                            height: 60,
-                            indicatorColor: Colors.purple.withOpacity(0),
-                            surfaceTintColor: Colors.grey[100],
-                            backgroundColor: Colors.grey[100],
-                            destinations: destinations,
-                            selectedIndex: currentIndex,
-                            onDestinationSelected: onSelected,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-          );
-        });
+              );
+            });
       },
     );
   }
@@ -107,13 +108,13 @@ class NavDestinationModel {
         label: 'Funcionalidades',
         icon: Icons.build,
         selectedIcon: Icons.build_circle,
-        screen: FuncionalidadesScreen(),
+        screen: const FuncionalidadesScreen(),
       ),
       NavigationItem(
         label: 'Configs',
         icon: Icons.settings,
         selectedIcon: Icons.settings_suggest,
-        screen: ConfigScreen(),
+        screen: const ConfigScreen(),
       ),
     ];
   }
@@ -134,6 +135,8 @@ class NavigationItem {
 }
 
 class ConfigScreen extends StatefulWidget {
+  const ConfigScreen({super.key});
+
   @override
   _ConfigScreenState createState() => _ConfigScreenState();
 }
@@ -141,7 +144,7 @@ class ConfigScreen extends StatefulWidget {
 class _ConfigScreenState extends State<ConfigScreen> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -153,8 +156,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
   @override
   Widget build(BuildContext context) {
     // Simulando dados do usuário
-    final String userName = "Lúcio Alves";
-    final String userProfilePicture =
+    const String userName = "Lúcio Alves";
+    const String userProfilePicture =
         "https://www.example.com/user_profile_picture.jpg"; // URL da foto de perfil
 
     return Scaffold(
@@ -171,48 +174,46 @@ class _ConfigScreenState extends State<ConfigScreen> {
             children: [
               CircleAvatar(
                 radius: 50,
-                backgroundImage: NetworkImage(userProfilePicture),
+                backgroundImage: const NetworkImage(userProfilePicture),
                 backgroundColor: Colors.grey[200],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Nome: $userName",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _loginController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Login',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Senha',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  // Lógica para salvar ou atualizar informações
                   String updatedLogin = _loginController.text;
                   String updatedPassword = _passwordController.text;
-                  // Aqui você pode implementar a lógica para salvar os dados
-                  // Exemplo: print("Login: $updatedLogin, Senha: $updatedPassword");
                 },
-                child: const Text('Atualizar Informações'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
                   foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  textStyle: TextStyle(fontSize: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  textStyle: const TextStyle(fontSize: 16),
                 ),
+                child: const Text('Atualizar Informações'),
               ),
             ],
           ),
@@ -223,42 +224,51 @@ class _ConfigScreenState extends State<ConfigScreen> {
 }
 
 class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/images/pruminas.png',
-            fit: BoxFit.cover,
-            height: 200, 
+    return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+            icon: const HeroIcon(HeroIcons.bars3, color: Colors.blue),
           ),
-          SizedBox(height: 20), 
-          Text(
-            'Atenção, Alunos da PRU MINAS!\n\n'
-              'Não percam a oportunidade de garantir seu lugar neste semestre! É crucial que todos se matriculem em todas as disciplinas desejadas o quanto antes para não correr o risco de perder o semestre. A matrícula antecipada assegura sua vaga nas matérias e permite que você se organize melhor para os estudos.\n\n'
-              'Não deixe para a última hora. Faça sua inscrição hoje mesmo e comece o semestre com o pé direito!\n\n'
-              'Atenciosamente,\n'
-              'Equipe PRU MINAS',
-              textAlign: TextAlign.center, 
-              style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black, 
-            ),
+        ),
+        drawer: const DrawerWidget(),
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: ListView(
+            children: [
+              Text(
+                'Bem-vinda, Juliana!',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[800],
+                    fontSize: 25),
+              ),
+              Text(
+                'Um subtítulo muito dahora para a sua home.',
+                style: TextStyle(color: Colors.grey[600], fontSize: 15),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }
 
 class FuncionalidadesScreen extends StatelessWidget {
+  const FuncionalidadesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text(
         'Funcionalidades',
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

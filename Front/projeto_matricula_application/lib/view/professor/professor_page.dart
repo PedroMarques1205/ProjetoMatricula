@@ -9,6 +9,8 @@ class Subject {
 }
 
 class ProfessorPage extends StatefulWidget {
+  const ProfessorPage({super.key});
+
   @override
   _ProfessorPageState createState() => _ProfessorPageState();
 }
@@ -17,9 +19,7 @@ class _ProfessorPageState extends State<ProfessorPage> {
   final List<Subject> subjects = [
     Subject(name: 'Matemática', students: ['Aluno 1', 'Aluno 2', 'Aluno 3']),
     Subject(name: 'História', students: ['Aluno 4', 'Aluno 5']),
-    Subject(
-        name: 'Química',
-        students: ['Aluno 6', 'Aluno 7', 'Aluno 8', 'Aluno 9']),
+    Subject(name: 'Química', students: ['Aluno 6', 'Aluno 7', 'Aluno 8', 'Aluno 9']),
   ];
 
   Subject? selectedSubject;

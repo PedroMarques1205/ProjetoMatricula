@@ -1,13 +1,12 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginClient {
   final String baseUrl;
 
   LoginClient(this.baseUrl);
 
-  // EXEMPLO
-
-  /* Future<bool> login(String code, String password) async {
+  Future<bool> login(String code, String password) async {
     final url = Uri.parse('$baseUrl/login');
     final response = await http.post(
       url,
@@ -26,5 +25,5 @@ class LoginClient {
     } else {
       return false;
     }
-  } */
-} 
+  }
+}
