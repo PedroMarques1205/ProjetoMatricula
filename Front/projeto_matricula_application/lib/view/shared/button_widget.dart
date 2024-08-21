@@ -20,7 +20,9 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPressed,
+      onTap: () {
+        onPressed();
+      },
       child: Container(
           alignment: Alignment.center,
           width: width,

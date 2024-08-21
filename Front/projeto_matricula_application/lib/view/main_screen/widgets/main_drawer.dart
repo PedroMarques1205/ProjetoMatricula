@@ -4,6 +4,7 @@ import 'package:projeto_matricula_application/design/colors/project_colors.dart'
 import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
+import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -85,7 +86,13 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.bookOpen,
                   text: 'Minhas Matérias',
                   width: 250,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => UserSubjects()),
+                      (route) => false,
+                    );
+                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),
