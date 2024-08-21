@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/view/main_screen/widgets/main_drawer.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_bloc.dart';
@@ -243,7 +244,7 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-            icon: const HeroIcon(HeroIcons.bars3, color: Colors.red),
+            icon: const HeroIcon(HeroIcons.bars3, color: ProjectColors.primaryColor),
           ),
         ),
         drawer: const DrawerWidget(),

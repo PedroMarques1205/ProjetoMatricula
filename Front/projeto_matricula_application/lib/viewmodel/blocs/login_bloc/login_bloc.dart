@@ -20,8 +20,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       UserDTO user = await service.doLogin(event.code, event.passwoard);
       if (user.matricula != null && user.matricula!.isNotEmpty) {
         Context.currentUser = user;
+        emit(LoggedInState(user: user));
       }
-      emit(LoggedInState(user: user));
     } catch (error) {
       emit(LoginErrorState());
     }

@@ -52,8 +52,8 @@ class DrawerWidget extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: ButtonWidget(
-                icon: HeroIcons.bookOpen,
-                text: 'Matérias',
+                icon: HeroIcons.academicCap,
+                text: 'Matrícula',
                 width: 250,
                 onPressed: () {},
                 backgroundColor: ProjectColors.buttonColor,
@@ -74,7 +74,21 @@ class DrawerWidget extends StatelessWidget {
                 textColor: Colors.grey[600],
               ),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Align(
+              alignment: Alignment.center,
+              child: ButtonWidget(
+                icon: HeroIcons.bookOpen,
+                text: 'Minhas Matérias',
+                width: 250,
+                onPressed: () {},
+                backgroundColor: ProjectColors.buttonColor,
+                textColor: Colors.grey[600],
+              ),
+            ),
+          ),
         ],
       ),
     );
