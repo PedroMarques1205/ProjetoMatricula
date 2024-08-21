@@ -1,66 +1,66 @@
-package com.pucminas.backendprojmatricula.core.usuario;
+    package com.pucminas.backendprojmatricula.core.usuario;
 
-import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
-import com.pucminas.backendprojmatricula.dataprovider.usuario.IUsuarioRepository;
-import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarUsuarioDTO;
-import com.pucminas.backendprojmatricula.model.Usuario;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+    import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
+    import com.pucminas.backendprojmatricula.dataprovider.usuario.IUsuarioRepository;
+    import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarUsuarioDTO;
+    import com.pucminas.backendprojmatricula.model.Usuario;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Service;
 
-import java.util.List;
+    import java.util.List;
 
-@Service
-public class UsuarioService {
+    @Service
+    public class UsuarioService {
 
-    @Autowired
-    IUsuarioRepository usuarioRepository;
+        @Autowired
+        IUsuarioRepository usuarioRepository;
 
-    public Usuario salvarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
-
-    public Usuario deletarUsuario(String matricula) {
-        if(usuarioRepository.findById(matricula).isPresent()) {
-            Usuario usuario = usuarioRepository.findById(matricula).get();
-            usuario.setAtivo(false);
-            usuarioRepository.save(usuario);
-
-            return usuario;
+        public Usuario salvarUsuario(Usuario usuario) {
+            return usuarioRepository.save(usuario);
         }
-        return null;
-    }
 
-    public Usuario editarUsuario(RequestEditarUsuarioDTO params) {
-        if(usuarioRepository.findById(params.getMatricula()).isPresent()) {
-            Usuario usuario = usuarioRepository.findById(params.getMatricula()).get();
+        public Usuario deletarUsuario(String matricula) {
+            if(usuarioRepository.findById(matricula).isPresent()) {
+                Usuario usuario = usuarioRepository.findById(matricula).get();
+                usuario.setAtivo(false);
+                usuarioRepository.save(usuario);
 
-            if(params.getNome()!=null)
-                usuario.setNome(params.getNome());
-            if(params.getSenha()!=null)
-                usuario.setSenha(params.getSenha());
-            if(params.getTipoAcesso()!=null)
-                usuario.setTipoAcesso(params.getTipoAcesso());
-
-
-            usuarioRepository.save(usuario);
-
-            return usuario;
-        }
-        return null;
-    }
-
-    public Usuario login(String matricula, String Senha) {
-        if(usuarioRepository.findById(matricula).isPresent()) {
-            if(usuarioRepository.findById(matricula).get().getSenha().equals(Senha)) {
-                return usuarioRepository.findById(matricula).get();
+                return usuario;
             }
+            return null;
         }
-        return null;
-    }
 
-    public List<Usuario> buscarUsuarioPorTipoAcesso(TipoUsuario acesso) {
-        return usuarioRepository.findByTipoAcesso(acesso).stream()
-                .filter(Usuario::isAtivo)
-                .toList();
+        public Usuario editarUsuario(RequestEditarUsuarioDTO params) {
+            if(usuarioRepository.findById(params.getMatricula()).isPresent()) {
+                Usuario usuario = usuarioRepository.findById(params.getMatricula()).get();
+
+                if(params.getNome()!=null)
+                    usuario.setNome(params.getNome());
+                if(params.getSenha()!=null)
+                    usuario.setSenha(params.getSenha());
+                if(params.getTipoAcesso()!=null)
+                    usuario.setTipoAcesso(params.getTipoAcesso());
+
+
+                usuarioRepository.save(usuario);
+
+                return usuario;
+            }
+            return null;
+        }
+
+        public Usuario login(String matricula, String Senha) {
+            if(usuarioRepository.findById(matricula).isPresent()) {
+                if(usuarioRepository.findById(matricula).get().getSenha().equals(Senha)) {
+                    return usuarioRepository.findById(matricula).get();
+                }
+            }
+            return null;
+        }
+
+        public List<Usuario> buscarUsuarioPorTipoAcesso(TipoUsuario acesso) {
+            return usuarioRepository.findByTipoAcesso(acesso).stream()
+                    .filter(Usuario::isAtivo)
+                    .toList();
+        }
     }
-}
