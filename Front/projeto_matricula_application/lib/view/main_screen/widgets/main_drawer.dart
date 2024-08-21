@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
+import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 
@@ -14,7 +15,7 @@ class DrawerWidget extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 164, 92, 92),
+              color: ProjectColors.primaryLight
             ),
             child: Center(
               child: Column(
@@ -55,7 +56,7 @@ class DrawerWidget extends StatelessWidget {
                 text: 'Matérias',
                 width: 250,
                 onPressed: () {},
-                backgroundColor: const Color.fromARGB(255, 234, 237, 237),
+                backgroundColor: ProjectColors.buttonColor,
                 textColor: Colors.grey[600],
               ),
             ),
@@ -69,7 +70,7 @@ class DrawerWidget extends StatelessWidget {
                 text: 'Financeiro',
                 width: 250,
                 onPressed: () {},
-                backgroundColor: const Color.fromARGB(255, 234, 237, 237),
+                backgroundColor: ProjectColors.buttonColor,
                 textColor: Colors.grey[600],
               ),
             ),

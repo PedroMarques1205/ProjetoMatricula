@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/infra/routes/router.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/login_bloc/login_bloc.dart';
@@ -38,10 +39,10 @@ class LoginPage extends StatelessWidget {
                 builder: (_, child) {
                   return Scaffold(
                       appBar: AppBar(
-                        shadowColor: const Color.fromARGB(255, 124, 52, 47),
-                        backgroundColor: const Color.fromARGB(255, 124, 52, 47),
+                        shadowColor: ProjectColors.primaryColor,
+                        backgroundColor: ProjectColors.primaryColor,
                         surfaceTintColor:
-                            const Color.fromARGB(255, 124, 52, 47),
+                            ProjectColors.primaryColor
                       ),
                       body: BlocConsumer<LoginBloc, LoginState>(
                         listener: (context, state) {
@@ -61,7 +62,7 @@ class LoginPage extends StatelessWidget {
                           return Container(
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height,
-                              color: const Color.fromARGB(255, 124, 52, 47),
+                              color: ProjectColors.primaryColor,
                               child: ListView(
                                 children: [
                                   Column(
@@ -129,8 +130,7 @@ class LoginPage extends StatelessWidget {
                                                   border: InputBorder.none,
                                                   hintText: 'Senha',
                                                   hintStyle: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 204, 156, 156))),
+                                                      color: ProjectColors.textLight)),
                                               onChanged: (value) {
                                                 password = value;
                                               },
@@ -146,8 +146,7 @@ class LoginPage extends StatelessWidget {
                                           child: const Text(
                                             'Esqueceu sua senha?',
                                             style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 204, 156, 156)),
+                                                color: ProjectColors.textLight),
                                           )),
                                       const SizedBox(
                                         height: 20,

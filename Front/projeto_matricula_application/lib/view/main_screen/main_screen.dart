@@ -243,7 +243,7 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-            icon: const HeroIcon(HeroIcons.bars3, color: Colors.blue),
+            icon: const HeroIcon(HeroIcons.bars3, color: Colors.red),
           ),
         ),
         drawer: const DrawerWidget(),
