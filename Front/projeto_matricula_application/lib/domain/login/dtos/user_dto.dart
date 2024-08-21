@@ -1,24 +1,33 @@
 import 'package:json_annotation/json_annotation.dart';
 
-// FALTANDO: funções para conversão de json
+part 'user_dto.g.dart'; 
 
+@JsonSerializable()
 class UserDTO {
-  String? name;
-  UserTypeEnum? type;
-  String? accessToken;
+  String? nome;
+  String? senha;
+  UserTypeEnum? tipoAcesso;
+  bool? ativo;
+  String? matricula;
 
   UserDTO({
-    this.name,
-    this.type,
-    this.accessToken,
+    this.nome,
+    this.senha,
+    this.tipoAcesso,
+    this.ativo,
+    this.matricula,
   });
+
+  factory UserDTO.fromJson(Map<String, dynamic> json) => _$UserDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserDTOToJson(this);
 }
 
 enum UserTypeEnum {
   @JsonValue('SECRETARIA')
-  secretaria,
+  Secretaria,
   @JsonValue('PROFESSOR')
-  professor,
+  Professor,
   @JsonValue('ALUNO')
-  aluno,
+  Aluno,
 }

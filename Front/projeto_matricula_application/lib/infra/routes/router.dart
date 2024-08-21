@@ -8,7 +8,7 @@ final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 class NavigationService {
   final _appRoutes = {
-    Routes.app: (_) => const LoginPage(),
+    Routes.app: (_) => LoginPage(),
   };
 
   final Set<String> _fullScreenRoutes = {};
@@ -42,7 +42,7 @@ class NavigationService {
                 builder: (_) => _appRoutes[settings.name]!(settings.arguments),
                 fullscreenDialog: _fullScreenRoutes.contains(settings.name),
               )
-        : MaterialPageRoute(builder: (_) => const LoginPage());
+        : MaterialPageRoute(builder: (_) => LoginPage());
   }
 
   Future<dynamic> push(Widget page) async {

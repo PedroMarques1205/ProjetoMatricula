@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
-import 'package:projeto_matricula_application/view/main_screen/widgets/main_side_bar.dart';
+import 'package:projeto_matricula_application/domain/context/context.dart';
+import 'package:projeto_matricula_application/view/main_screen/widgets/main_drawer.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_state.dart';
 
@@ -251,7 +252,7 @@ class HomeScreen extends StatelessWidget {
           child: ListView(
             children: [
               Text(
-                'Bem-vinda, Juliana!',
+                'Bem-vinda, ${Context.current.nome}!',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[800],
