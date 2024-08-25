@@ -1,7 +1,10 @@
 package com.pucminas.backendprojmatricula.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -12,7 +15,12 @@ public class Semestre {
     @EmbeddedId
     private SemestreId id;
 
-    class SemestreId implements Serializable {
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    @Embeddable
+    public static class SemestreId implements Serializable {
         private Integer ordinal;
 
         @ManyToOne

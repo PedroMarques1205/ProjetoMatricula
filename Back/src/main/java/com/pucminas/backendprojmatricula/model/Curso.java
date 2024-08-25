@@ -25,4 +25,6 @@ public class Curso {
     @NotNull
     private boolean ativo = true;
 
+    @NotNull
+    private int numSemestres;
 }

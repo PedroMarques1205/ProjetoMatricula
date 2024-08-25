@@ -27,7 +27,7 @@ public class DisciplinaService {
     public Disciplina deletarDisciplina(Long id) {
         if (disciplinaRepository.findById(id).isPresent()) {
             Disciplina disciplina = disciplinaRepository.findById(id).get();
-            disciplinaRepository.delete(disciplina);
+            disciplinaRepository.save(disciplina);
             return disciplina;
         }
         return null;
@@ -43,7 +43,7 @@ public class DisciplinaService {
             if (params.getDescricao() != null) {
                 disciplina.setDescricao(params.getDescricao());
             }
-            disciplina.setAtiva(params.isAtiva()); // atualiza o status das disciplinas
+            disciplina.setAtiva(params.isAtiva());
 
             return disciplinaRepository.save(disciplina);
         }

@@ -1,8 +1,11 @@
 package com.pucminas.backendprojmatricula.core.curso;
 
 import com.pucminas.backendprojmatricula.dataprovider.curso.ICursoRepository;
+import com.pucminas.backendprojmatricula.dataprovider.semestre.ISemestreRepository;
 import com.pucminas.backendprojmatricula.entrypoint.curso.dto.RequestEditarCursoDTO;
 import com.pucminas.backendprojmatricula.model.Curso;
+import com.pucminas.backendprojmatricula.model.Semestre;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,9 @@ public class CursoService {
     @Autowired
     ICursoRepository cursoRepository;
 
+    @Autowired
+    ISemestreRepository semestreRepository;
+
     public Optional<Curso> buscaCurso(Long id) {
         return cursoRepository.findById(id);
     }
@@ -25,8 +31,18 @@ public class CursoService {
                 .toList();
     }
 
+    @Transactional
     public Curso salvaCurso(Curso curso) {
-        return cursoRepository.save(curso);
+        cursoRepository.save(curso);
+        for(int i = 0; i < curso.getNumSemestres(); i++){
+            Semestre semestre = new Semestre();
+            semestre.setId(Semestre.SemestreId.builder()
+                            .curso(curso)
+                            .ordinal(i+1)
+                    .build());
+            semestreRepository.save(semestre);
+        }
+        return curso;
     }
 
     public Curso deletarCurso(Long id) {

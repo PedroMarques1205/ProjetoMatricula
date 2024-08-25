@@ -18,4 +18,11 @@ public class DisciplinasDoCurso {
     @ManyToOne
     @JoinColumn(name = "curso_id")
     Curso curso;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "semestre_ordinal", referencedColumnName = "ordinal"),
+            @JoinColumn(name = "semestre_curso_id", referencedColumnName = "curso_id")
+    })
+    Semestre semestre;
 }

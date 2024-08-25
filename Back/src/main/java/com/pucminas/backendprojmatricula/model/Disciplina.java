@@ -22,21 +22,4 @@ public class Disciplina {
 
     private boolean ativa;
 
-    //private int numeroAlunos;
-
-    //public void atualizarStatus() {
-      //  this.ativa = this.numeroAlunos >= 3;
-    //}
-
-    //public void matricularAluno() {
-        //this.numeroAlunos++;
-        //atualizarStatus();
-    //}
-
-    //public void desmatricularAluno() {
-        //if (this.numeroAlunos > 0) {
-            //this.numeroAlunos--;
-            //atualizarStatus();
-        //}
-    //}
 }
