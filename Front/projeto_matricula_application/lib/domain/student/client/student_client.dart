@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:projeto_matricula_application/domain/base_url.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
+import 'package:http/http.dart' as http;
 
-class LoginClient {
-  LoginClient();
+class StudentClient {
+  StudentClient();
 
   final String baseUrl = BaseUrl.baseUrl;
 
-  Future<UserDTO?> login(String code, String password) async {
-    final url = Uri.parse('$baseUrl/usuario/login?usuario=$code&senha=$password');
+  Future<List<UserDTO>> listStudents() async {
+    final url = Uri.parse('$baseUrl/usuario/obterUsuariosPorTipoAcesso?usuario=ALUNO');
 
     try {
       final response = await http.get(
@@ -19,17 +19,17 @@ class LoginClient {
         },
       );
 
-      if (response.statusCode == 101) {
-        print(response);
-      }
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        return UserDTO.fromJson(data);
+        final List<dynamic> jsonList = jsonDecode(response.body);
+        
+        final List<UserDTO> students = jsonList.map((json) => UserDTO.fromJson(json)).toList();
+
+        return students;
       } else {
-        return UserDTO();
+        return [];
       }
     } catch (error) {
-      print(error);
+      return [];
     }
   }
 }
