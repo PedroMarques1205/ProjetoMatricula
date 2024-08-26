@@ -6,7 +6,11 @@ import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/login/login_page.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/students_list.dart/register_student_page.dart';
+import 'package:projeto_matricula_application/view/teacher_list.dart/register_teacher_page.dart';
 import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
+
+// paginas
+import '.././../professor/professor_page.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -145,7 +149,13 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.users,
                   text: 'Professores',
                   width: 250,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => TeachersListPage()),
+                      (route) => false,
+                    );
+                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),
@@ -175,7 +185,13 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.bookOpen,
                   text: 'Suas matérias',
                   width: 250,
-                  onPressed: () {},
+                   onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ProfessorPage()),
+                      (route) => false,
+                    );
+                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),

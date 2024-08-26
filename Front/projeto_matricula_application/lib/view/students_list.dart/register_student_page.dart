@@ -6,6 +6,8 @@ import 'package:projeto_matricula_application/view/students_list.dart/widgets/st
 import 'package:projeto_matricula_application/viewmodel/blocs/register_student/register_student_page_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_student/register_student_page_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_student/register_student_page_state.dart';
+import '../main_screen/main_screen.dart';
+
 
 class StudentsListPage extends StatelessWidget {
   StudentsListPage({super.key});
@@ -23,14 +25,17 @@ class StudentsListPage extends StatelessWidget {
             style: TextStyle(color: Colors.grey[800]),
           ),
           leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: ProjectColors.primaryColor,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop(); // erro aqui
-            },
-          ),
+  icon: const Icon(
+    Icons.arrow_back,
+    color: ProjectColors.primaryColor,
+  ),
+  onPressed: () {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const MainScreen()), 
+      (route) => false,
+    );
+  },
+),
           actions: [
             TextButton(
                 onPressed: () {},
