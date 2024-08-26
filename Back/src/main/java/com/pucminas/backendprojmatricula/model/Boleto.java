@@ -1,5 +1,6 @@
 package com.pucminas.backendprojmatricula.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity(name = "Boletos")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Boleto {
 
     @Id
@@ -20,6 +22,9 @@ public class Boleto {
 
     @NotNull
     LocalDateTime dataValidade;
+
+    @NotNull
+    Double valor;
 
     @NotNull
     boolean pago = false;
