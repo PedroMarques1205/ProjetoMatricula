@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
 
 class NewStudentPage extends StatelessWidget {
+  final void Function(UserDTO user) onSave;
+
+  NewStudentPage({super.key, required this.onSave});
+
+  final UserDTO newUser = UserDTO(tipoAcesso: UserTypeEnum.Aluno, ativo: true);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,15 +84,9 @@ class NewStudentPage extends StatelessWidget {
                           const EdgeInsets.only(left: 25, right: 25, top: 15),
                       child: InputWidget(
                         title: 'Nome',
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 25, right: 25, top: 15),
-                      child: InputWidget(
-                        title: 'CPF',
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          newUser.nome = value;
+                        },
                       ),
                     ),
                     Padding(
@@ -93,7 +94,9 @@ class NewStudentPage extends StatelessWidget {
                           const EdgeInsets.only(left: 25, right: 25, top: 15),
                       child: InputWidget(
                         title: 'Matrícula',
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          newUser.matricula = value;
+                        },
                       ),
                     ),
                     Padding(
@@ -101,14 +104,16 @@ class NewStudentPage extends StatelessWidget {
                           const EdgeInsets.only(left: 25, right: 25, top: 15),
                       child: InputWidget(
                         title: 'Senha',
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          newUser.senha = value;
+                        },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 180),
                       child: ButtonWidget(
                         text: 'Salvar',
-                        onPressed: () {},
+                        onPressed: () => onSave(newUser),
                         width: 345,
                         backgroundColor: ProjectColors.primaryLight,
                         textColor: Colors.white,
