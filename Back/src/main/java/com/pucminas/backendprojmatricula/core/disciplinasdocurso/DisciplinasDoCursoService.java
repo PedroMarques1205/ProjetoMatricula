@@ -38,7 +38,6 @@ public class DisciplinasDoCursoService {
                 .curso(curso)
                 .build()).get() : null;
 
-
         DisciplinasDoCurso disciplinasDoCurso = new DisciplinasDoCurso();
         disciplinasDoCurso.setCurso(curso);
         disciplinasDoCurso.setDisciplina(disciplina);
