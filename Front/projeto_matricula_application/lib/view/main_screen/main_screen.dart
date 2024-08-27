@@ -209,11 +209,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  // logica para salvar ou atualizar informações
                   String updatedLogin = _loginController.text;
                   String updatedPassword = _passwordController.text;
-                  // Aqui pode implementar a lógica para salvar os dados
-                  // Exemplo: print("Login: $updatedLogin, Senha: $updatedPassword");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 92, 24, 33),

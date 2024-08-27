@@ -11,3 +11,11 @@ class RegisterTeachersListLoaded extends RegisterTeacherPageState {
 
   RegisterTeachersListLoaded({required this.teachers});
 }
+
+class NewTeacherRegisteredState extends RegisterTeacherPageState {
+  final UserDTO user;
+
+  NewTeacherRegisteredState({required this.user});
+}
+
+class NewStudentCreationErrorState extends RegisterTeacherPageState {}

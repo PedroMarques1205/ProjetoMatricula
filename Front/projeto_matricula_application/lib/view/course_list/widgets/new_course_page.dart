@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
-import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
-import '../register_student_page.dart';
+import '../widgets/course_list_item.dart';
+import '../register_course_page.dart';
 
-class NewStudentPage extends StatelessWidget {
-  final void Function(UserDTO user) onSave;
+class NewCoursePage extends StatelessWidget {
+  final void Function(CourseDTO course) onSave;
 
-  NewStudentPage({super.key, required this.onSave});
+  NewCoursePage({super.key, required this.onSave});
 
-  final UserDTO newUser = UserDTO(tipoAcesso: UserTypeEnum.Aluno, ativo: true);
+  final CourseDTO newCourse = CourseDTO(ativo: true);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class NewStudentPage extends StatelessWidget {
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
         title: Text(
-          'Novo Aluno',
+          'Novo Curso',
           style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -30,7 +31,7 @@ class NewStudentPage extends StatelessWidget {
           ),
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => StudentsListPage()),
+              MaterialPageRoute(builder: (context) => CoursesListPage()),
               (route) => false,
             );
           },
@@ -39,7 +40,7 @@ class NewStudentPage extends StatelessWidget {
           TextButton(
             onPressed: () {
               Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => StudentsListPage()),
+                MaterialPageRoute(builder: (context) => CoursesListPage()),
                 (route) => false,
               );
             },
@@ -59,36 +60,13 @@ class NewStudentPage extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Stack(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey[300],
-                            radius: 45,
-                            child: const HeroIcon(
-                              HeroIcons.user,
-                              color: Colors.white,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: CircleAvatar(
-                            backgroundColor: ProjectColors.primaryLight,
-                            radius: 20,
-                            child: HeroIcon(
-                              HeroIcons.camera,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                    child: InputWidget(
+                      title: 'ID',
+                      onChanged: (value) {
+                        newCourse.id = value;
+                      },
                     ),
                   ),
                   Padding(
@@ -96,33 +74,38 @@ class NewStudentPage extends StatelessWidget {
                     child: InputWidget(
                       title: 'Nome',
                       onChanged: (value) {
-                        newUser.nome = value;
+                        newCourse.nome = value;
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
                     child: InputWidget(
-                      title: 'Matrícula',
+                      title: 'Descrição',
                       onChanged: (value) {
-                        newUser.matricula = value;
+                        newCourse.descricao = value;
                       },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: InputWidget(
-                      title: 'Senha',
-                      onChanged: (value) {
-                        newUser.senha = value;
-                      },
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('Ativo')),
+                        Switch(
+                          value: newCourse.ativo ?? true,
+                          onChanged: (value) {
+                            newCourse.ativo = value;
+                          },
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 180),
+                    padding: const EdgeInsets.only(top: 20),
                     child: ButtonWidget(
                       text: 'Salvar',
-                      onPressed: () => onSave(newUser),
+                      onPressed: () => onSave(newCourse),
                       width: 345,
                       backgroundColor: ProjectColors.primaryLight,
                       textColor: Colors.white,
