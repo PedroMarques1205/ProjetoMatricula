@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/view/course_list/widgets/course_list_item.dart';
+import 'package:projeto_matricula_application/view/course_list/widgets/new_course_page.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_state.dart';
@@ -18,7 +20,7 @@ class CoursesListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Disciplinas',
+          'Cursos',
           style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
