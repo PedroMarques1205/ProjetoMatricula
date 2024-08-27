@@ -8,6 +8,7 @@ import '../teacher_list.dart/widgets/teacher_list_item.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_teacher/register_teacher_page_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_teacher/register_teacher_page_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_teacher/register_teacher_page_state.dart';
+import 'package:projeto_matricula_application/view/teacher_list.dart/widgets/new_teacher_page.dart';
 
 import '../main_screen/main_screen.dart';
 
@@ -23,7 +24,7 @@ class TeachersListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Professores', 
+          'Professores',
           style: TextStyle(color: Colors.grey[800]),
         ),
         leading: IconButton(
@@ -40,7 +41,7 @@ class TeachersListPage extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () => openNewTeacherPage(context),
             child: const Text(
               'Novo',
               style: TextStyle(
@@ -48,7 +49,7 @@ class TeachersListPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          )
+          ),
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
@@ -106,4 +107,36 @@ class TeachersListPage extends StatelessWidget {
       ),
     );
   }
+
+  void openNewTeacherPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => NewTeacherPage()),
+    );
+  }
+}
+
+Widget _buildCustomButton({
+  required BuildContext context,
+  required String label,
+  required VoidCallback onPressed,
+}) {
+  return ElevatedButton(
+    onPressed: onPressed,
+    style: ElevatedButton.styleFrom(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+      backgroundColor: ProjectColors.primaryColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    ),
+    child: Text(
+      label,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
 }

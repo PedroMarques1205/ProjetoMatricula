@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_dto.g.dart'; 
+part 'user_dto.g.dart';
 
 @JsonSerializable()
 class UserDTO {
@@ -18,7 +18,9 @@ class UserDTO {
     this.matricula,
   });
 
-  factory UserDTO.fromJson(Map<String, dynamic> json) => _$UserDTOFromJson(json);
+  factory UserDTO.fromJson(Map<String, dynamic> json) {
+    return _$UserDTOFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$UserDTOToJson(this);
 }
