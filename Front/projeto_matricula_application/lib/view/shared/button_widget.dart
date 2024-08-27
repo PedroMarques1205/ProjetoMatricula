@@ -7,7 +7,9 @@ class ButtonWidget extends StatelessWidget {
   final double width;
   final Color? backgroundColor;
   final Color? textColor;
-  final HeroIcons icon;
+  final HeroIcons? icon;
+  final double? radius;
+  final bool? centerTitle;
 
   const ButtonWidget(
       {super.key,
@@ -15,7 +17,10 @@ class ButtonWidget extends StatelessWidget {
       required this.onPressed,
       required this.width,
       this.backgroundColor,
-      this.textColor, required this.icon});
+      this.textColor,
+      this.icon,
+      this.radius,
+      this.centerTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +34,24 @@ class ButtonWidget extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
               color: backgroundColor ?? Colors.white,
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(radius ?? 10)),
           child: Row(
+            mainAxisAlignment: centerTitle == true
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.start,
+            crossAxisAlignment: centerTitle == true
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
             children: [
-              HeroIcon(icon, color: Colors.grey[600],),
-              const SizedBox(width: 5,),
+              icon != null
+                  ? HeroIcon(
+                      icon!,
+                      color: Colors.grey[600],
+                    )
+                  : Container(),
+              const SizedBox(
+                width: 5,
+              ),
               Text(
                 text,
                 style: TextStyle(
