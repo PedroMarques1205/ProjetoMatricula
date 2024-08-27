@@ -63,4 +63,10 @@ public class DisciplinaController {
         return ResponseEntity.ok(mapper.generalMapper(editarDisciplinaUseCase.editarDisciplina(disciplina),
                 DisciplinaDTO.class));
     }
+
+    @GetMapping("/obterDisciplinasPorEstudante")
+    public ResponseEntity<List<DisciplinaDTO>> buscarDisciplinas(String matriculaEstudante) {
+        return ResponseEntity.ok(mapper.mapCollection(obterDisciplinaUseCase.obterDisciplinasPorMatricula(matriculaEstudante),
+                DisciplinaDTO.class));
+    }
 }

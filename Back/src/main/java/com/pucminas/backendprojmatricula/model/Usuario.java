@@ -1,5 +1,6 @@
 package com.pucminas.backendprojmatricula.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,6 +10,7 @@ import lombok.Data;
 
 @Data
 @Entity(name = "Usuarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Usuario {
     @Id
     @NotEmpty

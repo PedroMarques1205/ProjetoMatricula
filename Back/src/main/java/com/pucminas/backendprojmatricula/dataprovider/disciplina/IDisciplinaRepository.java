@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IDisciplinaRepository extends JpaRepository<Disciplina, Long> {
-
+    Disciplina findByNome(String nome);
 }

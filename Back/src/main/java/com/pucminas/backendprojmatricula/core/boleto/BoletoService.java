@@ -27,4 +27,9 @@ public class BoletoService {
         boleto.setValor(valor);
         return boletoRepository.save(boleto);
     }
+
+    public List<Boleto> obterBoletosPorAluno(String matriculaAluno){
+        Usuario aluno = usuarioRepository.getReferenceById(matriculaAluno);
+        return boletoRepository.findBoletoByAlunoDevedor(aluno);
+    }
 }
