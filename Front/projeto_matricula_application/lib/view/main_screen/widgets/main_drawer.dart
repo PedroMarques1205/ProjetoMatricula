@@ -3,6 +3,7 @@ import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
+import 'package:projeto_matricula_application/view/course_list/register_course_page.dart';
 import 'package:projeto_matricula_application/view/login/login_page.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/students_list.dart/register_student_page.dart';
@@ -113,7 +114,14 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.academicCap,
                   text: 'Cursos',
                   width: 250,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CoursesListPage()),
+                      (route) => false,
+                    );
+                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),
@@ -131,7 +139,8 @@ class DrawerWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => StudentsListPage()),
+                      MaterialPageRoute(
+                          builder: (context) => StudentsListPage()),
                       (route) => false,
                     );
                   },
@@ -152,7 +161,8 @@ class DrawerWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => TeachersListPage()),
+                      MaterialPageRoute(
+                          builder: (context) => TeachersListPage()),
                       (route) => false,
                     );
                   },
@@ -185,10 +195,11 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.bookOpen,
                   text: 'Suas matérias',
                   width: 250,
-                   onPressed: () {
+                  onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => const ProfessorPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const ProfessorPage()),
                       (route) => false,
                     );
                   },

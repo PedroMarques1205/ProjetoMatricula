@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
-import '../widgets/course_list_item.dart';
 import '../register_course_page.dart';
 
 class NewCoursePage extends StatelessWidget {
