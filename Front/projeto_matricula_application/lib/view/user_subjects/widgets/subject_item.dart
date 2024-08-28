@@ -32,6 +32,10 @@ class SubjectItem extends StatelessWidget {
             'Turno: Noite',
             style: TextStyle(color: textColor),
           ),
+          Text(
+            '${subject.descricao}',
+            style: TextStyle(color: textColor),
+          ),
         ],
       ),
     );
