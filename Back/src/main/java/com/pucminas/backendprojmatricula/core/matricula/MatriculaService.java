@@ -37,13 +37,11 @@ public class MatriculaService {
     public List<Disciplina> obterDisciplinasPorAluno(String matricula) {
         Usuario aluno = usuarioRepository.findById(matricula).isPresent() ? usuarioRepository.findById(matricula).get() : null;
         List<Matricula> matriculas = matriculaRepository.findMatriculaByAluno(aluno);
-
         List<Disciplina> disciplinas = matriculas.stream()
                 .map(Matricula::getDisciplina)
                 .filter(Objects::nonNull)
                 .distinct()
                 .toList();
-
         return disciplinas;
     }
 }
