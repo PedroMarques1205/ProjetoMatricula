@@ -7,12 +7,12 @@ import 'package:projeto_matricula_application/view/course_list/widgets/new_cours
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_state.dart';
+import '../main_screen/main_screen.dart';
 
 class CoursesListPage extends StatelessWidget {
   CoursesListPage({super.key});
 
   List<CourseDTO> allCourses = [];
-
   final RegisterCoursePageBloc _bloc = RegisterCoursePageBloc();
 
   @override
@@ -29,7 +29,10 @@ class CoursesListPage extends StatelessWidget {
             color: ProjectColors.primaryColor,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const MainScreen()),
+              (route) => false,
+            );
           },
         ),
         actions: [
@@ -66,46 +69,52 @@ class CoursesListPage extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocBuilder<RegisterCoursePageBloc, RegisterCoursePageState>(
-        bloc: _bloc,
-        builder: (context, state) {
-          if (state is RegisterCoursePageInitState ||
-              state is RegisterCoursePageStartState) {
-            _bloc.add(RegisterCoursePageGetInfoEvent());
-          }
-          if (state is RegisterCoursesListLoaded) {
-            allCourses = state.courses;
+      body: BlocProvider(
+        create: (_) => _bloc,
+        child: BlocBuilder<RegisterCoursePageBloc, RegisterCoursePageState>(
+          builder: (context, state) {
+            if (state is RegisterCoursePageInitState ||
+                state is RegisterCoursePageStartState) {
+              _bloc.add(RegisterCoursePageGetInfoEvent());
+            }
+            if (state is RegisterCoursesListLoaded) {
+              allCourses = state.courses;
 
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: ListView.builder(
-                itemCount: allCourses.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                    child: CourseListItem(course: allCourses[index]),
-                  );
-                },
+              return SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: ListView.builder(
+                  itemCount: allCourses.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: CourseListItem(course: allCourses[index]),
+                    );
+                  },
+                ),
+              );
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ProjectColors.primaryColor,
               ),
             );
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(
-              color: ProjectColors.primaryColor,
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }
 
-  void openNewCoursePage(BuildContext context) {
-    Navigator.of(context).push(
+  void openNewCoursePage(BuildContext context) async {
+    final CourseDTO? newCourse = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => NewCoursePage(
-          onSave: (CourseDTO course) => onSave(course),
+          onSave: (CourseDTO course) async {
+            _bloc.add(RegisterNewCourseEvent(course: course));
+            await Future.delayed(Duration(milliseconds: 300)); 
+            return course;
+          },
         ),
       ),
     );

@@ -22,20 +22,21 @@ class RegisterCoursePageBloc extends Bloc<RegisterCoursePageEvent, RegisterCours
     emit(RegisterCoursesListLoaded(courses: courses));
   }
 
-  Future<void> _onNewCourse(RegisterNewCourseEvent event, Emitter<RegisterCoursePageState> emit) async {
-    CourseDTO newCourse = CourseDTO(
-      nome: event.course.nome,
-      codigo: event.course.codigo,
-      id: event.course.id,
-      ativo: true,
-    );
+ Future<void> _onNewCourse(RegisterNewCourseEvent event, Emitter<RegisterCoursePageState> emit) async {
+  CourseDTO newCourse = CourseDTO(
+    nome: event.course.nome,
+    descricao: event.course.descricao,
+    id: event.course.id,
+    ativo: event.course.ativo,
+    numSemestres: event.course.numSemestres,
+  );
 
-    var resp = await _service.createCourse(newCourse);
+  var resp = await _service.createCourse(newCourse);
 
-    if (resp?.codigo != null && resp!.codigo!.isNotEmpty) {
-      emit(NewCourseRegisteredState(course: resp));
-    } else {
-      emit(NewCourseCreationErrorState());
-    }
+  if (resp?.id != null && resp!.id!.isNotEmpty) {
+    emit(NewCourseRegisteredState(course: resp));
+  } else {
+    emit(NewCourseCreationErrorState());
   }
+}
 }

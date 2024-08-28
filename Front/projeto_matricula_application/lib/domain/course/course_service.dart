@@ -16,12 +16,14 @@ class CourseService {
     }
   }
 
-  Future<CourseDTO?> createCourse(CourseDTO course) async {
-    try {
-      var createdCourse = await client.createCourse(course);
-      return createdCourse;
-    } catch (error) {
-      return null;
-    }
+Future<CourseDTO?> createCourse(CourseDTO course) async {
+  try {
+    var createdCourse = await client.createCourse(course);
+    return createdCourse;
+  } catch (error) {
+    print('Error in service: $error');
+    return null;
   }
+}
+
 }

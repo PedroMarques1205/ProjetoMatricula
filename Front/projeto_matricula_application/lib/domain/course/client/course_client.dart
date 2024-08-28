@@ -9,7 +9,7 @@ class CourseClient {
   final String baseUrl = BaseUrl.baseUrl;
 
   Future<List<CourseDTO>> listCourses() async {
-    final url = Uri.parse('$baseUrl/Disciplina/buscarDisciplina');
+    final url = Uri.parse('$baseUrl/curso/obterTodosOsCursos');
 
     try {
       final response = await http.get(
@@ -33,26 +33,29 @@ class CourseClient {
     }
   }
 
-   Future<CourseDTO?> createCourse(CourseDTO course) async {
-    final url = Uri.parse('$baseUrl/Disciplina/novaDisciplina');
+  Future<CourseDTO?> createCourse(CourseDTO course) async {
+  final url = Uri.parse('$baseUrl/curso/novoCurso');
 
-    try {
-      final response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(course.toJson()),
-      );
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(course.toJson()),
+    );
 
-      if (response.statusCode == 201) {
-        final jsonResponse = jsonDecode(response.body);
-        return CourseDTO.fromJson(jsonResponse);
-      } else {
-        return null;
-      }
-    } catch (error) {
+    if (response.statusCode == 201) {
+      final jsonResponse = jsonDecode(response.body);
+      return CourseDTO.fromJson(jsonResponse);
+    } else {
+      print('Failed to create course: ${response.statusCode}');
       return null;
     }
+  } catch (error) {
+    print('Error creating course: $error');
+    return null;
   }
+}
+
 }

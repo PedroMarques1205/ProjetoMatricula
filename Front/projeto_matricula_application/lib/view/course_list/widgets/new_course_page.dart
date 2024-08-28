@@ -4,13 +4,62 @@ import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
 import '../register_course_page.dart';
+import '../../main_screen/main_screen.dart';
 
-class NewCoursePage extends StatelessWidget {
-  final void Function(CourseDTO course) onSave;
+class NewCoursePage extends StatefulWidget {
+  final Future<CourseDTO?> Function(CourseDTO course) onSave;
 
   NewCoursePage({super.key, required this.onSave});
 
-  final CourseDTO newCourse = CourseDTO(ativo: true);
+  @override
+  _NewCoursePageState createState() => _NewCoursePageState();
+}
+
+class _NewCoursePageState extends State<NewCoursePage> {
+  final CourseDTO newCourse = CourseDTO();
+
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _descricaoController = TextEditingController();
+  final TextEditingController _numSemestresController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _nomeController.text = newCourse.nome ?? '';
+    _descricaoController.text = newCourse.descricao ?? '';
+    _numSemestresController.text = newCourse.numSemestres?.toString() ?? '';
+  }
+
+  void _handleSave() async {
+    newCourse.nome = _nomeController.text;
+    newCourse.descricao = _descricaoController.text;
+    newCourse.numSemestres = int.tryParse(_numSemestresController.text);
+
+    final isValid = _validateCourse(newCourse);
+    if (isValid) {
+      final savedCourse = await widget.onSave(newCourse);
+      if (savedCourse != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const MainScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Falha ao salvar o curso.')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Preencha todos os campos corretamente.')),
+      );
+    }
+  }
+
+  bool _validateCourse(CourseDTO course) {
+    return course.nome != null &&
+           course.descricao != null &&
+           course.numSemestres != null &&
+           course.numSemestres! > 0;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +77,19 @@ class NewCoursePage extends StatelessWidget {
             color: ProjectColors.primaryColor,
           ),
           onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => CoursesListPage()),
-              (route) => false,
-            );
+            Navigator.of(context).pop();
           },
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => CoursesListPage()),
-                (route) => false,
-              );
+              Navigator.of(context).pop();
             },
             child: const Text(
               'Cancelar',
               style: TextStyle(color: ProjectColors.primaryColor),
             ),
-          )
+          ),
         ],
       ),
       body: Container(
@@ -60,17 +103,12 @@ class NewCoursePage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: InputWidget(
-                      title: 'ID',
-                      onChanged: (value) {
-                        newCourse.id = value;
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: InputWidget(
-                      title: 'Nome',
+                    child: TextFormField(
+                      controller: _nomeController,
+                      decoration: InputDecoration(
+                        labelText: 'Nome',
+                        border: OutlineInputBorder(),
+                      ),
                       onChanged: (value) {
                         newCourse.nome = value;
                       },
@@ -78,10 +116,28 @@ class NewCoursePage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: InputWidget(
-                      title: 'Descrição',
+                    child: TextFormField(
+                      controller: _descricaoController,
+                      decoration: InputDecoration(
+                        labelText: 'Descrição',
+                        border: OutlineInputBorder(),
+                      ),
                       onChanged: (value) {
                         newCourse.descricao = value;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                    child: TextFormField(
+                      controller: _numSemestresController,
+                      decoration: InputDecoration(
+                        labelText: 'Número Semestres',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        newCourse.numSemestres = int.tryParse(value);
                       },
                     ),
                   ),
@@ -93,7 +149,9 @@ class NewCoursePage extends StatelessWidget {
                         Switch(
                           value: newCourse.ativo ?? true,
                           onChanged: (value) {
-                            newCourse.ativo = value;
+                            setState(() {
+                              newCourse.ativo = value;
+                            });
                           },
                         ),
                       ],
@@ -103,14 +161,14 @@ class NewCoursePage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20),
                     child: ButtonWidget(
                       text: 'Salvar',
-                      onPressed: () => onSave(newCourse),
+                      onPressed: _handleSave,
                       width: 345,
                       backgroundColor: ProjectColors.primaryLight,
                       textColor: Colors.white,
                       centerTitle: true,
                       radius: 25,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

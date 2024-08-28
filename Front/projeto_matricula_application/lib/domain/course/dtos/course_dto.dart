@@ -6,23 +6,29 @@ part 'course_dto.g.dart';
 class CourseDTO {
   String? id;
   String? nome;
-  String? codigo;
   String? descricao;
-  bool? ativo;
   int? numSemestres;
+  bool? ativo;
 
-  CourseDTO({
-    this.id,
-    this.nome,
-    this.codigo,
-    this.descricao,
-    this.ativo,
-    this.numSemestres
-  });
+  CourseDTO({this.id, this.nome, this.descricao, this.numSemestres, this.ativo = true});
 
-  factory CourseDTO.fromJson(Map<String, dynamic> json) {
-    return _$CourseDTOFromJson(json);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nome': nome,
+      'descricao': descricao,
+      'numSemestres': numSemestres,
+      'ativo': ativo,
+    };
   }
 
-  Map<String, dynamic> toJson() => _$CourseDTOToJson(this);
+  static CourseDTO fromJson(Map<String, dynamic> json) {
+    return CourseDTO(
+      id: json['id'],
+      nome: json['nome'],
+      descricao: json['descricao'],
+      numSemestres: json['numSemestres'],
+      ativo: json['ativo'],
+    );
+  }
 }
