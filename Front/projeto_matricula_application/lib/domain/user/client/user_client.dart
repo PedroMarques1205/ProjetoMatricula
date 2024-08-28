@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:projeto_matricula_application/domain/base_url.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
-
 import 'package:http/http.dart' as http;
 
 class UserClient {
@@ -11,7 +10,7 @@ class UserClient {
   final String baseUrl = BaseUrl.baseUrl;
 
   Future<UserDTO> createUser(UserDTO newUser) async {
-    final url = Uri.parse('$baseUrl/usuario/novoUsuario?usuario=${newUser.tipoAcesso}');
+    final url = Uri.parse('$baseUrl/usuario/novoUsuario');
 
     try {
       final response = await http.post(
@@ -19,6 +18,7 @@ class UserClient {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
+        body: jsonEncode(newUser.toJson()),
       );
 
       if (response.statusCode == 200) {
@@ -30,6 +30,5 @@ class UserClient {
     } catch (error) {
       return UserDTO();
     }
-
   }
 }

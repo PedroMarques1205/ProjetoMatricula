@@ -197,7 +197,6 @@ class LoginPage extends StatelessWidget {
   }
 
   void _doLogin(BuildContext context) {
-    BlocProvider.of<LoginBloc>(context)
-        .add(LoginButtonPressed(code: code, passwoard: password));
+    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(code: code, passwoard: password));
   }
 }

@@ -9,7 +9,7 @@ class StudentClient {
   final String baseUrl = BaseUrl.baseUrl;
 
   Future<List<UserDTO>> listStudents() async {
-    final url = Uri.parse('$baseUrl/usuario/obterUsuariosPorTipoAcesso?usuario=ALUNO');
+    final url = Uri.parse('${baseUrl}/usuario/obterUsuariosPorTipoAcesso?usuario=ALUNO');
 
     try {
       final response = await http.get(

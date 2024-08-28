@@ -1,3 +1,3 @@
 class BaseUrl {
-  static const baseUrl = 'https://57f9-2804-14c-5b81-48f7-ada2-5f0-df3f-ea92.ngrok-free.app/api';
+  static const baseUrl = 'https://4c31-2804-14c-5bd2-86e4-7422-edf-5839-6f69.ngrok-free.app/api';
 }
