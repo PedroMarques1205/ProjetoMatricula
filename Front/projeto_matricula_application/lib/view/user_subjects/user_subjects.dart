@@ -9,32 +9,30 @@ import 'package:projeto_matricula_application/view/user_subjects/widgets/subject
 class UserSubjects extends StatelessWidget {
   final List<SubjectDTO> subjects = [
     SubjectDTO(
-        name: 'Cálculo I',
-        shift: SubjectShiftEnum.noite,
-        numberStudents: 15,
-        hours: 40),
+      nome: 'Cálculo I',
+      descricao: 'A',
+      ativa: true,
+      id: '1',
+    ),
     SubjectDTO(
-        name: 'AEDS I',
-        shift: SubjectShiftEnum.noite,
-        numberStudents: 15,
-        hours: 40),
+      nome: 'Cálculo II',
+      descricao: 'A',
+      ativa: true,
+      id: '2',
+    ),
     SubjectDTO(
-        name: 'Trabalho Interdisciplinar',
-        shift: SubjectShiftEnum.noite,
-        numberStudents: 15,
-        hours: 40),
-    SubjectDTO(
-        name: 'Introdução a ESW',
-        shift: SubjectShiftEnum.noite,
-        numberStudents: 15,
-        hours: 40),
+      nome: 'Física',
+      descricao: 'A',
+      ativa: true,
+      id: '3',
+    ),
   ];
 
   final List<List<Color>> gradients = [
-    [Color(0xFFFFD1DC), Color(0xFFFFC0CB)], 
+    [Color(0xFFFFD1DC), Color(0xFFFFC0CB)],
     [Color(0xFFFFE4B5), Color(0xFFFFDAB9)],
-    [Color(0xFFB0E0E6), Color(0xFFAFEEEE)], 
-    [Color(0xFFF0E68C), Color(0xFFFFFACD)], 
+    [Color(0xFFB0E0E6), Color(0xFFAFEEEE)],
+    [Color(0xFFF0E68C), Color(0xFFFFFACD)],
   ];
 
   UserSubjects({super.key});

@@ -14,4 +14,13 @@ class SubjectService {
       return [];
     }
   }
+
+  Future<SubjectDTO> createSubject(SubjectDTO subject) async {
+    try {
+      return await client.createSubject(subject);
+    } catch (error) {
+      print(error);
+      return SubjectDTO();
+    }
+  }
 }

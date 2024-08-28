@@ -5,12 +5,10 @@ class SubjectItem extends StatelessWidget {
   final SubjectDTO subject;
   final List<Color> gradientColors;
 
-  const SubjectItem(
-      {super.key, required this.subject, required this.gradientColors});
+  const SubjectItem({super.key, required this.subject, required this.gradientColors});
 
   @override
   Widget build(BuildContext context) {
-    // Escurece a primeira cor do gradiente para usar no texto
     final textColor = darken(gradientColors.first);
 
     return Container(
@@ -26,12 +24,16 @@ class SubjectItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            subject.name ?? 'Nome',
+            subject.nome ?? 'Nome',
             style: TextStyle(
                 color: textColor, fontSize: 25, fontWeight: FontWeight.bold),
           ),
           Text(
-            'Turno: ${subject.shift?.name}',
+            'Turno: Noite',
+            style: TextStyle(color: textColor),
+          ),
+          Text(
+            '${subject.descricao}',
             style: TextStyle(color: textColor),
           ),
         ],

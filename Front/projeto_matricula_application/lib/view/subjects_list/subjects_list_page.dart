@@ -1,23 +1,45 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/main_screen/main_screen.dart';
+import 'package:projeto_matricula_application/view/subjects_list/widgets/new_subject_page.dart';
+import 'package:projeto_matricula_application/view/user_subjects/widgets/subject_item.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_list_page/register_subjects_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_list_page/register_subjects_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_list_page/register_subjects_state.dart';
 
-class SubjectsListPage extends StatelessWidget {
-  final RegisterSubjectsBloc _bloc = RegisterSubjectsBloc();
+class SubjectsListPage extends StatefulWidget {
+  @override
+  _SubjectsListPageState createState() => _SubjectsListPageState();
+}
+
+class _SubjectsListPageState extends State<SubjectsListPage> {
+  late final RegisterSubjectsBloc _bloc;
   List<SubjectDTO> allSubjects = [];
-  
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = RegisterSubjectsBloc();
+    _bloc.add(ListSubjectsEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        shadowColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         title: Text(
           'Disciplinas',
-          style: TextStyle(color: Colors.grey[800]),
+          style:
+              TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -68,9 +90,6 @@ class SubjectsListPage extends StatelessWidget {
       body: BlocBuilder<RegisterSubjectsBloc, RegisterSubjectsState>(
         bloc: _bloc,
         builder: (context, state) {
-          if (state is RegisterSubjectsInitState) {
-            _bloc.add(ListSubjectsEvent());
-          }
           if (state is SubjectListLoadedState) {
             allSubjects = state.subjects;
 
@@ -81,9 +100,12 @@ class SubjectsListPage extends StatelessWidget {
                 itemCount: allSubjects.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                    child: Container()
-                  );
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: SubjectItem(
+                        subject: allSubjects[index],
+                        gradientColors: generateRandomGradientColors(),
+                      ));
                 },
               ),
             );
@@ -99,6 +121,31 @@ class SubjectsListPage extends StatelessWidget {
     );
   }
 
-  void openNewSubjectPage(BuildContext context) {}
-  
+  List<Color> generateRandomGradientColors() {
+    final random = Random();
+
+    Color getRandomColor() {
+      return Color.fromARGB(
+        255,
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+      );
+    }
+
+    return [
+      getRandomColor(),
+      getRandomColor(),
+    ];
+  }
+
+  void openNewSubjectPage(BuildContext context) {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+          builder: (context) => NewSubjectPage(
+                bloc: _bloc,
+              )),
+      (route) => false,
+    );
+  }
 }
