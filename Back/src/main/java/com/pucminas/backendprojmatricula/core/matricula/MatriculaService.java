@@ -28,6 +28,7 @@ public class MatriculaService {
     public Matricula matricularAlunoEmUmaDisciplina(String matricula, String nomeDisciplina) {
         Usuario aluno = usuarioRepository.findById(matricula).isPresent() ? usuarioRepository.findById(matricula).get() : null;
         Disciplina disciplina = disciplinaRepository.findByNome(nomeDisciplina);
+
         Matricula matriculaAluno = new Matricula();
         matriculaAluno.setAluno(aluno);
         matriculaAluno.setDisciplina(disciplina);
