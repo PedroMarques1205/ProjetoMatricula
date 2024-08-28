@@ -2,16 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
+import 'package:projeto_matricula_application/infra/routes/router.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
 import '../register_student_page.dart';
 
-class NewStudentPage extends StatelessWidget {
+class NewStudentPage extends StatefulWidget {
   final void Function(UserDTO user) onSave;
 
   NewStudentPage({super.key, required this.onSave});
 
-  final UserDTO newUser = UserDTO(tipoAcesso: UserTypeEnum.Aluno, ativo: true);
+  @override
+  _NewStudentPageState createState() => _NewStudentPageState();
+}
+
+class _NewStudentPageState extends State<NewStudentPage> {
+  late UserDTO newUser;
+
+  @override
+  void initState() {
+    super.initState();
+    newUser = UserDTO(tipoAcesso: UserTypeEnum.Aluno, ativo: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +33,8 @@ class NewStudentPage extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Text(
           'Novo Aluno',
-          style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -47,7 +60,7 @@ class NewStudentPage extends StatelessWidget {
               'Cancelar',
               style: TextStyle(color: ProjectColors.primaryColor),
             ),
-          )
+          ),
         ],
       ),
       body: Container(
@@ -92,29 +105,38 @@ class NewStudentPage extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                    padding:
+                        const EdgeInsets.only(left: 25, right: 25, top: 15),
                     child: InputWidget(
                       title: 'Nome',
                       onChanged: (value) {
-                        newUser.nome = value;
+                        setState(() {
+                          newUser.nome = value;
+                        });
                       },
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                    padding:
+                        const EdgeInsets.only(left: 25, right: 25, top: 15),
                     child: InputWidget(
                       title: 'Matrícula',
                       onChanged: (value) {
-                        newUser.matricula = value;
+                        setState(() {
+                          newUser.matricula = value;
+                        });
                       },
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                    padding:
+                        const EdgeInsets.only(left: 25, right: 25, top: 15),
                     child: InputWidget(
                       title: 'Senha',
                       onChanged: (value) {
-                        newUser.senha = value;
+                        setState(() {
+                          newUser.senha = value;
+                        });
                       },
                     ),
                   ),
@@ -122,7 +144,17 @@ class NewStudentPage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 180),
                     child: ButtonWidget(
                       text: 'Salvar',
-                      onPressed: () => onSave(newUser),
+                      onPressed: () {
+                        widget.onSave(newUser);
+                        try {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => const StudentsListPage()),
+                          );
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
                       width: 345,
                       backgroundColor: ProjectColors.primaryLight,
                       textColor: Colors.white,

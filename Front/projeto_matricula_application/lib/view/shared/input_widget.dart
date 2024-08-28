@@ -1,15 +1,39 @@
-
 import 'package:flutter/material.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 
-class InputWidget extends StatelessWidget {
+class InputWidget extends StatefulWidget {
   final String title;
   final String? hintText;
   final void Function(String value) onChanged;
 
-  InputWidget({super.key, required this.title, required this.onChanged, this.hintText});
+  InputWidget({
+    Key? key,
+    required this.title,
+    required this.onChanged,
+    this.hintText,
+  }) : super(key: key);
 
-  TextEditingController controller = TextEditingController();
+  @override
+  _InputWidgetState createState() => _InputWidgetState();
+}
+
+class _InputWidgetState extends State<InputWidget> {
+  late TextEditingController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+    controller.addListener(() {
+      widget.onChanged(controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +43,7 @@ class InputWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(0),
           child: Text(
-            title,
+            widget.title,
             style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
           ),
         ),
@@ -28,17 +52,19 @@ class InputWidget extends StatelessWidget {
           height: 50,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              color: ProjectColors.buttonColor,
-              borderRadius: BorderRadius.circular(10)),
+            color: ProjectColors.buttonColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: TextFormField(
             controller: controller,
             decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText ?? 'Informe um valor...',
-                hintStyle: TextStyle(color: Colors.grey[400])),
+              border: InputBorder.none,
+              hintText: widget.hintText ?? 'Informe um valor...',
+              hintStyle: TextStyle(color: Colors.grey[400]),
+            ),
             onChanged: (value) {},
           ),
-        )
+        ),
       ],
     );
   }

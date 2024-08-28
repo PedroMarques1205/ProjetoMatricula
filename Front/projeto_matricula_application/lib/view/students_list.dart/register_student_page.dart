@@ -10,117 +10,133 @@ import 'package:projeto_matricula_application/viewmodel/blocs/register_student/r
 import 'package:projeto_matricula_application/viewmodel/blocs/register_student/register_student_page_state.dart';
 import '../main_screen/main_screen.dart';
 
-class StudentsListPage extends StatelessWidget {
-  StudentsListPage({super.key});
+class StudentsListPage extends StatefulWidget {
+  const StudentsListPage({Key? key}) : super(key: key);
 
+  @override
+  _StudentsListPageState createState() => _StudentsListPageState();
+}
+
+class _StudentsListPageState extends State<StudentsListPage> {
   List<UserDTO> allStudents = [];
-
   final RegisterStudentPageBloc _bloc = RegisterStudentPageBloc();
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc.add(RegisterStudentPageGetInfoEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Alunos',
-            style:
-                TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
-          ),
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: ProjectColors.primaryColor,
-            ),
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const MainScreen()),
-                (route) => false,
-              );
-            },
-          ),
-          actions: [
-            TextButton(
-                onPressed: () => openNewStudentPage(context),
-                child: const Text(
-                  'Novo',
-                  style: TextStyle(
-                      color: ProjectColors.primaryColor,
-                      fontWeight: FontWeight.bold),
-                ))
-          ],
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(60.0),
-            child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: SizedBox(
-                  width: 340,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Pesquisar...',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none),
-                      filled: true,
-                      fillColor: ProjectColors.buttonColor,
-                    ),
-                  ),
-                )),
-          ),
+      appBar: AppBar(
+        title: Text(
+          'Alunos',
+          style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
         ),
-        body: BlocBuilder<RegisterStudentPageBloc, RegisterStudentPageState>(
-          bloc: _bloc,
-          builder: (context, state) {
-            if (state is NewStudentRegisteredState) {
-              allStudents.add(state.user);
-            }
-            if (state is NewStudentCreationErrorState) {
-              return const Center(
-                  child: HeroIcon(HeroIcons.heart,
-                      color: ProjectColors.primaryColor));
-            }
-            if (state is RegisterStudentPageInitState ||
-                state is RegisterStudentPageStartState) {
-              _bloc.add(RegisterStudentPageGetInfoEvent());
-            }
-            if (state is RegisterStudentsListLoaded) {
-              allStudents = state.students;
-
-              return SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: ListView.builder(
-                  itemCount: allStudents.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding:
-                            const EdgeInsets.only(top: 10, left: 20, right: 20),
-                        child: StudentListItem(student: allStudents[index]));
-                  },
-                ),
-              );
-            }
-
-            return const Center(
-              child: CircularProgressIndicator(
-                color: ProjectColors.primaryColor,
-              ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back,
+            color: ProjectColors.primaryColor,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const MainScreen()),
+              (route) => false,
             );
           },
-        ));
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => openNewStudentPage(context),
+            child: const Text(
+              'Novo',
+              style: TextStyle(
+                color: ProjectColors.primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: SizedBox(
+              width: 340,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Pesquisar...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: ProjectColors.buttonColor,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: BlocBuilder<RegisterStudentPageBloc, RegisterStudentPageState>(
+        bloc: _bloc,
+        builder: (context, state) {
+          if (state is NewStudentRegisteredState) {
+            allStudents.add(state.user);
+          }
+          if (state is NewStudentCreationErrorState) {
+            return const Center(
+              child: HeroIcon(HeroIcons.heart, color: ProjectColors.primaryColor),
+            );
+          }
+          if (state is RegisterStudentsListLoaded) {
+            allStudents = state.students;
+
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: ListView.builder(
+                itemCount: allStudents.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: StudentListItem(student: allStudents[index]),
+                  );
+                },
+              ),
+            );
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(
+              color: ProjectColors.primaryColor,
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void openNewStudentPage(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-          builder: (context) => NewStudentPage(
-                onSave: (UserDTO user) => onSave(user),
-              )),
+        builder: (context) => NewStudentPage(
+          onSave: (UserDTO user) => onSave(user),
+        ),
+      ),
       (route) => false,
     );
   }
 
   void onSave(UserDTO user) {
     _bloc.add(RegisterNewStudentEvent(user: user));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
