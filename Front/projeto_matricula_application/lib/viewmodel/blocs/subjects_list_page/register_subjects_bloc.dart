@@ -8,6 +8,11 @@ class RegisterSubjectsBloc extends Bloc<RegisterSubjectsEvent, RegisterSubjectsS
 
   RegisterSubjectsBloc() : super (RegisterSubjectsInitState()) {
     on<ListSubjectsEvent>(_onList);
+    on<CreateNewSubjectsEvent>(_onCreate);
+  }
+
+  Future<void> _onCreate(CreateNewSubjectsEvent event, Emitter<RegisterSubjectsState> emit) async {
+    await service.createSubject(event.subject);
   }
 
   Future<void> _onList(ListSubjectsEvent event, Emitter<RegisterSubjectsState> emit) async {

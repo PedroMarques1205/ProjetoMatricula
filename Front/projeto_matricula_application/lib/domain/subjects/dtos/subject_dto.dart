@@ -4,28 +4,16 @@ part 'subject_dto.g.dart';
 
 @JsonSerializable()
 class SubjectDTO {
-  final String? name;
-  final int? hours;
-  final int? numberStudents;
-  final SubjectShiftEnum? shift;
-
-  SubjectDTO({
-    this.name,
-    this.hours,
-    this.numberStudents,
-    this.shift,
-  });
+  String? id;
+  String? nome;
+  String? descricao;
+  bool? ativa;
 
   factory SubjectDTO.fromJson(Map<String, dynamic> json) {
     return _$SubjectDTOFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$SubjectDTOToJson(this);
-}
+  SubjectDTO({this.id, this.nome, this.descricao, this.ativa});
 
-enum SubjectShiftEnum {
-  @JsonValue('MANHA')
-  manha,
-  @JsonValue('NOITE')
-  noite
+  Map<String, dynamic> toJson() => _$SubjectDTOToJson(this);
 }

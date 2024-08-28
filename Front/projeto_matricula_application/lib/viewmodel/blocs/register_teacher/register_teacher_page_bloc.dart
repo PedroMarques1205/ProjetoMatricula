@@ -13,6 +13,7 @@ class RegisterTeacherPageBloc extends Bloc<RegisterTeacherPageEvent, RegisterTea
   RegisterTeacherPageBloc() : super(RegisterTeacherPageInitState()) {
     on<RegisterTeacherPageStart>(_onStart);
     on<RegisterTeacherPageGetInfoEvent>(_onGetInfo);
+    on<RegisterNewTeacherEvent>(_onNewStudent);
   }
 
   void _onStart(RegisterTeacherPageStart event, Emitter<RegisterTeacherPageState> emit) {

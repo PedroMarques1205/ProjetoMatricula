@@ -7,21 +7,16 @@ part of 'subject_dto.dart';
 // **************************************************************************
 
 SubjectDTO _$SubjectDTOFromJson(Map<String, dynamic> json) => SubjectDTO(
-      name: json['name'] as String?,
-      hours: (json['hours'] as num?)?.toInt(),
-      numberStudents: (json['numberStudents'] as num?)?.toInt(),
-      shift: $enumDecodeNullable(_$SubjectShiftEnumEnumMap, json['shift']),
+      id: json['id'] as String?,
+      nome: json['nome'] as String?,
+      descricao: json['descricao'] as String?,
+      ativa: json['ativa'] as bool?,
     );
 
 Map<String, dynamic> _$SubjectDTOToJson(SubjectDTO instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'hours': instance.hours,
-      'numberStudents': instance.numberStudents,
-      'shift': _$SubjectShiftEnumEnumMap[instance.shift],
+      'id': instance.id,
+      'nome': instance.nome,
+      'descricao': instance.descricao,
+      'ativa': instance.ativa,
     };
-
-const _$SubjectShiftEnumEnumMap = {
-  SubjectShiftEnum.manha: 'MANHA',
-  SubjectShiftEnum.noite: 'NOITE',
-};
