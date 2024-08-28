@@ -7,6 +7,7 @@ import 'package:projeto_matricula_application/view/course_list/register_course_p
 import 'package:projeto_matricula_application/view/login/login_page.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/students_list.dart/register_student_page.dart';
+import 'package:projeto_matricula_application/view/subjects_list/subjects_list_page.dart';
 import 'package:projeto_matricula_application/view/teacher_list.dart/register_teacher_page.dart';
 import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
 
@@ -180,7 +181,14 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.bookOpen,
                   text: 'Disciplinas',
                   width: 250,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SubjectsListPage()),
+                      (route) => false,
+                    );
+                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),

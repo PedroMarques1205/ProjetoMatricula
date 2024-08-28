@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 
 class SubjectItem extends StatelessWidget {
-  final SubjectDto subject;
+  final SubjectDTO subject;
   final List<Color> gradientColors;
 
   const SubjectItem(

@@ -7,23 +7,23 @@ import 'package:projeto_matricula_application/view/main_screen/main_screen.dart'
 import 'package:projeto_matricula_application/view/user_subjects/widgets/subject_item.dart';
 
 class UserSubjects extends StatelessWidget {
-  final List<SubjectDto> subjects = [
-    SubjectDto(
+  final List<SubjectDTO> subjects = [
+    SubjectDTO(
         name: 'Cálculo I',
         shift: SubjectShiftEnum.noite,
         numberStudents: 15,
         hours: 40),
-    SubjectDto(
+    SubjectDTO(
         name: 'AEDS I',
         shift: SubjectShiftEnum.noite,
         numberStudents: 15,
         hours: 40),
-    SubjectDto(
+    SubjectDTO(
         name: 'Trabalho Interdisciplinar',
         shift: SubjectShiftEnum.noite,
         numberStudents: 15,
         hours: 40),
-    SubjectDto(
+    SubjectDTO(
         name: 'Introdução a ESW',
         shift: SubjectShiftEnum.noite,
         numberStudents: 15,
