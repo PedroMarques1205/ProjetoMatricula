@@ -53,4 +53,10 @@ public class UsuarioController {
     public ResponseEntity<List<Usuario>> obterUsuarioPorAcesso(@RequestParam TipoUsuario usuario) {
         return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorTipoAcesso(usuario));
     }
+
+
+    @GetMapping("/obterTurmaDeAlunosPorDisciplina")
+    public ResponseEntity<List<Usuario>> obterUsuarioPorDisciplina(@RequestParam String nomeDisciplina) {
+        return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorDisciplina(nomeDisciplina));
+    }
 }
