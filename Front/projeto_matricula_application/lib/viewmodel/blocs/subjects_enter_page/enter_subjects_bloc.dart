@@ -6,9 +6,10 @@ import 'package:projeto_matricula_application/viewmodel/blocs/subjects_enter_pag
 class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
   final SubjectService service = SubjectService();
 
-  EnterSubjectsBloc() : super (EnterSubjectsInitState()) {
+  EnterSubjectsBloc() : super(EnterSubjectsInitState()) {
     on<ListSubjectsEvent>(_onList);
     on<CreateNewSubjectsEvent>(_onCreate);
+    on<AssociateSubjectEvent>(_onAssociate);  
   }
 
   Future<void> _onCreate(CreateNewSubjectsEvent event, Emitter<EnterSubjectsState> emit) async {
@@ -17,7 +18,11 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
 
   Future<void> _onList(ListSubjectsEvent event, Emitter<EnterSubjectsState> emit) async {
     var allSubjects = await service.listSubjects();
-
     emit(SubjectListLoadedState(subjects: allSubjects));
   }
+
+  Future<void> _onAssociate(AssociateSubjectEvent event, Emitter<EnterSubjectsState> emit) async {
+    await service.associateSubject(event.subject);
+  }
 }
+

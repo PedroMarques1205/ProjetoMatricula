@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/main_screen/main_screen.dart';
-import 'package:projeto_matricula_application/view/subjects_list/widgets/new_subject_page.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_enter_page/enter_subjects_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_enter_page/enter_subjects_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_enter_page/enter_subjects_state.dart';
@@ -54,39 +53,6 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
             );
           },
         ),
-        actions: [
-          TextButton(
-            onPressed: () => openNewSubjectPage(context),
-            child: const Text(
-              'Novo',
-              style: TextStyle(
-                color: ProjectColors.primaryColor,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60.0),
-          child: Padding(
-            padding: const EdgeInsets.all(5),
-            child: SizedBox(
-              width: 340,
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Pesquisar...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: ProjectColors.buttonColor,
-                ),
-              ),
-            ),
-          ),
-        ),
       ),
       body: BlocBuilder<EnterSubjectsBloc, EnterSubjectsState>(
         bloc: _bloc,
@@ -94,49 +60,45 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
           if (state is SubjectListLoadedState) {
             allSubjects = state.subjects;
 
-            return SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: ListView.builder(
-                itemCount: allSubjects.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: generateRandomGradientColors(),
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
+            return ListView.builder(
+              itemCount: allSubjects.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: generateRandomGradientColors(),
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            allSubjects[index].nome,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          ElevatedButton(
-                            onPressed: () => registerStudent(allSubjects[index]),
-                            child: Text('Cadastrar Aluno'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ProjectColors.buttonColor,
-                            ),
-                          ),
-                        ],
-                      ),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                },
-              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                       Text(
+                            allSubjects[index].nome ?? 'Nome não disponível',
+                            style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        ElevatedButton(
+                          onPressed: () => registerStudent(allSubjects[index]),
+                          child: const Text('Se Inscrever'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ProjectColors.buttonColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           }
 
@@ -168,37 +130,31 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
     ];
   }
 
-  void openNewSubjectPage(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => NewSubjectPage(
-          bloc: _bloc,
-        ),
-      ),
-    );
-  }
+ void registerStudent(SubjectDTO subject) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Cadastrar Aluno'),
+      content: Text('Você deseja cadastrar um aluno para a disciplina "${subject.nome}"?'),
+      actions: [
+        TextButton(
+          onPressed: () {
 
-  void registerStudent(SubjectDTO subject) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Cadastrar Aluno'),
-        content: Text('Você deseja cadastrar um aluno para a disciplina "${subject.nome}"?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Confirmar'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Cancelar'),
-          ),
-        ],
-      ),
-    );
-  }
+            _bloc.add(AssociateSubjectEvent(subject: subject));
+
+            Navigator.of(context).pop();
+          },
+          child: Text('Confirmar'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cancelar'),
+        ),
+      ],
+    ),
+  );
+}
+
 }

@@ -9,6 +9,7 @@ import 'package:projeto_matricula_application/viewmodel/blocs/login_bloc/login_e
 import 'package:projeto_matricula_application/viewmodel/blocs/login_bloc/login_state.dart';
 
 import '../main_screen/main_screen.dart';
+import './curiosidade_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -42,7 +43,20 @@ class LoginPage extends StatelessWidget {
                         shadowColor: ProjectColors.primaryColor,
                         backgroundColor: ProjectColors.primaryColor,
                         surfaceTintColor:
-                            ProjectColors.primaryColor
+                            ProjectColors.primaryColor,
+                        actions: [
+                          IconButton(
+                            icon: Icon(Icons.info, color: Colors.white),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CuriosidadePage(), 
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       body: BlocConsumer<LoginBloc, LoginState>(
                         listener: (context, state) {

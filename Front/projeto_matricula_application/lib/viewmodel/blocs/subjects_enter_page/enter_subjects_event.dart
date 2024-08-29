@@ -2,10 +2,19 @@ import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.d
 
 abstract class EnterSubjectsEvent {}
 
+class EnterSubjectsPageStart extends EnterSubjectsEvent {
+}
+
 class ListSubjectsEvent extends EnterSubjectsEvent {}
 
 class CreateNewSubjectsEvent extends EnterSubjectsEvent {
   final SubjectDTO subject;
 
   CreateNewSubjectsEvent({required this.subject});
+}
+
+class AssociateSubjectEvent extends EnterSubjectsEvent {
+  final SubjectDTO subject;
+
+  AssociateSubjectEvent({required this.subject});
 }

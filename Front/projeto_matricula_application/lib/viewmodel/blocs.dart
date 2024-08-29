@@ -24,5 +24,6 @@ List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (context) => RegisterStudentPageBloc()..add(RegisterStudentPageStart())),
   BlocProvider(create: (context) => RegisterTeacherPageBloc()..add(RegisterTeacherPageStart())),
   BlocProvider(create: (context) => RegisterCoursePageBloc()..add(RegisterCoursePageStart())),
-  BlocProvider(create: (context) => EnterSubjectsBloc()()..add(EnterSubjectsPageStart())),
+ BlocProvider(create: (context) => EnterSubjectsBloc()..add(EnterSubjectsPageStart())),
+  
 ];

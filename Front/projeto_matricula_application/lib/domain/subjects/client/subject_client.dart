@@ -44,7 +44,6 @@ class SubjectClient {
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = jsonDecode(response.body);
-
         final List<SubjectDTO> subjects =
             jsonList.map((json) => SubjectDTO.fromJson(json)).toList();
 
@@ -57,20 +56,20 @@ class SubjectClient {
     }
   }
 
-  Future<List<SubjectDTO>> associateSubject() async {
+  Future<List<SubjectDTO>> associateSubject(SubjectDTO subject) async {
     final url = Uri.parse('$baseUrl/api/matricula/matricularAlunoEmDisciplina');
 
     try {
-      final response = await http.get(
+      final response = await http.post(
         url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
+        body: jsonEncode(subject.toJson()),
       );
 
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = jsonDecode(response.body);
-
         final List<SubjectDTO> subjects =
             jsonList.map((json) => SubjectDTO.fromJson(json)).toList();
 
