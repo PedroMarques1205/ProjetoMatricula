@@ -38,7 +38,7 @@ class CourseListItem extends StatelessWidget {
                   style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  course.id ?? 'ID',
+                  course.descricao ?? 'Descrição',
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ],

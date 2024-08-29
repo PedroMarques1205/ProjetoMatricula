@@ -21,5 +21,4 @@ public class Disciplina {
     private String descricao;
 
     private boolean ativa;
-
 }

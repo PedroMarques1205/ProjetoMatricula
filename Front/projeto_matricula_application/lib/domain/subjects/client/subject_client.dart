@@ -56,4 +56,30 @@ class SubjectClient {
       return [];
     }
   }
+
+  Future<List<SubjectDTO>> associateSubject() async {
+    final url = Uri.parse('$baseUrl/api/matricula/matricularAlunoEmDisciplina');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = jsonDecode(response.body);
+
+        final List<SubjectDTO> subjects =
+            jsonList.map((json) => SubjectDTO.fromJson(json)).toList();
+
+        return subjects;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
 }
