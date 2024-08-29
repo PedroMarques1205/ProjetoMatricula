@@ -101,7 +101,8 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                 itemCount: allSubjects.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 20, right: 20),
                     child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -116,20 +117,21 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            allSubjects[index].nome,
-                            style: TextStyle(
+                            allSubjects[index].nome ?? '',
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           ElevatedButton(
-                            onPressed: () => registerStudent(allSubjects[index]),
-                            child: Text('Cadastrar Aluno'),
+                            onPressed: () =>
+                                registerStudent(allSubjects[index]),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ProjectColors.buttonColor,
                             ),
+                            child: const Text('Cadastrar Aluno'),
                           ),
                         ],
                       ),
@@ -168,22 +170,15 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
     ];
   }
 
-  void openNewSubjectPage(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => NewSubjectPage(
-          bloc: _bloc,
-        ),
-      ),
-    );
-  }
+  void openNewSubjectPage(BuildContext context) {}
 
   void registerStudent(SubjectDTO subject) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Cadastrar Aluno'),
-        content: Text('Você deseja cadastrar um aluno para a disciplina "${subject.nome}"?'),
+        content: Text(
+            'Você deseja cadastrar um aluno para a disciplina "${subject.nome}"?'),
         actions: [
           TextButton(
             onPressed: () {
