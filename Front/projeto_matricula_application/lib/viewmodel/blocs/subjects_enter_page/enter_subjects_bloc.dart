@@ -9,7 +9,7 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
   EnterSubjectsBloc() : super(EnterSubjectsInitState()) {
     on<ListSubjectsEvent>(_onList);
     on<CreateNewSubjectsEvent>(_onCreate);
-    on<AssociateSubjectEvent>(_onAssociate);  
+    on<AssociateSubjectEvent>(_onAssociate);  // Adicione essa linha
   }
 
   Future<void> _onCreate(CreateNewSubjectsEvent event, Emitter<EnterSubjectsState> emit) async {
@@ -25,4 +25,5 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
     await service.associateSubject(event.subject);
   }
 }
+
 

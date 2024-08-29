@@ -24,12 +24,14 @@ class SubjectService {
     }
   }
 
-  Future<List<SubjectDTO>> associateSubject(SubjectDTO subject) async {
-    try {
-      return await client.associateSubject();
-    } catch (error) {
-      print(error);
-      return [];
-    }
+  Future<SubjectDTO> associateSubject(SubjectDTO subject) async {
+  try {
+    List<SubjectDTO> result = await client.associateSubject(subject);
+    return result.isNotEmpty ? result.first : SubjectDTO();  
+  } catch (error) {
+    print(error);
+    return SubjectDTO();
   }
+}
+
 }
