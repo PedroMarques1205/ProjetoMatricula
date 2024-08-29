@@ -60,6 +60,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
           if (state is SubjectListLoadedState) {
             allSubjects = state.subjects;
 
+<<<<<<< HEAD
             return ListView.builder(
               itemCount: allSubjects.length,
               itemBuilder: (context, index) {
@@ -72,6 +73,48 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                         colors: generateRandomGradientColors(),
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
+=======
+            return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: ListView.builder(
+                itemCount: allSubjects.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: generateRandomGradientColors(),
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            allSubjects[index].nome ?? '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () =>
+                                registerStudent(allSubjects[index]),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ProjectColors.buttonColor,
+                            ),
+                            child: const Text('Cadastrar Aluno'),
+                          ),
+                        ],
+>>>>>>> 8f121bfc2ee39c487bb6fbacdd894d04b01f9628
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -130,6 +173,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
     ];
   }
 
+<<<<<<< HEAD
  void registerStudent(SubjectDTO subject) {
   showDialog(
     context: context,
@@ -157,4 +201,32 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
   );
 }
 
+=======
+  void openNewSubjectPage(BuildContext context) {}
+
+  void registerStudent(SubjectDTO subject) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Cadastrar Aluno'),
+        content: Text(
+            'Você deseja cadastrar um aluno para a disciplina "${subject.nome}"?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Confirmar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancelar'),
+          ),
+        ],
+      ),
+    );
+  }
+>>>>>>> 8f121bfc2ee39c487bb6fbacdd894d04b01f9628
 }
