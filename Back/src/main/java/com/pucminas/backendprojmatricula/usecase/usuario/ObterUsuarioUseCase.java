@@ -2,6 +2,7 @@ package com.pucminas.backendprojmatricula.usecase.usuario;
 
 import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
 import com.pucminas.backendprojmatricula.common.mapper.Mapper;
+import com.pucminas.backendprojmatricula.core.matricula.MatriculaService;
 import com.pucminas.backendprojmatricula.core.usuario.UsuarioService;
 import com.pucminas.backendprojmatricula.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class ObterUsuarioUseCase {
     UsuarioService usuarioService;
 
     @Autowired
+    MatriculaService matriculaService;
+
+    @Autowired
     Mapper mapper;
 
     public Usuario obterUsuarioPorId(String matricula, String senha) {
@@ -24,5 +28,9 @@ public class ObterUsuarioUseCase {
 
     public List<Usuario> obterUsuarioPorTipoAcesso(TipoUsuario acesso) {
         return usuarioService.buscarUsuarioPorTipoAcesso(acesso);
+    }
+
+    public List<Usuario> obterUsuarioPorDisciplina(String disciplina) {
+        return matriculaService.obterAlunosPorDisciplina(disciplina);
     }
 }

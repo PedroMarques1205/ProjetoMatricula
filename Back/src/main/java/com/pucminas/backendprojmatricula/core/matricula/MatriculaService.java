@@ -45,4 +45,15 @@ public class MatriculaService {
                 .toList();
         return disciplinas;
     }
+
+    public List<Usuario> obterAlunosPorDisciplina(String nomeDisciplina) {
+        Disciplina disciplina = disciplinaRepository.findByNome(nomeDisciplina);
+        List<Matricula> matriculas = matriculaRepository.findMatriculaByDisciplina(disciplina);
+        List<Usuario> alunos = matriculas.stream()
+                .map(Matricula::getAluno)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+        return alunos;
+    }
 }
