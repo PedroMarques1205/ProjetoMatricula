@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/context/context.dart';
+import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/main_screen/widgets/main_drawer.dart';
+import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_state.dart';
 
@@ -48,8 +50,8 @@ class MainScreenWidgetState extends State<MainScreen> {
 
               final destinations = allowedDestinations
                   .map((e) => NavigationDestination(
-                      icon: Icon(e.icon!),
-                      selectedIcon: Icon(e.selectedIcon),
+                      icon: HeroIcon(e.heroIcon!),
+                      selectedIcon: HeroIcon(e.heroIcon!),
                       label: e.label!))
                   .toList();
 
@@ -107,20 +109,23 @@ class NavDestinationModel {
     return [
       NavigationItem(
         label: 'Home',
-        icon: Icons.home,
-        selectedIcon: Icons.home_filled,
+        heroIcon: HeroIcons.home,
+        selectedIcon: HeroIcons.home,
         screen: HomeScreen(),
       ),
-      NavigationItem(
-        label: 'Funcionalidades',
-        icon: Icons.build,
-        selectedIcon: Icons.build_circle,
-        screen: FuncionalidadesScreen(),
-      ),
+      if (Context.currentUser.tipoAcesso == UserTypeEnum.Aluno)
+        NavigationItem(
+          label: 'Currículo',
+          heroIcon: HeroIcons.rectangleStack,
+          selectedIcon: HeroIcons.rectangleStack,
+          screen: const Center(
+            child: Text('Currículo'),
+          ),
+        ),
       NavigationItem(
         label: 'Configs',
-        icon: Icons.settings,
-        selectedIcon: Icons.settings_suggest,
+        heroIcon: HeroIcons.cog6Tooth,
+        selectedIcon: HeroIcons.cog6Tooth,
         screen: const ConfigScreen(),
       ),
     ];
@@ -129,15 +134,15 @@ class NavDestinationModel {
 
 class NavigationItem {
   final String? label;
-  final IconData? icon;
-  final IconData? selectedIcon;
+  final HeroIcons? heroIcon;
+  final HeroIcons? selectedIcon;
   final Widget screen;
 
   NavigationItem({
     required this.label,
-    required this.icon,
     required this.selectedIcon,
     required this.screen,
+    this.heroIcon,
   });
 }
 
@@ -162,70 +167,150 @@ class _ConfigScreenState extends State<ConfigScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // simulando dados 
-    const String userName = "Lúcio Alves";
-    const String userProfilePicture = "https://www.example.com/user_profile_picture.jpg"; 
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Configurações'),
-        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(userProfilePicture),
-                backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            title: Text(
+              'Configurações',
+              style: TextStyle(
+                  color: Colors.grey[600], fontWeight: FontWeight.bold),
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.white),
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          color: Colors.white,
+          child: ListView(children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.grey[400],
+                    child: const HeroIcon(
+                      size: 40,
+                      HeroIcons.user,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          Context.currentUser.nome!,
+                          style: TextStyle(
+                              color: Colors.grey[700],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        Text(
+                          Context.currentUser.tipoAcesso!.name,
+                          style: TextStyle(
+                              color: Colors.grey[500],
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 5),
+                    child: IconButton(
+                      icon: HeroIcon(
+                        HeroIcons.pencilSquare,
+                        color: Colors.grey[500],
+                        size: 30,
+                      ),
+                      onPressed: () {},
+                    ),
+                  )
+                ],
               ),
-              const SizedBox(height: 20),
-              const Text(
-                "Nome: $userName",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  const HeroIcon(
+                    HeroIcons.phone,
+                    color: ProjectColors.primaryLight,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Fale Conosco',
+                    style: TextStyle(color: Colors.grey[500], fontSize: 18),
+                  ),
+                  const Spacer(),
+                  HeroIcon(
+                    HeroIcons.chevronRight,
+                    color: Colors.grey[500],
+                  )
+                ],
               ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _loginController,
-                decoration: const InputDecoration(
-                  labelText: 'Login',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  const HeroIcon(
+                    HeroIcons.identification,
+                    color: ProjectColors.primaryLight,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Carteirinha virtual',
+                    style: TextStyle(color: Colors.grey[500], fontSize: 18),
+                  ),
+                  const Spacer(),
+                  HeroIcon(
+                    HeroIcons.chevronRight,
+                    color: Colors.grey[500],
+                  )
+                ],
               ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Senha',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  const HeroIcon(
+                    HeroIcons.arrowTopRightOnSquare,
+                    color: ProjectColors.primaryLight,
+                    size: 30,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Sair',
+                    style: TextStyle(color: Colors.grey[500], fontSize: 18),
+                  ),
+                  const Spacer(),
+                  HeroIcon(
+                    HeroIcons.chevronRight,
+                    color: Colors.grey[500],
+                  )
+                ],
               ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {
-                  String updatedLogin = _loginController.text;
-                  String updatedPassword = _passwordController.text;
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 92, 24, 33),
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  textStyle: const TextStyle(fontSize: 16),
-                ),
-                child: const Text('Atualizar Informações'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+            const Divider()
+          ]),
+        ));
   }
 }
 
@@ -237,39 +322,65 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         key: _scaffoldKey,
         appBar: AppBar(
+          shadowColor: Colors.white,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           leading: IconButton(
             onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-            icon: const HeroIcon(HeroIcons.bars3, color: ProjectColors.primaryColor),
+            icon: const HeroIcon(HeroIcons.bars3,
+                color: ProjectColors.primaryColor),
           ),
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: const HeroIcon(
+                  HeroIcons.bell,
+                  color: ProjectColors.primaryLight,
+                  size: 25,
+                ))
+          ],
         ),
         drawer: const DrawerWidget(),
-        body: Container(
-          padding: const EdgeInsets.all(20),
-          child: ListView(
-            children: [
-              Text(
-                'Bem-vinda, ${Context.current.nome}!',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                    fontSize: 25),
-              ),
-              Text(
-                'Um subtítulo muito dahora para a sua home.',
-                style: TextStyle(color: Colors.grey[600], fontSize: 15),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-            ],
+        body: _loadContent());
+  }
+
+  Widget _loadContent() {
+    switch (Context.currentUser.tipoAcesso) {
+      case UserTypeEnum.Aluno:
+        return _buildStudentsSubjects();
+      case UserTypeEnum.Professor:
+        return _buildTeatchersClasses();
+      case UserTypeEnum.Secretaria:
+        return _buildSecretaryContent();
+      case null:
+        return Center(
+          child: Text(
+            'Erro no carregamento. Faça o login novamente.',
+            style:
+                TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
           ),
-        ));
+        );
+    }
+  }
+
+  Widget _buildStudentsSubjects() {
+    return UserSubjects();
+  }
+
+  Widget _buildTeatchersClasses() {
+    return Container();
+  }
+
+  Widget _buildSecretaryContent() {
+    return Container();
   }
 }
 
-  class FuncionalidadesScreen extends StatelessWidget {
+class FuncionalidadesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

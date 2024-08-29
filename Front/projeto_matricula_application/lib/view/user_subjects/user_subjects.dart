@@ -39,58 +39,31 @@ class UserSubjects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        shadowColor: Colors.white,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        // title: const Text(
-        //   'Matérias',
-        //   style: TextStyle(
-        //       color: ProjectColors.primaryColor, fontWeight: FontWeight.bold),
-        // ),
-        // centerTitle: false,
-        leading: IconButton(
-          icon: const HeroIcon(
-            HeroIcons.chevronLeft,
-            color: ProjectColors.primaryLight,
-          ),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-              (route) => false,
-            );
-          },
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60.0),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                width: 340,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Pesquisar...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    filled: true,
-                    fillColor: ProjectColors.buttonColor,
-                  ),
-                ),
-              )),
-        ),
-      ),
-      body: Container(
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(10),
         color: Colors.white,
         height: MediaQuery.of(context).size.height,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 340,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Pesquisar...',
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
+                      filled: true,
+                      fillColor: ProjectColors.buttonColor,
+                    ),
+                  ),
+                )),
             Padding(
                 padding: const EdgeInsets.only(left: 25, top: 15, bottom: 15),
                 child: RichText(
@@ -114,19 +87,21 @@ class UserSubjects extends StatelessWidget {
                   ),
                 )),
             Expanded(
-              child: ListView.builder(
-                itemCount: subjects.length,
-                itemBuilder: (context, index) {
-                  final gradientColors = gradients[index % gradients.length];
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: SubjectItem(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(subjects.length, (index) {
+                    final gradientColors = gradients[index % gradients.length];
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: SubjectItem(
                           subject: subjects[index],
-                          gradientColors: gradientColors),
-                    ),
-                  );
-                },
+                          gradientColors: gradientColors,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
               ),
             ),
           ],

@@ -10,8 +10,6 @@ import 'package:projeto_matricula_application/view/students_list.dart/register_s
 import 'package:projeto_matricula_application/view/subjects_list/subjects_list_page.dart';
 import 'package:projeto_matricula_application/view/teacher_list.dart/register_teacher_page.dart';
 import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
-
-// paginas
 import '.././../professor/professor_page.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -20,6 +18,8 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      shadowColor: Colors.white,
+      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -80,27 +80,6 @@ class DrawerWidget extends StatelessWidget {
                   text: 'Financeiro',
                   width: 250,
                   onPressed: () {},
-                  backgroundColor: ProjectColors.buttonColor,
-                  textColor: Colors.grey[600],
-                ),
-              ),
-            ),
-          if (Context.current.tipoAcesso == UserTypeEnum.Aluno)
-            Padding(
-              padding: const EdgeInsets.only(right: 5, left: 5, top: 10),
-              child: Align(
-                alignment: Alignment.center,
-                child: ButtonWidget(
-                  icon: HeroIcons.bookOpen,
-                  text: 'Minhas Matérias',
-                  width: 250,
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => UserSubjects()),
-                      (route) => false,
-                    );
-                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),
