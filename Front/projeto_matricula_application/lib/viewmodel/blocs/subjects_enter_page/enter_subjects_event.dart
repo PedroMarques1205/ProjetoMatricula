@@ -15,6 +15,10 @@ class CreateNewSubjectsEvent extends EnterSubjectsEvent {
 
 class AssociateSubjectEvent extends EnterSubjectsEvent {
   final SubjectDTO subject;
+  final String matricula;
 
-  AssociateSubjectEvent({required this.subject});
+  AssociateSubjectEvent({
+    required this.subject,
+    required this.matricula,
+  });
 }

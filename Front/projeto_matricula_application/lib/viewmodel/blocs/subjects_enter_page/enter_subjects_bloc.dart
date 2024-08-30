@@ -21,9 +21,16 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
     emit(SubjectListLoadedState(subjects: allSubjects));
   }
 
-  Future<void> _onAssociate(AssociateSubjectEvent event, Emitter<EnterSubjectsState> emit) async {
-    await service.associateSubject(event.subject);
+Future<void> _onAssociate(AssociateSubjectEvent event, Emitter<EnterSubjectsState> emit) async {
+  if (event.subject.nome != null && event.matricula.isNotEmpty) {
+    await service.associateSubject(event.matricula, event.subject.nome!);
+  } else {
+    print('Nome da disciplina ou matrícula está vazio');
   }
+}
+
+
+
 }
 
 

@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
@@ -17,12 +16,20 @@ class SubjectsEnterPage extends StatefulWidget {
 class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
   late final EnterSubjectsBloc _bloc;
   List<SubjectDTO> allSubjects = [];
+  final _matriculaController = TextEditingController();
+  SubjectDTO? _selectedSubject;
 
   @override
   void initState() {
     super.initState();
     _bloc = EnterSubjectsBloc();
     _bloc.add(ListSubjectsEvent());
+  }
+
+  @override
+  void dispose() {
+    _matriculaController.dispose();
+    super.dispose();
   }
 
   @override
@@ -78,9 +85,9 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                       Text(
-                            allSubjects[index].nome ?? 'Nome não disponível',
-                            style: const TextStyle(
+                        Text(
+                          allSubjects[index].nome ?? 'Nome não disponível',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -88,7 +95,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
-                          onPressed: () => registerStudent(allSubjects[index]),
+                          onPressed: () => registerStudent(),
                           child: const Text('Se Inscrever'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ProjectColors.buttonColor,
@@ -130,31 +137,79 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
     ];
   }
 
- void registerStudent(SubjectDTO subject) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text('Cadastrar Aluno'),
-      content: Text('Você deseja cadastrar um aluno para a disciplina "${subject.nome}"?'),
-      actions: [
-        TextButton(
-          onPressed: () {
-
-            _bloc.add(AssociateSubjectEvent(subject: subject));
-
-            Navigator.of(context).pop();
-          },
-          child: Text('Confirmar'),
+  void registerStudent() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Cadastrar Aluno'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DropdownButtonFormField<SubjectDTO>(
+              value: _selectedSubject,
+              items: allSubjects.map((subject) {
+                return DropdownMenuItem<SubjectDTO>(
+                  value: subject,
+                  child: Text(subject.nome ?? 'Nome não disponível'),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedSubject = newValue;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Disciplina',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _matriculaController,
+              decoration: const InputDecoration(
+                labelText: 'Matrícula do Aluno',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+          ],
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('Cancelar'),
-        ),
-      ],
-    ),
-  );
-}
-
+        actions: [
+          TextButton(
+            onPressed: () {
+              final matricula = _matriculaController.text.trim();
+              if (_selectedSubject != null && matricula.isNotEmpty) {
+                 _bloc.add(
+                      AssociateSubjectEvent(
+                     subject: _selectedSubject!,
+                     matricula: _matriculaController.text.trim(),
+                    ),
+                  );
+                  Navigator.of(context).pop();
+                   _matriculaController.clear();
+                    setState(() {
+                      _selectedSubject = null;
+                     });
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                 const SnackBar(content: Text('Por favor, preencha todos os campos.')),
+              );
+             }
+            },
+            child: const Text('Confirmar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _matriculaController.clear();
+              setState(() {
+                _selectedSubject = null;
+              });
+            },
+            child: const Text('Cancelar'),
+          ),
+        ],
+      ),
+    );
+  }
 }
