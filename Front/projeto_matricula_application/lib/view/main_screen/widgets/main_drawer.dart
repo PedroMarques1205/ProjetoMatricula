@@ -12,6 +12,7 @@ import 'package:projeto_matricula_application/view/subjects_list/subjects_list_p
 import 'package:projeto_matricula_application/view/teacher_list.dart/register_teacher_page.dart';
 import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
 import '.././../professor/professor_page.dart';
+import '../../pagamento/pagamento_alert.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -87,7 +88,14 @@ class DrawerWidget extends StatelessWidget {
                   icon: HeroIcons.currencyDollar,
                   text: 'Financeiro',
                   width: 250,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PagamentoAlert()),
+                      (route) => false,
+                    );
+                  },
                   backgroundColor: ProjectColors.buttonColor,
                   textColor: Colors.grey[600],
                 ),
