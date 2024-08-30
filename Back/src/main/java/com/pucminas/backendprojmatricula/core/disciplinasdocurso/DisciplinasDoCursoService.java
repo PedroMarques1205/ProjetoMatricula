@@ -11,6 +11,7 @@ import com.pucminas.backendprojmatricula.model.Semestre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,4 +47,8 @@ public class DisciplinasDoCursoService {
         DisciplinasDoCursoRepository.save(disciplinasDoCurso);
     }
 
+    public List<DisciplinasDoCurso> gerarCurriculo(Long cursoId) {
+        Curso curso = cursoRepository.findById(cursoId).isPresent() ? cursoRepository.findById(cursoId).get() : null;
+        return DisciplinasDoCursoRepository.findDisciplinasDoCursoByCurso(curso);
+    }
 }
