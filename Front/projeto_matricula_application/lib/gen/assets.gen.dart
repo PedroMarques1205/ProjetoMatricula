@@ -16,12 +16,22 @@ class $AssetsImagesGen {
   AssetGenImage get logoChapeuzinho =>
       const AssetGenImage('assets/images/logo_chapeuzinho.png');
 
+  /// File path: assets/images/member1.jpg
+  AssetGenImage get member1 => const AssetGenImage('assets/images/member1.jpg');
+
+  /// File path: assets/images/member2.jpg
+  AssetGenImage get member2 => const AssetGenImage('assets/images/member2.jpg');
+
+  /// File path: assets/images/member4.jpg
+  AssetGenImage get member4 => const AssetGenImage('assets/images/member4.jpg');
+
   /// File path: assets/images/pruminas.png
   AssetGenImage get pruminas =>
       const AssetGenImage('assets/images/pruminas.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [logoChapeuzinho, pruminas];
+  List<AssetGenImage> get values =>
+      [logoChapeuzinho, member1, member2, member4, pruminas];
 }
 
 class Assets {

@@ -96,10 +96,10 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                         const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () => registerStudent(),
-                          child: const Text('Se Inscrever'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ProjectColors.buttonColor,
                           ),
+                          child: const Text('Se Inscrever'),
                         ),
                       ],
                     ),
