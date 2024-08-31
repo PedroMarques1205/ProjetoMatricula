@@ -375,7 +375,42 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildSecretaryContent() {
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          RichText(
+            text: TextSpan(
+              text: 'Bem-vindo(a), ',
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.grey[700],
+              ),
+              children: [
+                TextSpan(
+                  text: Context.current.nome,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const TextSpan(
+                  text: '!',
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: Image.asset(
+                'assets/images/pruMinasSymbol.png',
+                width: 300,
+                height: 300,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -22,10 +22,13 @@ class TeachersListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        shadowColor: Colors.white,
+        backgroundColor: Colors.white,
         title: Text(
           'Professores',
-          style: TextStyle(color: Colors.grey[800]),
+          style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(

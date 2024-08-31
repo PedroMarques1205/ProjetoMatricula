@@ -16,7 +16,7 @@ class NewCoursePage extends StatefulWidget {
 }
 
 class _NewCoursePageState extends State<NewCoursePage> {
-  final CourseDTO newCourse = CourseDTO();
+  late CourseDTO newCourse;
 
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
@@ -25,15 +25,24 @@ class _NewCoursePageState extends State<NewCoursePage> {
   @override
   void initState() {
     super.initState();
+    newCourse = CourseDTO();
+
     _nomeController.text = newCourse.nome ?? '';
     _descricaoController.text = newCourse.descricao ?? '';
     _numSemestresController.text = newCourse.numSemestres?.toString() ?? '';
   }
 
+  void _updateCourse() {
+    setState(() {
+      newCourse.nome = _nomeController.text;
+      newCourse.descricao = _descricaoController.text;
+      newCourse.numSemestres = int.tryParse(_numSemestresController.text);
+      newCourse.ativo = newCourse.ativo ?? true;
+    });
+  }
+
   void _handleSave() async {
-    newCourse.nome = _nomeController.text;
-    newCourse.descricao = _descricaoController.text;
-    newCourse.numSemestres = int.tryParse(_numSemestresController.text);
+    _updateCourse();
 
     final isValid = _validateCourse(newCourse);
     if (isValid) {
@@ -56,9 +65,9 @@ class _NewCoursePageState extends State<NewCoursePage> {
 
   bool _validateCourse(CourseDTO course) {
     return course.nome != null &&
-           course.descricao != null &&
-           course.numSemestres != null &&
-           course.numSemestres! > 0;
+        course.descricao != null &&
+        course.numSemestres != null &&
+        course.numSemestres! > 0;
   }
 
   @override
@@ -69,7 +78,8 @@ class _NewCoursePageState extends State<NewCoursePage> {
         backgroundColor: Colors.white,
         title: Text(
           'Novo Curso',
-          style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -102,50 +112,41 @@ class _NewCoursePageState extends State<NewCoursePage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: TextFormField(
-                      controller: _nomeController,
-                      decoration: InputDecoration(
-                        labelText: 'Nome',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
-                        newCourse.nome = value;
-                      },
-                    ),
-                  ),
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25, top: 15),
+                      child: InputWidget(
+                        controller: _nomeController,
+                        onChanged: (value) {
+                          _updateCourse();
+                        },
+                        title: 'Nome',
+                      )),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: TextFormField(
-                      controller: _descricaoController,
-                      decoration: InputDecoration(
-                        labelText: 'Descrição',
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: (value) {
-                        newCourse.descricao = value;
-                      },
-                    ),
-                  ),
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25, top: 15),
+                      child: InputWidget(
+                        controller: _descricaoController,
+                        onChanged: (value) {
+                          _updateCourse();
+                        },
+                        title: 'Descrição',
+                      )),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: TextFormField(
-                      controller: _numSemestresController,
-                      decoration: InputDecoration(
-                        labelText: 'Número Semestres',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        newCourse.numSemestres = int.tryParse(value);
-                      },
-                    ),
-                  ),
+                      padding:
+                          const EdgeInsets.only(left: 25, right: 25, top: 15),
+                      child: InputWidget(
+                        controller: _numSemestresController,
+                        onChanged: (value) {
+                          _updateCourse();
+                        },
+                        title: 'Número de Semestres',
+                      )),
                   Padding(
-                    padding: const EdgeInsets.only(left: 25, right: 25, top: 15),
+                    padding:
+                        const EdgeInsets.only(left: 25, right: 25, top: 15),
                     child: Row(
                       children: [
-                        Expanded(child: Text('Ativo')),
+                        const Expanded(child: Text('Ativo')),
                         Switch(
                           value: newCourse.ativo ?? true,
                           onChanged: (value) {
@@ -158,7 +159,7 @@ class _NewCoursePageState extends State<NewCoursePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 330),
                     child: ButtonWidget(
                       text: 'Salvar',
                       onPressed: _handleSave,

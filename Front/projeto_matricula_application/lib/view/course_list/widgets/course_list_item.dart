@@ -14,7 +14,6 @@ class CourseListItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width,
-      height: 70,
       decoration: BoxDecoration(
         color: ProjectColors.buttonColor,
         borderRadius: BorderRadius.circular(10),

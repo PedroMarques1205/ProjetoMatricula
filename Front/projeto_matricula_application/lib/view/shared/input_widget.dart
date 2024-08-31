@@ -4,13 +4,14 @@ import 'package:projeto_matricula_application/design/colors/project_colors.dart'
 class InputWidget extends StatefulWidget {
   final String title;
   final String? hintText;
+  final TextEditingController? controller;
   final void Function(String value) onChanged;
 
   InputWidget({
     Key? key,
     required this.title,
     required this.onChanged,
-    this.hintText,
+    this.hintText, this.controller,
   }) : super(key: key);
 
   @override
@@ -23,7 +24,7 @@ class _InputWidgetState extends State<InputWidget> {
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController();
+    controller = widget.controller ?? TextEditingController();
     controller.addListener(() {
       widget.onChanged(controller.text);
     });

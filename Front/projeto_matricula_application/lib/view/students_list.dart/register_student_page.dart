@@ -30,7 +30,12 @@ class _StudentsListPageState extends State<StudentsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white,
+        foregroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         title: Text(
           'Alunos',
           style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),

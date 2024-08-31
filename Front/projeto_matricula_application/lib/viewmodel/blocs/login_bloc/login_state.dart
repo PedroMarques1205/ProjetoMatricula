@@ -11,3 +11,5 @@ class LoggedInState extends LoginState {
 
   LoggedInState({required this.user});
 }
+
+class LoginInProgressState extends LoginState {}

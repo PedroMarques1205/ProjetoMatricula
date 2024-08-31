@@ -94,13 +94,13 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                       itemCount: mySubjects.length + courseSubjects.length + 1,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          return const Padding(
-                            padding: EdgeInsets.only(
+                          return Padding(
+                            padding: const EdgeInsets.only(
                                 left: 15, right: 15, top: 5, bottom: 15),
                             child: Text(
                               'Minhas matérias',
                               style: TextStyle(
-                                  color: ProjectColors.primaryColor,
+                                  color: Colors.grey[600],
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -113,16 +113,16 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                               index == mySubjects.length - 1 ||
                                   index == mySubjects.length - 2);
                         } else if (index == mySubjects.length) {
-                          return const Column(
+                          return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Divider(),
+                              const Divider(),
                               Padding(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 child: Text(
                                   'Todas matérias',
                                   style: TextStyle(
-                                      color: ProjectColors.blueButtonColor,
+                                      color: Colors.grey[600],
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),

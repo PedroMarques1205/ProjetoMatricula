@@ -11,14 +11,20 @@ import 'package:projeto_matricula_application/viewmodel/blocs/login_bloc/login_s
 import '../main_screen/main_screen.dart';
 import './curiosidade_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
 
   String code = '';
   String password = '';
+  bool isLoggingIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +48,15 @@ class LoginPage extends StatelessWidget {
                       appBar: AppBar(
                         shadowColor: ProjectColors.primaryColor,
                         backgroundColor: ProjectColors.primaryColor,
-                        surfaceTintColor:
-                            ProjectColors.primaryColor,
+                        surfaceTintColor: ProjectColors.primaryColor,
                         actions: [
                           IconButton(
-                            icon: Icon(Icons.info, color: Colors.white),
+                            icon: const Icon(Icons.info, color: Colors.white),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CuriosidadePage(), 
+                                  builder: (context) => CuriosidadePage(),
                                 ),
                               );
                             },
@@ -61,6 +66,9 @@ class LoginPage extends StatelessWidget {
                       body: BlocConsumer<LoginBloc, LoginState>(
                         listener: (context, state) {
                           if (state is LoggedInState) {
+                            setState(() {
+                              isLoggingIn = false;
+                            });
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -69,7 +77,14 @@ class LoginPage extends StatelessWidget {
                             );
                           }
                           if (state is LoginErrorState) {
-                            // exibir mensagem de erro no login
+                            setState(() {
+                              isLoggingIn = false;
+                            });
+                          }
+                          if (state is LoginInProgressState) {
+                            setState(() {
+                              isLoggingIn = true;
+                            });
                           }
                         },
                         builder: (context, state) {
@@ -81,12 +96,19 @@ class LoginPage extends StatelessWidget {
                                 children: [
                                   Column(
                                     children: [
-                                      Center(
-                                        child: Image.asset(
-                                          'assets/images/logo_chapeuzinho.png',
-                                          width: 250,
-                                          height: 250,
+                                      CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 85,
+                                        child: Center(
+                                          child: Image.asset(
+                                            'assets/images/pruMinasSymbol.png',
+                                            width: 250,
+                                            height: 250,
+                                          ),
                                         ),
+                                      ),
+                                      const SizedBox(
+                                        height: 50,
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -105,6 +127,8 @@ class LoginPage extends StatelessWidget {
                                             padding: const EdgeInsets.all(10),
                                             child: TextFormField(
                                               controller: codeController,
+                                              style: const TextStyle(
+                                                  color: Colors.white),
                                               decoration: const InputDecoration(
                                                   border: InputBorder.none,
                                                   hintText: 'Código',
@@ -140,11 +164,15 @@ class LoginPage extends StatelessWidget {
                                             padding: const EdgeInsets.all(10),
                                             child: TextFormField(
                                               controller: passwordController,
+                                              obscureText: true,
+                                              style: const TextStyle(
+                                                  color: Colors.white),
                                               decoration: const InputDecoration(
                                                   border: InputBorder.none,
                                                   hintText: 'Senha',
                                                   hintStyle: TextStyle(
-                                                      color: ProjectColors.textLight)),
+                                                      color: ProjectColors
+                                                          .textLight)),
                                               onChanged: (value) {
                                                 password = value;
                                               },
@@ -153,7 +181,7 @@ class LoginPage extends StatelessWidget {
                                         ],
                                       ),
                                       const SizedBox(
-                                        height: 20,
+                                        height: 50,
                                       ),
                                       TextButton(
                                           onPressed: () {},
@@ -175,13 +203,15 @@ class LoginPage extends StatelessWidget {
                                               color: Colors.white,
                                               borderRadius:
                                                   BorderRadius.circular(20)),
-                                          child: const Text(
-                                            'Login',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 124, 52, 47),
-                                            ),
-                                          ),
+                                          child: isLoggingIn
+                                              ? const CircularProgressIndicator()
+                                              : const Text(
+                                                  'Login',
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 124, 52, 47),
+                                                  ),
+                                                ),
                                         ),
                                       ),
                                       const SizedBox(
@@ -211,6 +241,10 @@ class LoginPage extends StatelessWidget {
   }
 
   void _doLogin(BuildContext context) {
-    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(code: code, passwoard: password));
+    setState(() {
+      isLoggingIn = true;
+    });
+    BlocProvider.of<LoginBloc>(context)
+        .add(LoginButtonPressed(code: code, passwoard: password));
   }
 }

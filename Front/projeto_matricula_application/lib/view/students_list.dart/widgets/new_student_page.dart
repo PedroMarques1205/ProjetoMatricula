@@ -28,6 +28,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
@@ -141,7 +142,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 180),
+                    padding: const EdgeInsets.only(top: 280),
                     child: ButtonWidget(
                       text: 'Salvar',
                       onPressed: () {
