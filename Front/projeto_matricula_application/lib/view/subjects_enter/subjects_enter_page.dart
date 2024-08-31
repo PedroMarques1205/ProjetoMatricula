@@ -83,23 +83,35 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Center(
+                          child: Text(
+                            allSubjects[index].nome ?? 'Nome não disponível',
+                            style: TextStyle(
+                              color: Colors.grey[800],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Text(
-                          allSubjects[index].nome ?? 'Nome não disponível',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                          allSubjects[index].descricao ?? 'Nome não disponível',
+                          style: TextStyle(
+                            color: Colors.grey[600],
                             fontSize: 18,
                           ),
                         ),
                         const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () => registerStudent(),
-                          child: const Text('Se Inscrever'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ProjectColors.buttonColor,
                           ),
+                          child: const Text('Matricular-se', style: TextStyle(color: ProjectColors.primaryColor),),
                         ),
                       ],
                     ),
@@ -132,8 +144,8 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
     }
 
     return [
-      getRandomColor(),
-      getRandomColor(),
+      ProjectColors.buttonColor,
+      const Color.fromARGB(255, 194, 204, 204),
     ];
   }
 
@@ -179,22 +191,23 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
             onPressed: () {
               final matricula = _matriculaController.text.trim();
               if (_selectedSubject != null && matricula.isNotEmpty) {
-                 _bloc.add(
-                      AssociateSubjectEvent(
-                     subject: _selectedSubject!,
-                     matricula: _matriculaController.text.trim(),
-                    ),
-                  );
-                  Navigator.of(context).pop();
-                   _matriculaController.clear();
-                    setState(() {
-                      _selectedSubject = null;
-                     });
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                 const SnackBar(content: Text('Por favor, preencha todos os campos.')),
-              );
-             }
+                _bloc.add(
+                  AssociateSubjectEvent(
+                    subject: _selectedSubject!,
+                    matricula: _matriculaController.text.trim(),
+                  ),
+                );
+                Navigator.of(context).pop();
+                _matriculaController.clear();
+                setState(() {
+                  _selectedSubject = null;
+                });
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Por favor, preencha todos os campos.')),
+                );
+              }
             },
             child: const Text('Confirmar'),
           ),

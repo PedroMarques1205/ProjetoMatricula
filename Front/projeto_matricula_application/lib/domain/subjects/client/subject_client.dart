@@ -8,6 +8,30 @@ class SubjectClient {
 
   final String baseUrl = BaseUrl.baseUrl;
 
+  Future<List<SubjectDTO>> listStudentsSubjects(String userId) async {
+    final url = Uri.parse('$baseUrl/Disciplina/obterDisciplinasPorEstudante?matriculaEstudante=$userId');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final List<dynamic> jsonList = jsonDecode(response.body);
+        final List<SubjectDTO> subjects = jsonList.map((json) => SubjectDTO.fromJson(json)).toList();
+
+        return subjects;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      throw Exception('Failed to create subject: $error');
+    }
+  }
+
   Future<SubjectDTO> createSubject(SubjectDTO subject) async {
     final url = Uri.parse('$baseUrl/Disciplina/novaDisciplina');
 

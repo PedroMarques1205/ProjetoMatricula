@@ -33,8 +33,8 @@ class RegisterCoursePageBloc extends Bloc<RegisterCoursePageEvent, RegisterCours
 
   var resp = await _service.createCourse(newCourse);
 
-  if (resp?.id != null && resp!.id!.isNotEmpty) {
-    emit(NewCourseRegisteredState(course: resp));
+  if (resp?.id != null) {
+    emit(NewCourseRegisteredState(course: resp!));
   } else {
     emit(NewCourseCreationErrorState());
   }

@@ -7,7 +7,7 @@ part of 'course_dto.dart';
 // **************************************************************************
 
 CourseDTO _$CourseDTOFromJson(Map<String, dynamic> json) => CourseDTO(
-      id: json['id'] as String?,
+      id: (json['id'] as num?)?.toInt(),
       nome: json['nome'] as String?,
       descricao: json['descricao'] as String?,
       numSemestres: (json['numSemestres'] as num?)?.toInt(),
@@ -18,6 +18,6 @@ Map<String, dynamic> _$CourseDTOToJson(CourseDTO instance) => <String, dynamic>{
       'id': instance.id,
       'nome': instance.nome,
       'descricao': instance.descricao,
-      'numSemestres': instance.numSemestres,
       'ativo': instance.ativo,
+      'numSemestres': instance.numSemestres,
     };

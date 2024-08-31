@@ -4,11 +4,11 @@ part 'course_dto.g.dart';
 
 @JsonSerializable()
 class CourseDTO {
-  String? id;
+  int? id;
   String? nome;
   String? descricao;
-  int? numSemestres;
   bool? ativo;
+  int? numSemestres;
 
   CourseDTO({this.id, this.nome, this.descricao, this.numSemestres, this.ativo = true});
 

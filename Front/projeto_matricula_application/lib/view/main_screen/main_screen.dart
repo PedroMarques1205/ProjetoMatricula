@@ -6,6 +6,7 @@ import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/main_screen/widgets/main_drawer.dart';
 import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
+import 'package:projeto_matricula_application/view/users_grade_page/users_grade_page.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_bloc.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/main_screen/main_screen_state.dart';
 
@@ -118,9 +119,7 @@ class NavDestinationModel {
           label: 'Currículo',
           heroIcon: HeroIcons.rectangleStack,
           selectedIcon: HeroIcons.rectangleStack,
-          screen: const Center(
-            child: Text('Currículo'),
-          ),
+          screen: UsersGradePage(),
         ),
       NavigationItem(
         label: 'Configs',
