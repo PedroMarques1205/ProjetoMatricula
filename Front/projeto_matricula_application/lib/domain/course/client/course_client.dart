@@ -34,7 +34,7 @@ class CourseClient {
     }
   }
 
-  Future<List<CourseSubjectsDTO>> listCourseSubjects(String courseId) async {
+  Future<List<CourseSubjectsDTO>> listCourseSubjects(int courseId) async {
     final url = Uri.parse('$baseUrl/disciplinascurso/gerarCurriculoDoCurso?idCurso=$courseId');
 
     try {

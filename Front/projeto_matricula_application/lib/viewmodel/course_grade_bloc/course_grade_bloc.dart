@@ -17,7 +17,7 @@ class CourseGradeBloc extends Bloc<CourseGradeEvent, CourseGradeState> {
     if (course.id == null) {
       emit(LoadCourseErrorState());
     } else {
-      var coursesSubjects = await service.listCousesSubjects(course.id.toString());
+      var coursesSubjects = await service.listCousesSubjects(course.id!);
       emit(CourseGradeLoadedState(subjects: coursesSubjects, course: course));
     }
   }

@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_subjects_dto.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/main_screen/main_screen.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/subjects_enter_page/enter_subjects_bloc.dart';
@@ -15,9 +17,12 @@ class SubjectsEnterPage extends StatefulWidget {
 
 class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
   late final EnterSubjectsBloc _bloc;
-  List<SubjectDTO> allSubjects = [];
   final _matriculaController = TextEditingController();
   SubjectDTO? _selectedSubject;
+
+  List<SubjectDTO> mySubjects = [];
+  List<CourseSubjectsDTO> courseSubjects = [];
+  CourseDTO course = CourseDTO();
 
   @override
   void initState() {
@@ -42,9 +47,9 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
         foregroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         title: Text(
-          'Disciplinas',
+          'Matrícula',
           style: TextStyle(
-            color: Colors.grey[800],
+            color: Colors.grey[600],
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -64,61 +69,77 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
       body: BlocBuilder<EnterSubjectsBloc, EnterSubjectsState>(
         bloc: _bloc,
         builder: (context, state) {
+          if (state is SubjectListLoadingErrorState) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: Text(
+                    'Ops! Ocorreu um erro no carregamento.\nTente novamente mais tarde.'),
+              ),
+            );
+          }
           if (state is SubjectListLoadedState) {
-            allSubjects = state.subjects;
+            mySubjects = state.mySubjects;
+            courseSubjects = state.otherSubjects;
+            course = state.course;
 
-            return ListView.builder(
-              itemCount: allSubjects.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: generateRandomGradientColors(),
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Center(
-                          child: Text(
-                            allSubjects[index].nome ?? 'Nome não disponível',
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25,
+            return ListView(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView.builder(
+                      itemCount: mySubjects.length + courseSubjects.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return const Padding(
+                            padding: EdgeInsets.only(
+                                left: 15, right: 15, top: 5, bottom: 15),
+                            child: Text(
+                              'Minhas matérias',
+                              style: TextStyle(
+                                  color: ProjectColors.primaryColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          allSubjects[index].descricao ?? 'Nome não disponível',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        ElevatedButton(
-                          onPressed: () => registerStudent(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: ProjectColors.buttonColor,
-                          ),
-                          child: const Text('Matricular-se', style: TextStyle(color: ProjectColors.primaryColor),),
-                        ),
-                      ],
+                          );
+                        }
+                        if (index < mySubjects.length) {
+                          return buildSubjectItem(
+                              mySubjects[index],
+                              index,
+                              index == mySubjects.length - 1 ||
+                                  index == mySubjects.length - 2);
+                        } else if (index == mySubjects.length) {
+                          return const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Divider(),
+                              Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Text(
+                                  'Todas matérias',
+                                  style: TextStyle(
+                                      color: ProjectColors.blueButtonColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          int courseIndex = index - mySubjects.length - 1;
+                          return buildSubjectItemButWithOtherType(
+                              courseSubjects[courseIndex], courseIndex);
+                        }
+                      },
                     ),
                   ),
-                );
-              },
-            );
+                ],
+              ),
+            ]);
           }
 
           return const Center(
@@ -131,22 +152,166 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
     );
   }
 
-  List<Color> generateRandomGradientColors() {
-    final random = Random();
+  Widget buildSubjectItem(SubjectDTO subject, int index, bool isOptional) {
+    return Card(
+        color: ProjectColors.buttonColor,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Theme(
+          data: ThemeData(
+            dividerColor: Colors.transparent,
+          ),
+          child: ExpansionTile(
+            title: Text(
+              isOptional
+                  ? '${subject.nome} - Opcional'
+                  : subject.nome ?? 'Nome',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isOptional ? Colors.pink : ProjectColors.primaryColor,
+              ),
+            ),
+            leading: Icon(
+              Icons.book,
+              color: isOptional ? Colors.pink : ProjectColors.primaryColor,
+            ),
+            childrenPadding: const EdgeInsets.all(10),
+            children: [
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Período',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Turno',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Professor',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Cancelar matrícula',
+                                  style: TextStyle(color: Colors.red),
+                                )),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
+            ],
+          ),
+        ));
+  }
 
-    Color getRandomColor() {
-      return Color.fromARGB(
-        255,
-        random.nextInt(256),
-        random.nextInt(256),
-        random.nextInt(256),
-      );
+  Widget buildSubjectItemButWithOtherType(
+      CourseSubjectsDTO subject, int index) {
+    return Card(
+        color: ProjectColors.buttonColor,
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Theme(
+          data: ThemeData(
+            dividerColor: Colors.transparent,
+          ),
+          child: ExpansionTile(
+            title: Text(
+              subject.disciplina?.nome ?? 'Nome',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: ProjectColors.blueButtonColor,
+              ),
+            ),
+            leading:
+                const Icon(Icons.book, color: ProjectColors.blueButtonColor),
+            childrenPadding: const EdgeInsets.all(10),
+            children: [
+              Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Período',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Turno',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Professor',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Matricular-se',
+                                  style: TextStyle(
+                                      color: ProjectColors.blueButtonColor),
+                                )),
+                          )
+                        ],
+                      )
+                    ],
+                  )),
+            ],
+          ),
+        ));
+  }
+
+  List<Color> generateRandomGradientColors(int index) {
+    if (index % 2 == 0) {
+      return [ProjectColors.subjectLight, ProjectColors.primaryLight];
+    } else {
+      return [ProjectColors.subjectCoolLight, ProjectColors.subjectCoolDark];
     }
-
-    return [
-      ProjectColors.buttonColor,
-      const Color.fromARGB(255, 194, 204, 204),
-    ];
   }
 
   void registerStudent() {
@@ -159,7 +324,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
           children: [
             DropdownButtonFormField<SubjectDTO>(
               value: _selectedSubject,
-              items: allSubjects.map((subject) {
+              items: mySubjects.map((subject) {
                 return DropdownMenuItem<SubjectDTO>(
                   value: subject,
                   child: Text(subject.nome ?? 'Nome não disponível'),
@@ -194,7 +359,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                 _bloc.add(
                   AssociateSubjectEvent(
                     subject: _selectedSubject!,
-                    matricula: _matriculaController.text.trim(),
+                    matricula: matricula,
                   ),
                 );
                 Navigator.of(context).pop();

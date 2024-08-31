@@ -16,7 +16,7 @@ class CourseService {
     }
   }
 
-  Future<List<CourseSubjectsDTO>> listCousesSubjects(String courseId) async {
+  Future<List<CourseSubjectsDTO>> listCousesSubjects(int courseId) async {
     try {
       return await client.listCourseSubjects(courseId);
     } catch (error) {
