@@ -6,6 +6,14 @@ import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.d
 class SubjectService {
   final SubjectClient client = SubjectClient();
 
+  Future<List<SubjectDTO>> listStudentsSubjects(String userId) async {
+    try {
+      return await client.listStudentsSubjects(userId);
+    } catch (error) {
+      return [];
+    }
+  }
+
   Future<List<SubjectDTO>> listSubjects() async {
     try {
       return await client.listSubjects();

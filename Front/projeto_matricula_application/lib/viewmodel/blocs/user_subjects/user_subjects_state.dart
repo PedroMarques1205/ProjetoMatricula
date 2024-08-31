@@ -9,3 +9,5 @@ class UserSubjectsLoadedState extends UserSubjectsState {
 
   UserSubjectsLoadedState({required this.subjects});
 }
+
+class UserSubjectsEmptyState extends UserSubjectsState {}
