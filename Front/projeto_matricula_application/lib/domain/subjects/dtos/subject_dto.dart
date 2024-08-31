@@ -4,7 +4,7 @@ part 'subject_dto.g.dart';
 
 @JsonSerializable()
 class SubjectDTO {
-  String? id;
+  int? id;
   String? nome;
   String? descricao;
   bool? ativa;

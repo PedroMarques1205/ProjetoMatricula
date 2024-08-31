@@ -1,30 +1,32 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+
+part 'semester_dto.g.dart';
 
 @JsonSerializable()
 class SemesterDTO {
-  String? id;
-  int? ordinal;
-  String? courseId;
+  SemestreId? id;
 
   SemesterDTO({
     this.id,
-    this.ordinal,
-    this.courseId,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'ordinal': ordinal,
-      'courseId': courseId,
-    };
-  }
+  factory SemesterDTO.fromJson(Map<String, dynamic> json) => _$SemesterDTOFromJson(json);
 
-  static SemesterDTO fromJson(Map<String, dynamic> json) {
-    return SemesterDTO(
-      id: json['id'],
-      ordinal: json['ordinal'],
-      courseId: json['courseId'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$SemesterDTOToJson(this);
+}
+
+@JsonSerializable()
+class SemestreId {
+  int? ordinal;
+  CourseDTO? curso;
+
+  SemestreId({
+    this.ordinal,
+    this.curso,
+  });
+
+  factory SemestreId.fromJson(Map<String, dynamic> json) => _$SemestreIdFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SemestreIdToJson(this);
 }

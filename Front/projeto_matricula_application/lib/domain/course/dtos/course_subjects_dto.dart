@@ -1,34 +1,25 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/domain/semester/semester_dto.dart';
+import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
+
+part 'course_subjects_dto.g.dart'; 
 
 @JsonSerializable()
 class CourseSubjectsDTO {
   int? id;
-  String? cursoId;
-  String? disciplinaId;
-  String? semestreId;
+  SubjectDTO? disciplina;
+  CourseDTO? curso;
+  SemesterDTO? semestre;
 
   CourseSubjectsDTO({
     this.id,
-    this.cursoId,
-    this.disciplinaId,
-    this.semestreId,
+    this.disciplina,
+    this.curso,
+    this.semestre,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'cursoId': cursoId,
-      'disciplinaId': disciplinaId,
-      'semestreId': semestreId,
-    };
-  }
+  factory CourseSubjectsDTO.fromJson(Map<String, dynamic> json) => _$CourseSubjectsDTOFromJson(json);
 
-  static CourseSubjectsDTO fromJson(Map<String, dynamic> json) {
-    return CourseSubjectsDTO(
-      id: json['id'],
-      cursoId: json['cursoId'],
-      disciplinaId: json['disciplinaId'],
-      semestreId: json['semestreId'],
-    );
-  }
+  Map<String, dynamic> toJson() => _$CourseSubjectsDTOToJson(this);
 }

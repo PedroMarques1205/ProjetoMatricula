@@ -69,7 +69,7 @@ class _CourseSemesterItemState extends State<CourseSemesterItem> {
                       ListTile(
                         leading: const Icon(Icons.book, color: ProjectColors.primaryLight),
                         title: Text(
-                            subject.disciplinaId ?? 'Matéria desconhecida'),
+                            subject.disciplina?.nome ?? 'Matéria desconhecida'),
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 8, horizontal: 16),
                       ),

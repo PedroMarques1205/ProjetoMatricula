@@ -7,13 +7,14 @@ part of 'subject_dto.dart';
 // **************************************************************************
 
 SubjectDTO _$SubjectDTOFromJson(Map<String, dynamic> json) => SubjectDTO(
-      id: json['id'] as String?,
+      id: (json['id'] as num?)?.toInt(),
       nome: json['nome'] as String?,
       descricao: json['descricao'] as String?,
       ativa: json['ativa'] as bool?,
     );
 
-Map<String, dynamic> _$SubjectDTOToJson(SubjectDTO instance) => <String, dynamic>{
+Map<String, dynamic> _$SubjectDTOToJson(SubjectDTO instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'nome': instance.nome,
       'descricao': instance.descricao,
