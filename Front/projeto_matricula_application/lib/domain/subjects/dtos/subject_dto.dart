@@ -9,11 +9,18 @@ class SubjectDTO {
   String? descricao;
   bool? ativa;
 
-  factory SubjectDTO.fromJson(Map<String, dynamic> json) {
-    return _$SubjectDTOFromJson(json);
-  }
+  SubjectDTO({
+    this.id,
+    this.nome,
+    this.descricao,
+    this.ativa,
+  });
 
-  SubjectDTO({this.id, this.nome, this.descricao, this.ativa});
-
+  factory SubjectDTO.fromJson(Map<String, dynamic> json) => _$SubjectDTOFromJson(json);
   Map<String, dynamic> toJson() => _$SubjectDTOToJson(this);
+
+  @override
+  String toString() {
+    return 'SubjectDTO(id: $id, nome: $nome, descricao: $descricao, ativa: $ativa)';
+  }
 }

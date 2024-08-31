@@ -49,11 +49,11 @@ class _CourseSemesterItemState extends State<CourseSemesterItem> {
         child: ExpansionTile(
           title: Row(
             children: [
-              Icon(Icons.school, color: ProjectColors.primaryColor),
+              const Icon(Icons.school, color: ProjectColors.primaryColor),
               const SizedBox(width: 8),
               Text(
                 'Semestre ${widget.semesterIndex + 1}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: ProjectColors.primaryColor,
                 ),
@@ -67,7 +67,7 @@ class _CourseSemesterItemState extends State<CourseSemesterItem> {
                   return Column(
                     children: [
                       ListTile(
-                        leading: Icon(Icons.book, color: ProjectColors.primaryLight),
+                        leading: const Icon(Icons.book, color: ProjectColors.primaryLight),
                         title: Text(
                             subject.disciplinaId ?? 'Matéria desconhecida'),
                         contentPadding: const EdgeInsets.symmetric(

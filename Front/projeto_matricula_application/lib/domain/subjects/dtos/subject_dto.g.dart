@@ -13,8 +13,7 @@ SubjectDTO _$SubjectDTOFromJson(Map<String, dynamic> json) => SubjectDTO(
       ativa: json['ativa'] as bool?,
     );
 
-Map<String, dynamic> _$SubjectDTOToJson(SubjectDTO instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$SubjectDTOToJson(SubjectDTO instance) => <String, dynamic>{
       'id': instance.id,
       'nome': instance.nome,
       'descricao': instance.descricao,
