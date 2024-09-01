@@ -13,6 +13,7 @@ import 'package:projeto_matricula_application/view/teacher_list.dart/register_te
 import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
 import '.././../professor/professor_page.dart';
 import '../../pagamento/pagamento_alert.dart';
+import '../../subjects_enter/associate_professor_page.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -202,7 +203,29 @@ class DrawerWidget extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ProfessorPage()),
+                          builder: (context) => ClassProfessorPage()),
+                      (route) => false,
+                    );
+                  },
+                  backgroundColor: ProjectColors.buttonColor,
+                  textColor: Colors.grey[600],
+                ),
+              ),
+            ),
+             if (Context.current.tipoAcesso == UserTypeEnum.Secretaria)
+            Padding(
+              padding: const EdgeInsets.only(right: 5, left: 5, top: 10),
+              child: Align(
+                alignment: Alignment.center,
+                child: ButtonWidget(
+                  icon: HeroIcons.bookOpen,
+                  text: 'Matricular Professor',
+                  width: 250,
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AssociateProfessorPage()),
                       (route) => false,
                     );
                   },

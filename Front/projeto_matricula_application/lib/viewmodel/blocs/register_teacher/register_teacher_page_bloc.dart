@@ -4,16 +4,17 @@ import 'package:projeto_matricula_application/viewmodel/blocs/register_teacher/r
 import 'package:projeto_matricula_application/viewmodel/blocs/register_teacher/register_teacher_page_state.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/domain/user/user_service.dart';
+import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 
 class RegisterTeacherPageBloc extends Bloc<RegisterTeacherPageEvent, RegisterTeacherPageState> {
-
   final TeacherService _service = TeacherService();
-   final UserService _userService = UserService();
+  final UserService _userService = UserService();
 
   RegisterTeacherPageBloc() : super(RegisterTeacherPageInitState()) {
     on<RegisterTeacherPageStart>(_onStart);
     on<RegisterTeacherPageGetInfoEvent>(_onGetInfo);
-    on<RegisterNewTeacherEvent>(_onNewStudent);
+    on<RegisterNewTeacherEvent>(_onNewTeacher);
+    on<RegisterTeacherPageGetDisciplinesEvent>(_onGetDisciplines); // New event handler
   }
 
   void _onStart(RegisterTeacherPageStart event, Emitter<RegisterTeacherPageState> emit) {
@@ -25,7 +26,7 @@ class RegisterTeacherPageBloc extends Bloc<RegisterTeacherPageEvent, RegisterTea
     emit(RegisterTeachersListLoaded(teachers: teachers));
   }
 
- Future<void> _onNewStudent(RegisterNewTeacherEvent event, Emitter<RegisterTeacherPageState> emit) async {
+  Future<void> _onNewTeacher(RegisterNewTeacherEvent event, Emitter<RegisterTeacherPageState> emit) async {
     UserDTO newUser = UserDTO(
       nome: event.user.nome,
       matricula: event.user.matricula,
@@ -42,5 +43,14 @@ class RegisterTeacherPageBloc extends Bloc<RegisterTeacherPageEvent, RegisterTea
       emit(NewStudentCreationErrorState());
     }
   }
-  
+
+ // register_teacher_page_bloc.dart
+Future<void> _onGetDisciplines(RegisterTeacherPageGetDisciplinesEvent event, Emitter<RegisterTeacherPageState> emit) async {
+  try {
+    var disciplines = await _service.listProfessorDisciplines(event.professorId);  
+    emit(TeacherDisciplinesLoaded(disciplines: disciplines));
+  } catch (e) {
+    emit(TeacherDisciplinesError(message: e.toString()));
+  }
+}
 }

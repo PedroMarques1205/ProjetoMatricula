@@ -433,7 +433,7 @@ class FuncionalidadesScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfessorPage()),
+                  MaterialPageRoute(builder: (context) => ClassProfessorPage()),
                 );
               },
             ),

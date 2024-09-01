@@ -11,3 +11,11 @@ class RegisterNewTeacherEvent extends RegisterTeacherPageEvent {
 
   RegisterNewTeacherEvent({required this.user});
 }
+
+
+class RegisterTeacherPageGetDisciplinesEvent extends RegisterTeacherPageEvent {
+  final String professorId;  // Garanta que isso seja String
+
+  RegisterTeacherPageGetDisciplinesEvent({required this.professorId});
+}
+  

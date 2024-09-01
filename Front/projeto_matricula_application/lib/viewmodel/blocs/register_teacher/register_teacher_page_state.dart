@@ -1,4 +1,5 @@
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
+import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 
 abstract class RegisterTeacherPageState {}
 
@@ -19,3 +20,16 @@ class NewTeacherRegisteredState extends RegisterTeacherPageState {
 }
 
 class NewStudentCreationErrorState extends RegisterTeacherPageState {}
+
+
+class TeacherDisciplinesLoaded extends RegisterTeacherPageState {
+  final List<SubjectDTO> disciplines;
+
+  TeacherDisciplinesLoaded({required this.disciplines});
+}
+
+class TeacherDisciplinesError extends RegisterTeacherPageState {
+  final String message;
+
+  TeacherDisciplinesError({required this.message});
+}

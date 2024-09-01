@@ -15,6 +15,8 @@ import './blocs/register_teacher/register_teacher_page_bloc.dart';
 import './blocs/register_teacher/register_teacher_page_event.dart';
 import './blocs/subjects_enter_page/enter_subjects_bloc.dart';
 import './blocs/subjects_enter_page/enter_subjects_event.dart';
+import '../viewmodel/blocs/professor_page/professor_course_page_bloc.dart';
+import '../viewmodel/blocs/professor_page/professor_course_page_event.dart';
 
 List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (context) => InitBloc()..add(StartAppEvent())),
@@ -24,4 +26,5 @@ List<SingleChildWidget> blocProviders = [
   BlocProvider(create: (context) => RegisterTeacherPageBloc()..add(RegisterTeacherPageStart())),
   BlocProvider(create: (context) => RegisterCoursePageBloc()..add(RegisterCoursePageStart())),
   BlocProvider(create: (context) => EnterSubjectsBloc()..add(EnterSubjectsPageStart())),
+  BlocProvider(create: (context) => ProfessorPageBloc()..add(ProfessorPageStart())),
 ];

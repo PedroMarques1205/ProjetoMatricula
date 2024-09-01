@@ -105,4 +105,29 @@ class SubjectClient {
   }
 }
 
+Future<void> associateProfessor(String professorId, String subjectName) async {
+  final url = Uri.parse('$baseUrl/ProfessorDisciplina/ligarProfessorEmDisciplina?matriculaAluno=$professorId&nomeDisciplina=$subjectName');
+
+  try {
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'matriculaProfessor': professorId,
+        'nomeDisciplina': subjectName,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to associate professor with subject');
+    }
+  } catch (error) {
+    throw Exception('Failed to associate professor with subject: $error');
+  }
+}
+
+
+
 }

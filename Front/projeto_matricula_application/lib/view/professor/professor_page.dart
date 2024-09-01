@@ -1,186 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import '../main_screen/main_screen.dart';
+import '../../viewmodel/blocs/professor_page/professor_course_page_bloc.dart';
+import '../../viewmodel/blocs/professor_page/professor_course_page_event.dart';
+import '../../viewmodel/blocs/professor_page/professor_course_page_state.dart';
+import 'widgets/subject_list_item.dart'; 
 
-class Subject {
-  final String name;
-  final List<String> students;
-
-  Subject({required this.name, required this.students});
-}
-
-class ProfessorPage extends StatefulWidget {
-  const ProfessorPage({super.key});
+class ClassProfessorPage extends StatefulWidget {
+  ClassProfessorPage({super.key});
 
   @override
-  _ProfessorPageState createState() => _ProfessorPageState();
+  _ClassProfessorPageState createState() => _ClassProfessorPageState();
 }
 
-class _ProfessorPageState extends State<ProfessorPage> {
-  final List<Subject> subjects = [
-    Subject(name: 'Matemática', students: ['Aluno 1', 'Aluno 2', 'Aluno 3']),
-    Subject(name: 'História', students: ['Aluno 4', 'Aluno 5']),
-    Subject(name: 'Química', students: ['Aluno 6', 'Aluno 7', 'Aluno 8', 'Aluno 9']),
-  ];
+class _ClassProfessorPageState extends State<ClassProfessorPage> {
+  List<SubjectDTO> allDisciplines = [];
+  late ProfessorPageBloc _bloc;
+  String? professorId; // Altere para String
+  
+  @override
+  void initState() {
+    super.initState();
+    _bloc = ProfessorPageBloc();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _showProfessorIdDialog(context);
+      if (professorId != null) {
+        _bloc.add(ProfessorPageGetDisciplinesEvent(matriculaProfessor: professorId!));
+      }
+    });
+  }
 
-  Subject? selectedSubject;
+  Future<void> _showProfessorIdDialog(BuildContext context) async {
+    TextEditingController idController = TextEditingController();
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Digite a Matrícula do Professor'),
+          content: TextField(
+            controller: idController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(hintText: "Matrícula"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => MainScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            ),
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                setState(() {
+                  professorId = idController.text; // Atualize para String
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gerenciamento de Matérias'),
-        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Pru Minas',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+    return BlocProvider(
+      create: (_) => _bloc,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ProjectColors.buttonColor,
+          title: const Text('Disciplinas do Professor'),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
             ),
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => MainScreen()),
+                (route) => false,
+              );
+            },
           ),
-        ],
-      ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.grey[200],
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: const BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                  const SizedBox(width: 16.0),
-                  // Nome do usuário
-                  const Text(
-                    'Usuário',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                color: const Color.fromARGB(255, 92, 24, 33),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: subjects.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedSubject = subjects[index];
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Text(
-                                    subjects[index].name,
-                                    style: const TextStyle(
-                                      color: Color.fromARGB(255, 255, 255, 255),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => MainScreen()),
-                            (route) => false,
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
-                        ),
-                        child: const Text('Voltar'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
         ),
-      ),
-      body: Row(
-        children: [
-          // Exibição dos alunos da matéria selecionada
-          Expanded(
-            child: selectedSubject == null
-                ? const Center(child: Text('Selecione uma matéria'))
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Alunos de ${selectedSubject!.name}:',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: selectedSubject!.students.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(selectedSubject!.students[index]),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-          ),
-        ],
+        body: BlocBuilder<ProfessorPageBloc, ProfessorPageState>(
+          builder: (context, state) {
+            if (state is ProfessorPageLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ProfessorDisciplinesLoaded) {
+              allDisciplines = state.disciplines;
+              return ListView.builder(
+                itemCount: allDisciplines.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: SubjectListItem(subject: allDisciplines[index]), 
+                  );
+                },
+              );
+            } else if (state is ProfessorDisciplinesError) {
+              return Center(child: Text('Erro: ${state.message}'));
+            } else {
+              return const Center(child: Text('Nenhuma disciplina encontrada.'));
+            }
+          },
+        ),
       ),
     );
   }

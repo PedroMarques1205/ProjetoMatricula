@@ -42,6 +42,13 @@ Future<SubjectDTO> associateSubject(String matricula, String subjectName) async 
   }
 }
   
+  Future<void> associateProfessor(String professorId, String subjectName) async {
+  try {
+    await client.associateProfessor(professorId, subjectName);
+  } catch (error) {
+    print(error);
+  }
+}
 
 
 }

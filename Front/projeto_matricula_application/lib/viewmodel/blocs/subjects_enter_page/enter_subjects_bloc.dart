@@ -16,6 +16,8 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
     on<ListSubjectsEvent>(_onList);
     on<CreateNewSubjectsEvent>(_onCreate);
     on<AssociateSubjectEvent>(_onAssociate);
+    on<AssociateProfessorEvent>(_onAssociateProfessor);
+    on<ProfessorIdChanged>(_onProfessorIdChanged);
   }
 
   Future<void> _onCreate(
@@ -64,4 +66,21 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
       print('Nome da disciplina ou matrícula está vazio');
     }
   }
+
+  Future<void> _onProfessorIdChanged(
+      ProfessorIdChanged event, Emitter<EnterSubjectsState> emit) async {
+    emit(EnterSubjectsWithProfessorIdState(professorId: event.professorId));
+  }
+
+   Future<void> _onAssociateProfessor(
+    AssociateProfessorEvent event, Emitter<EnterSubjectsState> emit) async {
+    try {
+      await service.associateProfessor(event.professorId, event.subjectName);
+      emit(AssociationSuccessState());
+    } catch (e) {
+      emit(AssociationErrorState(message: e.toString()));
+    }
+  }
+
+  
 }

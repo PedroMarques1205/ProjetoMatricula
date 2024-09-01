@@ -12,7 +12,29 @@ class SubjectListLoadedState extends EnterSubjectsState {
   final List<SubjectDTO> mySubjects;
   final CourseDTO course;
 
-  SubjectListLoadedState({required this.subjects, required this.otherSubjects, required this.mySubjects, required this.course});
+  SubjectListLoadedState({
+    required this.subjects,
+    required this.otherSubjects,
+    required this.mySubjects,
+    required this.course,
+  });
 }
 
 class SubjectListLoadingErrorState extends EnterSubjectsState {}
+
+class AssociationSuccessState extends EnterSubjectsState {}
+
+class AssociationErrorState extends EnterSubjectsState {
+  final String message;
+
+  AssociationErrorState({required this.message});
+}
+
+// Nova classe concreta que inclui professorId
+class EnterSubjectsWithProfessorIdState extends EnterSubjectsState {
+  final String professorId;
+
+  EnterSubjectsWithProfessorIdState({required this.professorId});
+}
+
+

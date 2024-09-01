@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
                     context,
                     'Professor',
                     () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ProfessorPage()),
+                      MaterialPageRoute(builder: (context) => ClassProfessorPage()),
                     ),
                   ),
                   const SizedBox(height: 16.0),
