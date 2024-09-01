@@ -89,6 +89,3 @@ Certifique-se de ter os seguintes programas instalados:
 
 1. Se o usuário estiver utilizando um iPhone, o projeto não funcionará em um computador com Windows; é necessário utilizar um Mac para acessar o projeto a partir do iPhone.
 2. O backend deve estar em execução para que o Swagger funcione corretamente.
-
-
-
