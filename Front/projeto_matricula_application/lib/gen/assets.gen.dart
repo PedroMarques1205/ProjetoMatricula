@@ -19,6 +19,10 @@ class $AssetsImagesGen {
   AssetGenImage get idkicon2 =>
       const AssetGenImage('assets/images/idkicon2.png');
 
+  /// File path: assets/images/julianaMember.jpeg
+  AssetGenImage get julianaMember =>
+      const AssetGenImage('assets/images/julianaMember.jpeg');
+
   /// File path: assets/images/logo_chapeuzinho.png
   AssetGenImage get logoChapeuzinho =>
       const AssetGenImage('assets/images/logo_chapeuzinho.png');
@@ -32,13 +36,26 @@ class $AssetsImagesGen {
   /// File path: assets/images/member4.jpg
   AssetGenImage get member4 => const AssetGenImage('assets/images/member4.jpg');
 
+  /// File path: assets/images/pruMinasSymbol.png
+  AssetGenImage get pruMinasSymbol =>
+      const AssetGenImage('assets/images/pruMinasSymbol.png');
+
   /// File path: assets/images/pruminas.png
   AssetGenImage get pruminas =>
       const AssetGenImage('assets/images/pruminas.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [idkicon, idkicon2, logoChapeuzinho, member1, member2, member4, pruminas];
+  List<AssetGenImage> get values => [
+        idkicon,
+        idkicon2,
+        julianaMember,
+        logoChapeuzinho,
+        member1,
+        member2,
+        member4,
+        pruMinasSymbol,
+        pruminas
+      ];
 }
 
 class Assets {

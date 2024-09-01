@@ -8,7 +8,7 @@ import 'package:projeto_matricula_application/view/shared/input_widget.dart';
 import '../register_student_page.dart';
 
 class NewStudentPage extends StatefulWidget {
-  final void Function(UserDTO user) onSave;
+  final void Function(UserDTO user, CourseDTO selectedCourse, int semesrer) onSave;
   final List<CourseDTO> courses;
 
   NewStudentPage({super.key, required this.onSave, required this.courses});
@@ -19,7 +19,7 @@ class NewStudentPage extends StatefulWidget {
 
 class _NewStudentPageState extends State<NewStudentPage> {
   late UserDTO newUser;
-  CourseDTO? selectedCourse;
+  CourseDTO selectedCourse = CourseDTO();
   int? selectedSemester;
 
   @override
@@ -206,7 +206,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                     child: ButtonWidget(
                       text: 'Salvar',
                       onPressed: () {
-                        widget.onSave(newUser);
+                        widget.onSave(newUser, selectedCourse, selectedSemester ?? 1);
                         try {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
@@ -281,7 +281,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                             onTap: () {
                               setState(() {
                                 selectedCourse = course;
-                                selectedSemester = null;
+                                selectedSemester = 1;
                               });
                               Navigator.of(context).pop();
                             },

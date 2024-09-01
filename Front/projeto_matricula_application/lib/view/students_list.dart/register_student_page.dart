@@ -21,6 +21,7 @@ class StudentsListPage extends StatefulWidget {
 class _StudentsListPageState extends State<StudentsListPage> {
   List<UserDTO> allStudents = [];
   List<CourseDTO> courses = [];
+  CourseDTO selectedCourse = CourseDTO();
   final RegisterStudentPageBloc _bloc = RegisterStudentPageBloc();
 
   @override
@@ -135,7 +136,7 @@ class _StudentsListPageState extends State<StudentsListPage> {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => NewStudentPage(
-          onSave: (UserDTO user) => onSave(user),
+          onSave: (UserDTO user, CourseDTO course, int semester) => onSave(user, course, semester),
           courses: courses,
         ),
       ),
@@ -143,8 +144,8 @@ class _StudentsListPageState extends State<StudentsListPage> {
     );
   }
 
-  void onSave(UserDTO user) {
-    _bloc.add(RegisterNewStudentEvent(user: user));
+  void onSave(UserDTO user, CourseDTO course, int semester) {
+    _bloc.add(RegisterNewStudentEvent(user: user, course: course));
   }
 
   @override

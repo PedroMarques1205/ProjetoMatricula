@@ -16,13 +16,9 @@ TeacherDTO _$TeacherDTOFromJson(Map<String, dynamic> json) => TeacherDTO(
 
 Map<String, dynamic> _$TeacherDTOToJson(TeacherDTO instance) =>
     <String, dynamic>{
-      'id': instance.matricula,
+      'matricula': instance.matricula,
       'nome': instance.nome,
       'senha': instance.senha,
       'tipoAcesso': instance.tipoAcesso,
-      'ativa': instance.ativo,
+      'ativo': instance.ativo,
     };
-
-//     "senha": "string",
-//     "tipoAcesso": "ALUNO",
-

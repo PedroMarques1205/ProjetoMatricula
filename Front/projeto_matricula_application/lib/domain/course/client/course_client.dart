@@ -3,14 +3,41 @@ import 'package:projeto_matricula_application/domain/base_url.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_matricula_application/domain/course/dtos/course_subjects_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/students_course_registration.dart';
 
 class CourseClient {
   CourseClient();
 
   final String baseUrl = BaseUrl.baseUrl;
 
+  Future<StudentsCourseRegistration> registerStudentOnCourse(String userId, String courseId) async {
+    final url = Uri.parse('$baseUrl/alunosPorCurso/matricularAlunoEmUmCurso?matriculaAluno=$userId,nomeCurso=$courseId');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final dynamic courseJson = jsonDecode(response.body);
+
+        final StudentsCourseRegistration course = StudentsCourseRegistration.fromJson(courseJson);
+
+        return course;
+      } else {
+        return StudentsCourseRegistration();
+      }
+    } catch (error) {
+      return StudentsCourseRegistration();
+    }
+  }
+
   Future<CourseDTO> courseByUserId(String userId) async {
-    final url = Uri.parse('$baseUrl/alunosPorCurso/obterCursoPorAluno?matriculaAluno=$userId');
+    final url = Uri.parse(
+        '$baseUrl/alunosPorCurso/obterCursoPorAluno?matriculaAluno=$userId');
 
     try {
       final response = await http.get(
@@ -35,7 +62,8 @@ class CourseClient {
   }
 
   Future<List<CourseSubjectsDTO>> listCourseSubjects(int courseId) async {
-    final url = Uri.parse('$baseUrl/disciplinascurso/gerarCurriculoDoCurso?idCurso=$courseId');
+    final url = Uri.parse(
+        '$baseUrl/disciplinascurso/gerarCurriculoDoCurso?idCurso=$courseId');
 
     try {
       final response = await http.get(
@@ -48,7 +76,8 @@ class CourseClient {
       if (response.statusCode == 200) {
         final List<dynamic> courseJson = jsonDecode(response.body);
 
-        final List<CourseSubjectsDTO> courseSubjects = courseJson.map((json) => CourseSubjectsDTO.fromJson(json)).toList();
+        final List<CourseSubjectsDTO> courseSubjects =
+            courseJson.map((json) => CourseSubjectsDTO.fromJson(json)).toList();
 
         return courseSubjects;
       } else {
