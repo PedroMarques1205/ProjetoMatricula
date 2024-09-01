@@ -70,13 +70,15 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
         bloc: _bloc,
         builder: (context, state) {
           if (state is SubjectListLoadingErrorState) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(15),
-                child: Text(
-                    'Ops! Ocorreu um erro no carregamento.\nTente novamente mais tarde.'),
+            return Center(
+                child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                'Parece que você não está vinculado(a) a nenhum curso.',
+                style: TextStyle(
+                    color: Colors.grey[600], fontWeight: FontWeight.bold),
               ),
-            );
+            ));
           }
           if (state is SubjectListLoadedState) {
             mySubjects = state.mySubjects;

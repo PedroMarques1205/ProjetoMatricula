@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:projeto_matricula_application/domain/course/course_service.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/domain/student/student_service.dart';
 import 'package:projeto_matricula_application/domain/user/user_service.dart';
@@ -9,6 +10,7 @@ class RegisterStudentPageBloc extends Bloc<RegisterStudentPageEvent, RegisterStu
 
   final StudentService _service = StudentService();
   final UserService _userService = UserService();
+  final CourseService _courseService = CourseService();
 
   RegisterStudentPageBloc() : super(RegisterStudentPageInitState()) {
     on<RegisterStudentPageStart>(_onStart);
@@ -21,8 +23,9 @@ class RegisterStudentPageBloc extends Bloc<RegisterStudentPageEvent, RegisterStu
   }
 
   Future<void> _onGetInfo(RegisterStudentPageGetInfoEvent event, Emitter<RegisterStudentPageState> emit) async {
+    var courses = await _courseService.listCourses();
     var students = await _service.listStudents();
-    emit(RegisterStudentsListLoaded(students: students));
+    emit(RegisterStudentsListLoaded(students: students, courses: courses));
   }
 
   Future<void> _onNewStudent(RegisterNewStudentEvent event, Emitter<RegisterStudentPageState> emit) async {

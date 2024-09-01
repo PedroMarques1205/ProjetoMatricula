@@ -69,11 +69,13 @@ class UsersGradePageState extends State<UsersGradePage> {
         builder: (context, state) {
           if (state is LoadCourseErrorState) {
             return Center(
+                child: Padding(
+              padding: EdgeInsets.all(15),
               child: Text(
-                'Houve um erro no carregamento. Tente novamente mais tarde.',
-                style: TextStyle(color: Colors.grey[600]),
+                'Parece que você não está vinculado(a) a nenhum curso.',
+                style: TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold),
               ),
-            );
+            ));
           }
           if (state is CourseGradeLoadedState) {
             return Container(

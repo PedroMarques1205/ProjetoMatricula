@@ -10,7 +10,6 @@ import 'package:projeto_matricula_application/view/students_list.dart/register_s
 import 'package:projeto_matricula_application/view/subjects_enter/subjects_enter_page.dart';
 import 'package:projeto_matricula_application/view/subjects_list/subjects_list_page.dart';
 import 'package:projeto_matricula_application/view/teacher_list.dart/register_teacher_page.dart';
-import 'package:projeto_matricula_application/view/user_subjects/user_subjects.dart';
 import '.././../professor/professor_page.dart';
 import '../../pagamento/pagamento_alert.dart';
 import '../../subjects_enter/associate_professor_page.dart';
@@ -64,10 +63,10 @@ class DrawerWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: ButtonWidget(
-                  icon: HeroIcons.academicCap,
-                  text: 'Matrícula',
+                  icon: HeroIcons.bookOpen,
+                  text: 'Disciplinas',
                   width: 250,
-                   onPressed: () {
+                  onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
@@ -92,8 +91,7 @@ class DrawerWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => PagamentoAlert()),
+                      MaterialPageRoute(builder: (context) => PagamentoAlert()),
                       (route) => false,
                     );
                   },
@@ -137,7 +135,7 @@ class DrawerWidget extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => StudentsListPage()),
+                          builder: (context) => const StudentsListPage()),
                       (route) => false,
                     );
                   },
@@ -212,7 +210,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               ),
             ),
-             if (Context.current.tipoAcesso == UserTypeEnum.Secretaria)
+          if (Context.current.tipoAcesso == UserTypeEnum.Secretaria)
             Padding(
               padding: const EdgeInsets.only(right: 5, left: 5, top: 10),
               child: Align(
@@ -225,7 +223,7 @@ class DrawerWidget extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AssociateProfessorPage()),
+                          builder: (context) => const AssociateProfessorPage()),
                       (route) => false,
                     );
                   },

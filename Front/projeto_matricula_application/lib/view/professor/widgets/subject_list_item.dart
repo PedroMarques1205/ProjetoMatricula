@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 
 class SubjectListItem extends StatelessWidget {
@@ -13,16 +14,16 @@ class SubjectListItem extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 70,
       decoration: BoxDecoration(
-        color: Colors.blueGrey.shade100,
+        color: ProjectColors.buttonColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.grey[400],
+          const CircleAvatar(
+            backgroundColor: Colors.white,
             child: Icon(
               Icons.book,
-              color: Colors.white,
+              color: ProjectColors.primaryLight,
             ),
           ),
           const SizedBox(width: 10),
@@ -32,7 +33,8 @@ class SubjectListItem extends StatelessWidget {
               children: [
                 Text(
                   subject.nome ?? 'Disciplina',
-                  style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.grey[800], fontWeight: FontWeight.bold),
                 ),
                 Text(
                   subject.descricao ?? 'Descrição',

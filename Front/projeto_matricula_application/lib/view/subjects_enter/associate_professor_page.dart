@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/view/shared/button_widget.dart';
+import 'package:projeto_matricula_application/view/shared/input_widget.dart';
 import '../../viewmodel/blocs/subjects_enter_page/enter_subjects_bloc.dart';
 import '../../viewmodel/blocs/subjects_enter_page/enter_subjects_event.dart';
 import '../../viewmodel/blocs/subjects_enter_page/enter_subjects_state.dart';
@@ -29,7 +31,7 @@ class _AssociateProfessorPageState extends State<AssociateProfessorPage> {
           foregroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           title: Text(
-            'Associar Professor a Disciplina',
+            'Designar Professores',
             style: TextStyle(
               color: Colors.grey[800],
               fontWeight: FontWeight.bold,
@@ -41,54 +43,58 @@ class _AssociateProfessorPageState extends State<AssociateProfessorPage> {
               color: ProjectColors.primaryColor,
             ),
             onPressed: () {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const MainScreen()),
-              (route) => false,
-            );
-          },
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const MainScreen()),
+                (route) => false,
+              );
+            },
           ),
         ),
         body: BlocBuilder<EnterSubjectsBloc, EnterSubjectsState>(
           builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
+              child: ListView(
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'ID do Professor',
-                      border: OutlineInputBorder(),
-                    ),
+                  const SizedBox(height: 20),
+                  InputWidget(
+                    title: 'Matrícula do Professor',
                     onChanged: (value) {
                       setState(() {
                         _professorId = value;
                       });
                     },
                   ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Nome da Disciplina',
-                      border: OutlineInputBorder(),
-                    ),
+                  const SizedBox(height: 20),
+                  InputWidget(
+                    title: 'Nome da Disciplina',
                     onChanged: (value) {
                       setState(() {
                         _subjectName = value;
                       });
                     },
                   ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<EnterSubjectsBloc>().add(
-                        AssociateProfessorEvent(
-                          professorId: _professorId,
-                          subjectName: _subjectName,
-                        ),
-                      );
-                    },
-                    child: const Text('Associar'),
-                  ),
+                  const SizedBox(height: 460),
+                  ButtonWidget(
+                      radius: 25,
+                      textColor: Colors.white,
+                      backgroundColor: ProjectColors.primaryLight,
+                      centerTitle: true,
+                      text: 'Associar',
+                      onPressed: () {
+                        context.read<EnterSubjectsBloc>().add(
+                              AssociateProfessorEvent(
+                                professorId: _professorId,
+                                subjectName: _subjectName,
+                              ),
+                            );
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const MainScreen()),
+                          (route) => false,
+                        );
+                      },
+                      width: 300)
                 ],
               ),
             );

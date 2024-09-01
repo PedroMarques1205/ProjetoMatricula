@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/students_list.dart/widgets/new_student_page.dart';
 import 'package:projeto_matricula_application/view/students_list.dart/widgets/student_list_item.dart';
@@ -19,6 +20,7 @@ class StudentsListPage extends StatefulWidget {
 
 class _StudentsListPageState extends State<StudentsListPage> {
   List<UserDTO> allStudents = [];
+  List<CourseDTO> courses = [];
   final RegisterStudentPageBloc _bloc = RegisterStudentPageBloc();
 
   @override
@@ -38,7 +40,8 @@ class _StudentsListPageState extends State<StudentsListPage> {
         surfaceTintColor: Colors.white,
         title: Text(
           'Alunos',
-          style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(
@@ -94,11 +97,13 @@ class _StudentsListPageState extends State<StudentsListPage> {
           }
           if (state is NewStudentCreationErrorState) {
             return const Center(
-              child: HeroIcon(HeroIcons.heart, color: ProjectColors.primaryColor),
+              child:
+                  HeroIcon(HeroIcons.heart, color: ProjectColors.primaryColor),
             );
           }
           if (state is RegisterStudentsListLoaded) {
             allStudents = state.students;
+            courses = state.courses;
 
             return SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -107,7 +112,8 @@ class _StudentsListPageState extends State<StudentsListPage> {
                 itemCount: allStudents.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 20, right: 20),
                     child: StudentListItem(student: allStudents[index]),
                   );
                 },
@@ -130,6 +136,7 @@ class _StudentsListPageState extends State<StudentsListPage> {
       MaterialPageRoute(
         builder: (context) => NewStudentPage(
           onSave: (UserDTO user) => onSave(user),
+          courses: courses,
         ),
       ),
       (route) => false,

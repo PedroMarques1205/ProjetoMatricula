@@ -18,7 +18,12 @@ class CoursesListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        shadowColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         title: Text(
           'Cursos',
           style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
