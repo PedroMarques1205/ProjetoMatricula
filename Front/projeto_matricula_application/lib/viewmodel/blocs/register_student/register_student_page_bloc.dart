@@ -29,12 +29,6 @@ class RegisterStudentPageBloc extends Bloc<RegisterStudentPageEvent, RegisterStu
   }
 
   Future<void> _onNewStudent(RegisterNewStudentEvent event, Emitter<RegisterStudentPageState> emit) async {
-    try {
-      var registrationCourse = await _courseService.registerStudentOnCourse(event.user.matricula!, event.course.nome!);
-    } catch (error) {
-      print(error);
-    }
-
     UserDTO newUser = UserDTO(
       nome: event.user.nome,
       matricula: event.user.matricula,
@@ -44,6 +38,14 @@ class RegisterStudentPageBloc extends Bloc<RegisterStudentPageEvent, RegisterStu
     );
 
     var resp = await _userService.newUser(newUser);
+    
+    try {
+      var registrationCourse = await _courseService.registerStudentOnCourse(resp!.matricula!, event.course.nome!);
+    } catch (error) {
+      print(error);
+    }
+
+    
     
     if (resp?.matricula != null && resp!.matricula!.isNotEmpty) {
       emit(NewStudentRegisteredState(user: resp));
