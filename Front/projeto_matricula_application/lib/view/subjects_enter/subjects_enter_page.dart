@@ -95,7 +95,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                     child: ListView.builder(
                       itemCount: mySubjects.length + courseSubjects.length + 1,
                       itemBuilder: (context, index) {
-                        if (index == 0) {
+                        if (index == 0 && mySubjects.isNotEmpty) {
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, right: 15, top: 5, bottom: 15),
