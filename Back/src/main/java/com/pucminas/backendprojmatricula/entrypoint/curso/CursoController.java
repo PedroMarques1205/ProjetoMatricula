@@ -1,9 +1,11 @@
 package com.pucminas.backendprojmatricula.entrypoint.curso;
 
 import com.pucminas.backendprojmatricula.common.mapper.Mapper;
+import com.pucminas.backendprojmatricula.core.curso.dto.DisciplinaSemestreDTO;
 import com.pucminas.backendprojmatricula.entrypoint.curso.dto.CursoDTO;
 import com.pucminas.backendprojmatricula.entrypoint.curso.dto.RequestEditarCursoDTO;
 import com.pucminas.backendprojmatricula.model.Curso;
+import com.pucminas.backendprojmatricula.model.DisciplinasDoCurso;
 import com.pucminas.backendprojmatricula.usecase.curso.DeletarCursoUseCase;
 import com.pucminas.backendprojmatricula.usecase.curso.EditarCursoUseCase;
 import com.pucminas.backendprojmatricula.usecase.curso.ObterCursoUseCase;
@@ -63,5 +65,10 @@ public class CursoController {
     public ResponseEntity<CursoDTO> deletarCurso(@RequestBody RequestEditarCursoDTO curso) {
         return ResponseEntity.ok(mapper.generalMapper(editarCursoUseCase.editarCurso(curso),
                 CursoDTO.class));
+    }
+
+    @PostMapping("/novoCursoComDisciplinas")
+    public ResponseEntity<List<DisciplinasDoCurso>> salvarNovoCursoComDisciplinas(@RequestBody @Valid Curso curso, @RequestBody List<DisciplinaSemestreDTO> disciplinaComSemestre) {
+        return ResponseEntity.ok(salvarCursoUseCase.salvarCursoComDIsciplina(curso,disciplinaComSemestre));
     }
 }

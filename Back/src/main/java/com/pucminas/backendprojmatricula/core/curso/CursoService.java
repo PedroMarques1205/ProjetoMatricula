@@ -1,14 +1,20 @@
 package com.pucminas.backendprojmatricula.core.curso;
 
+import com.pucminas.backendprojmatricula.core.curso.dto.DisciplinaSemestreDTO;
 import com.pucminas.backendprojmatricula.dataprovider.curso.ICursoRepository;
+import com.pucminas.backendprojmatricula.dataprovider.disciplina.IDisciplinaRepository;
+import com.pucminas.backendprojmatricula.dataprovider.disciplinasdocurso.IDisciplinasDoCursoRepository;
 import com.pucminas.backendprojmatricula.dataprovider.semestre.ISemestreRepository;
 import com.pucminas.backendprojmatricula.entrypoint.curso.dto.RequestEditarCursoDTO;
 import com.pucminas.backendprojmatricula.model.Curso;
+import com.pucminas.backendprojmatricula.model.Disciplina;
+import com.pucminas.backendprojmatricula.model.DisciplinasDoCurso;
 import com.pucminas.backendprojmatricula.model.Semestre;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +27,13 @@ public class CursoService {
     @Autowired
     ISemestreRepository semestreRepository;
 
+    @Autowired
+    IDisciplinasDoCursoRepository DisciplinasDoCursoRepository;
+
+    @Autowired
+    IDisciplinaRepository disciplinaRepository;
+
+
     public Optional<Curso> buscaCurso(Long id) {
         return cursoRepository.findById(id);
     }
@@ -31,7 +44,6 @@ public class CursoService {
                 .toList();
     }
 
-    @Transactional
     public Curso salvaCurso(Curso curso) {
         cursoRepository.save(curso);
         for(int i = 0; i < curso.getNumSemestres(); i++){
@@ -70,5 +82,30 @@ public class CursoService {
             return curso;
         }
         return null;
+    }
+
+    public List<DisciplinasDoCurso> associarDisciplinasParaCurso(Curso curso, List<DisciplinaSemestreDTO> disciplinaSemestreDTO) {
+        salvaCurso(curso);
+        List<DisciplinasDoCurso> retorno = new ArrayList<>();
+        for (DisciplinaSemestreDTO item : disciplinaSemestreDTO) {
+            Long disciplinaId = item.getIdDisciplina();
+            Integer semestreOrdinal = item.getOrdinalSemestre();
+            Disciplina disciplina = disciplinaRepository.findById(disciplinaId).isPresent() ? disciplinaRepository.findById(disciplinaId).get() : null;
+            Semestre semestre = semestreRepository.findById(Semestre.SemestreId.builder()
+                    .ordinal(semestreOrdinal)
+                    .curso(curso)
+                    .build()).isPresent() ? semestreRepository.findById(Semestre.SemestreId.builder()
+                    .ordinal(semestreOrdinal)
+                    .curso(curso)
+                    .build()).get() : null;
+
+            DisciplinasDoCurso disciplinasDoCurso = new DisciplinasDoCurso();
+            disciplinasDoCurso.setCurso(curso);
+            disciplinasDoCurso.setDisciplina(disciplina);
+            disciplinasDoCurso.setSemestre(semestre);
+
+            retorno.add(DisciplinasDoCursoRepository.save(disciplinasDoCurso));
+        }
+        return retorno;
     }
 }
