@@ -202,7 +202,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
                           ),
                         )),
                   Padding(
-                    padding: const EdgeInsets.only(top: 260),
+                    padding: const EdgeInsets.only(top: 200),
                     child: ButtonWidget(
                       text: 'Salvar',
                       onPressed: () {

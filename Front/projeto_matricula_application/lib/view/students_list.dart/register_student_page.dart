@@ -136,7 +136,8 @@ class _StudentsListPageState extends State<StudentsListPage> {
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => NewStudentPage(
-          onSave: (UserDTO user, CourseDTO course, int semester) => onSave(user, course, semester),
+          onSave: (UserDTO user, CourseDTO course, int semester) =>
+              onSave(user, course, semester),
           courses: courses,
         ),
       ),
@@ -145,7 +146,11 @@ class _StudentsListPageState extends State<StudentsListPage> {
   }
 
   void onSave(UserDTO user, CourseDTO course, int semester) {
-    _bloc.add(RegisterNewStudentEvent(user: user, course: course));
+    try {
+      _bloc.add(RegisterNewStudentEvent(user: user, course: course));
+    } catch (error) {
+      print(error);
+    }
   }
 
   @override

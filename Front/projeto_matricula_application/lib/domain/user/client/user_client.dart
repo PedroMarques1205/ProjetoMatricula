@@ -9,6 +9,29 @@ class UserClient {
 
   final String baseUrl = BaseUrl.baseUrl;
 
+  Future<UserDTO> registerStudentsCourse(UserDTO newUser, int idCurso) async {
+    final url = Uri.parse('$baseUrl/usuario/salvarNovoAlunoEmUmCurso?idCurso=$idCurso');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(newUser.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        final dynamic user = jsonDecode(response.body);
+        return UserDTO.fromJson(user);
+      } else {
+        return UserDTO();
+      }
+    } catch (error) {
+      return UserDTO();
+    }
+  }
+
   Future<UserDTO> createUser(UserDTO newUser) async {
     final url = Uri.parse('$baseUrl/usuario/novoUsuario');
 
