@@ -122,21 +122,7 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
   }
 
   List<Color> generateRandomGradientColors() {
-    final random = Random();
-
-    Color getRandomColor() {
-      return Color.fromARGB(
-        255,
-        random.nextInt(256),
-        random.nextInt(256),
-        random.nextInt(256),
-      );
-    }
-
-    return [
-      getRandomColor(),
-      getRandomColor(),
-    ];
+    return [ProjectColors.buttonColor, ProjectColors.subjectCoolDark];
   }
 
   void openNewSubjectPage(BuildContext context) {

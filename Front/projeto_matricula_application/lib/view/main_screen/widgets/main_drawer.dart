@@ -216,7 +216,7 @@ class DrawerWidget extends StatelessWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: ButtonWidget(
-                  icon: HeroIcons.bookOpen,
+                  icon: HeroIcons.bookmark,
                   text: 'Matricular Professor',
                   width: 250,
                   onPressed: () {

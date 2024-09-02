@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
-import '../register_course_page.dart';
 import '../../main_screen/main_screen.dart';
 
 class NewCoursePage extends StatefulWidget {
-  final Future<CourseDTO?> Function(CourseDTO course) onSave;
+  final Future<void> Function(CourseDTO course) onSave;
+  final List<SubjectDTO> allSubjects;
 
-  NewCoursePage({super.key, required this.onSave});
+  NewCoursePage({super.key, required this.onSave, required this.allSubjects});
 
   @override
   _NewCoursePageState createState() => _NewCoursePageState();
@@ -21,6 +22,8 @@ class _NewCoursePageState extends State<NewCoursePage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _descricaoController = TextEditingController();
   final TextEditingController _numSemestresController = TextEditingController();
+
+  List<SubjectDTO> selectedSubjects = [];
 
   @override
   void initState() {
@@ -46,19 +49,13 @@ class _NewCoursePageState extends State<NewCoursePage> {
 
     final isValid = _validateCourse(newCourse);
     if (isValid) {
-      final savedCourse = await widget.onSave(newCourse);
-      if (savedCourse != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const MainScreen()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Falha ao salvar o curso.')),
-        );
-      }
+      await widget.onSave(newCourse);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Preencha todos os campos corretamente.')),
+        const SnackBar(content: Text('Preencha todos os campos corretamente.')),
       );
     }
   }
@@ -144,22 +141,33 @@ class _NewCoursePageState extends State<NewCoursePage> {
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 25, right: 25, top: 15),
-                    child: Row(
-                      children: [
-                        const Expanded(child: Text('Ativo')),
-                        Switch(
-                          value: newCourse.ativo ?? true,
-                          onChanged: (value) {
-                            setState(() {
-                              newCourse.ativo = value;
-                            });
-                          },
+                    child: InkWell(
+                      onTap: _openSubjectsPopup,
+                      child: Container(
+                        height: 70,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: ProjectColors.buttonColor,
                         ),
-                      ],
+                        child: Center(
+                          child: Text(
+                            selectedSubjects.isNotEmpty
+                                ? selectedSubjects.map((s) => s.nome).join(', ')
+                                : 'Escolha disciplinas...',
+                            style: TextStyle(
+                              color: selectedSubjects.isNotEmpty
+                                  ? Colors.blue
+                                  : Colors.grey[700],
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 330),
+                    padding: const EdgeInsets.only(top: 300),
                     child: ButtonWidget(
                       text: 'Salvar',
                       onPressed: _handleSave,
@@ -176,6 +184,59 @@ class _NewCoursePageState extends State<NewCoursePage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _openSubjectsPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            'Disciplinas',
+            style:
+                TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold),
+          ),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView(
+              shrinkWrap: true,
+              children: widget.allSubjects.map((subject) {
+                return RadioListTile<SubjectDTO>(
+                  title: Text(subject.nome ?? ''),
+                  value: subject,
+                  groupValue: selectedSubjects.isNotEmpty
+                      ? selectedSubjects.first
+                      : null,
+                  onChanged: (selected) {
+                    setState(() {
+                      if (selected != null) {
+                        if (selectedSubjects.contains(selected)) {
+                          selectedSubjects.remove(selected);
+                        } else {
+                          selectedSubjects.add(selected);
+                        }
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Cancelar',
+                style: TextStyle(color: ProjectColors.primaryColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

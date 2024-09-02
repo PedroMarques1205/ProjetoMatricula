@@ -109,7 +109,7 @@ class CuriosidadePage extends StatelessWidget {
   final List<Map<String, String>> _members = [
     {'imagePath': 'assets/images/member1.jpg', 'name': 'Lúcio Alves'},
     {'imagePath': 'assets/images/member2.jpg', 'name': 'Pedro Henrique'},
-    {'imagePath': 'assets/images/julianaMember.jpg', 'name': 'Juliana Parreiras'},
+    {'imagePath': 'assets/images/julianaMember.jpeg', 'name': 'Juliana Parreiras'},
     {'imagePath': 'assets/images/member4.jpg', 'name': 'Luidi Cadete'},
   ];
 }

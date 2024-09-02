@@ -19,6 +19,8 @@ class StudentListItem extends StatelessWidget {
             color: ProjectColors.buttonColor,
             borderRadius: BorderRadius.circular(10)),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
               backgroundColor: Colors.grey[400],
@@ -30,10 +32,27 @@ class StudentListItem extends StatelessWidget {
             const SizedBox(
               width: 5,
             ),
-            Text(
-              student.nome ?? 'Aluno',
-              style: TextStyle(color: Colors.grey[800]),
-            )
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'Código: ${student.matricula}' ?? 'Matrícula',
+                  style: TextStyle(color: Colors.grey[800]),
+                ),
+                Text(
+                  'Nome: ${student.nome}' ?? 'Aluno',
+                  style: TextStyle(color: Colors.grey[800]),
+                ),
+              ],
+            ),
+            const Spacer(),
+            IconButton(
+                onPressed: () {},
+                icon: HeroIcon(
+                  HeroIcons.ellipsisVertical,
+                  color: Colors.grey[800],
+                ))
           ],
         ));
   }
