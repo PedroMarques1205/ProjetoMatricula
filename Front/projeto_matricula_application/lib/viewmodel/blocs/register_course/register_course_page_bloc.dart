@@ -1,11 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:projeto_matricula_application/domain/course/course_service.dart';
+import 'package:projeto_matricula_application/domain/subjects/subject_service.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_event.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_state.dart';
 
 class RegisterCoursePageBloc extends Bloc<RegisterCoursePageEvent, RegisterCoursePageState> {
   final CourseService _service = CourseService();
+  final SubjectService _subjectService = SubjectService();
 
   RegisterCoursePageBloc() : super(RegisterCoursePageInitState()) {
     on<RegisterCoursePageStart>(_onStart);
@@ -19,7 +21,8 @@ class RegisterCoursePageBloc extends Bloc<RegisterCoursePageEvent, RegisterCours
 
   Future<void> _onGetInfo(RegisterCoursePageGetInfoEvent event, Emitter<RegisterCoursePageState> emit) async {
     var courses = await _service.listCourses();
-    emit(RegisterCoursesListLoaded(courses: courses));
+    var subjects = await _subjectService.listSubjects();
+    emit(RegisterCoursesListLoaded(courses: courses, subjects: subjects));
   }
 
  Future<void> _onNewCourse(RegisterNewCourseEvent event, Emitter<RegisterCoursePageState> emit) async {

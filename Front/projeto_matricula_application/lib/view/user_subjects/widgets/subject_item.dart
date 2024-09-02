@@ -5,16 +5,16 @@ class SubjectItem extends StatelessWidget {
   final SubjectDTO subject;
   final List<Color> gradientColors;
 
-  const SubjectItem({super.key, required this.subject, required this.gradientColors});
+  const SubjectItem(
+      {super.key, required this.subject, required this.gradientColors});
 
   @override
   Widget build(BuildContext context) {
-    final textColor = darken(gradientColors.first);
+    final textColor = Colors.grey[600];
 
     return Container(
       padding: const EdgeInsets.all(10),
       width: 340,
-      height: 200,
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: gradientColors),
         borderRadius: BorderRadius.circular(10),
@@ -36,16 +36,17 @@ class SubjectItem extends StatelessWidget {
             '${subject.descricao}',
             style: TextStyle(color: textColor),
           ),
+          Row(
+            children: [
+              Text(
+                subject.ativa == true ? 'Ativo' : 'Inválido',
+                style: TextStyle(
+                    color: subject.ativa == true ? Colors.green : Colors.red),
+              )
+            ],
+          )
         ],
       ),
     );
-  }
-
-  Color darken(Color color, [double amount = .2]) {
-    assert(amount >= 0 && amount <= 1);
-    final hsl = HSLColor.fromColor(color);
-    final darkenedHsl =
-        hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-    return darkenedHsl.toColor();
   }
 }

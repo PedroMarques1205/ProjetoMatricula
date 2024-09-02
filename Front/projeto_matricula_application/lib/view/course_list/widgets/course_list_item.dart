@@ -34,7 +34,8 @@ class CourseListItem extends StatelessWidget {
               children: [
                 Text(
                   course.nome ?? 'Curso',
-                  style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.grey[800], fontWeight: FontWeight.bold),
                 ),
                 Text(
                   course.descricao ?? 'Descrição',
@@ -43,10 +44,12 @@ class CourseListItem extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            course.ativo == true ? Icons.check_circle : Icons.cancel,
-            color: course.ativo == true ? Colors.green : Colors.red,
-          ),
+          IconButton(
+              onPressed: () {},
+              icon: HeroIcon(
+                HeroIcons.ellipsisVertical,
+                color: Colors.grey[800],
+              ))
         ],
       ),
     );

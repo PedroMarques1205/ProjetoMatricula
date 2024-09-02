@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/course_list/widgets/course_list_item.dart';
 import 'package:projeto_matricula_application/view/course_list/widgets/new_course_page.dart';
 import 'package:projeto_matricula_application/viewmodel/blocs/register_course/register_course_page_bloc.dart';
@@ -14,6 +15,8 @@ class CoursesListPage extends StatelessWidget {
 
   List<CourseDTO> allCourses = [];
   final RegisterCoursePageBloc _bloc = RegisterCoursePageBloc();
+
+  List<SubjectDTO> subjects = [];
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +87,7 @@ class CoursesListPage extends StatelessWidget {
             }
             if (state is RegisterCoursesListLoaded) {
               allCourses = state.courses;
+              subjects = state.subjects;
 
               return SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -115,11 +119,11 @@ class CoursesListPage extends StatelessWidget {
     final CourseDTO? newCourse = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => NewCoursePage(
+          allSubjects: subjects,
           onSave: (CourseDTO course) async {
             _bloc.add(RegisterNewCourseEvent(course: course));
-            await Future.delayed(Duration(milliseconds: 300)); 
-            return course;
-          },
+            await Future.delayed(const Duration(milliseconds: 300)); 
+          }, 
         ),
       ),
     );
