@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/curso")
@@ -44,15 +45,13 @@ public class CursoController {
     }
 
     @GetMapping("/buscarCurso")
-    public ResponseEntity<CursoDTO> buscarCurso(@RequestParam Long id) {
-        return ResponseEntity.ok(mapper.generalMapper(obterCursoUseCase.obterCurso(id),
-                CursoDTO.class));
+    public ResponseEntity<Optional<Curso>> buscarCurso(@RequestParam Long id) {
+        return ResponseEntity.ok(obterCursoUseCase.obterCurso(id));
     }
 
     @GetMapping("/obterTodosOsCursos")
-    public ResponseEntity<List<CursoDTO>> buscarTodosCursos() {
-        return ResponseEntity.ok(mapper.mapCollection(obterCursoUseCase.obterCursos(),
-                CursoDTO.class));
+    public ResponseEntity<List<Curso>> buscarTodosCursos() {
+        return ResponseEntity.ok(obterCursoUseCase.obterCursos());
     }
 
     @DeleteMapping("/deletaCurso")
