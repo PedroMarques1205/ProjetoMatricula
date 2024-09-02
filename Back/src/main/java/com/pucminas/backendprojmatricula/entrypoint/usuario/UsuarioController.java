@@ -2,6 +2,7 @@ package com.pucminas.backendprojmatricula.entrypoint.usuario;
 import com.pucminas.backendprojmatricula.common.enums.TipoUsuario;
 import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.RequestEditarUsuarioDTO;
 import com.pucminas.backendprojmatricula.entrypoint.usuario.dto.UsuarioDTO;
+import com.pucminas.backendprojmatricula.model.AlunosMatriculadosPorCurso;
 import com.pucminas.backendprojmatricula.model.Usuario;
 import com.pucminas.backendprojmatricula.usecase.usuario.DeletarUsuarioUseCase;
 import com.pucminas.backendprojmatricula.usecase.usuario.EditarUsuarioUseCase;
@@ -58,5 +59,10 @@ public class UsuarioController {
     @GetMapping("/obterTurmaDeAlunosPorDisciplina")
     public ResponseEntity<List<Usuario>> obterUsuarioPorDisciplina(@RequestParam String nomeDisciplina) {
         return ResponseEntity.ok(obterUsuarioUseCase.obterUsuarioPorDisciplina(nomeDisciplina));
+    }
+
+    @PostMapping("/salvarNovoAlunoEmUmCurso")
+    public ResponseEntity<AlunosMatriculadosPorCurso> matricular(@RequestBody Usuario aluno,@RequestParam Long idCurso) {
+        return ResponseEntity.ok(salvarNovoUsuarioUseCase.salvaAlunoEmCurso(aluno,idCurso));
     }
 }
