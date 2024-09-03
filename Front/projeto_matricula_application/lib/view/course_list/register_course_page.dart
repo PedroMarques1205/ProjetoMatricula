@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_with_subjects_dto.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/course_list/widgets/course_list_item.dart';
 import 'package:projeto_matricula_application/view/course_list/widgets/new_course_page.dart';
@@ -120,16 +121,16 @@ class CoursesListPage extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => NewCoursePage(
           allSubjects: subjects,
-          onSave: (CourseDTO course) async {
-            _bloc.add(RegisterNewCourseEvent(course: course));
+          onSave: (CourseDTO course, List<SubjectsSemester> subjects) async {
+            _bloc.add(RegisterNewCourseEvent(course: course, subjects: subjects));
             await Future.delayed(const Duration(milliseconds: 300)); 
-          }, 
+          }, subjectSemesters: [], 
         ),
       ),
     );
   }
 
-  void onSave(CourseDTO course) {
-    _bloc.add(RegisterNewCourseEvent(course: course));
+  void onSave(CourseDTO course, List<SubjectsSemester> subjects) {
+    _bloc.add(RegisterNewCourseEvent(course: course, subjects: subjects));
   }
 }

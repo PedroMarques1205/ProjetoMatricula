@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_with_subjects_dto.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/shared/input_widget.dart';
 import '../../main_screen/main_screen.dart';
 
 class NewCoursePage extends StatefulWidget {
-  final Future<void> Function(CourseDTO course) onSave;
+  final Future<void> Function(
+      CourseDTO course, List<SubjectsSemester> subjectSemesters) onSave;
   final List<SubjectDTO> allSubjects;
+  final List<SubjectsSemester> subjectSemesters;
 
-  NewCoursePage({super.key, required this.onSave, required this.allSubjects});
+  NewCoursePage({
+    super.key,
+    required this.onSave,
+    required this.allSubjects,
+    required this.subjectSemesters,
+  });
 
   @override
   _NewCoursePageState createState() => _NewCoursePageState();
@@ -32,6 +40,31 @@ class _NewCoursePageState extends State<NewCoursePage> {
     _nomeController.text = newCourse.nome ?? '';
     _descricaoController.text = newCourse.descricao ?? '';
     _numSemestresController.text = newCourse.numSemestres?.toString() ?? '';
+
+    _initializeSubjectsBySemester();
+  }
+
+  void _initializeSubjectsBySemester() {
+    for (var subjectSemester in widget.subjectSemesters) {
+      if (subjectSemester.ordinalSemestre != null &&
+          subjectSemester.idDisciplina != null) {
+        final semester = subjectSemester.ordinalSemestre!;
+        final subjectId = subjectSemester.idDisciplina!;
+
+        final subject = widget.allSubjects.firstWhere(
+          (subject) => subject.id == subjectId,
+          orElse: () => SubjectDTO(),
+        );
+
+        if (!semesterSubjects.containsKey(semester)) {
+          semesterSubjects[semester] = [];
+        }
+
+        if (subject.id != null) {
+          semesterSubjects[semester]!.add(subject);
+        }
+      }
+    }
   }
 
   void _updateCourse() {
@@ -48,7 +81,7 @@ class _NewCoursePageState extends State<NewCoursePage> {
 
     final isValid = _validateCourse(newCourse);
     if (isValid) {
-      await widget.onSave(newCourse);
+      await widget.onSave(newCourse, widget.subjectSemesters);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainScreen()),
       );
@@ -85,13 +118,24 @@ class _NewCoursePageState extends State<NewCoursePage> {
                 return CheckboxListTile(
                   title: Text(subject.nome ?? ''),
                   value: semesterSubjects[semester]?.contains(subject) ?? false,
-                  onChanged: (selected) {
+                  onChanged: (bool? selected) {
                     setState(() {
                       if (selected == true) {
-                        semesterSubjects[semester] ??= [];
+                        if (!semesterSubjects.containsKey(semester)) {
+                          semesterSubjects[semester] = [];
+                        }
                         semesterSubjects[semester]!.add(subject);
+                        widget.subjectSemesters.add(
+                          SubjectsSemester(
+                            idDisciplina: subject.id,
+                            ordinalSemestre: semester,
+                          ),
+                        );
                       } else {
                         semesterSubjects[semester]?.remove(subject);
+                        widget.subjectSemesters.removeWhere((element) =>
+                            element.idDisciplina == subject.id &&
+                            element.ordinalSemestre == semester);
                       }
                     });
                   },
@@ -189,54 +233,67 @@ class _NewCoursePageState extends State<NewCoursePage> {
                       title: 'Número de Semestres',
                     ),
                   ),
-                  ...List.generate(newCourse.numSemestres ?? 0, (semester) {
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, right: 20, left: 20),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: ProjectColors.buttonColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.all(5),
-                          child: Theme(
+                  ...List.generate(
+                      newCourse.numSemestres ?? 0,
+                      (index) => Theme(
                             data: ThemeData(
                               dividerColor: Colors.transparent,
                             ),
-                            child: ExpansionTile(
-                              title: Text('Semestre ${semester + 1}'),
-                              children: [
-                                ...(semesterSubjects[semester + 1] ?? [])
-                                    .map((subject) {
-                                  return ListTile(
-                                    title: Text(subject.nome ?? ''),
-                                    trailing: IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () {
-                                        setState(() {
-                                          semesterSubjects[semester + 1]
-                                              ?.remove(subject);
-                                        });
-                                      },
-                                    ),
-                                  );
-                                }),
-                                Padding(
-                                    padding: const EdgeInsets.all(15),
-                                    child: TextButton(
-                                      onPressed: () =>
-                                          _openSubjectsPopup(semester + 1),
-                                      child: const Text(
-                                        'Adicionar Matéria',
-                                        style: TextStyle(
-                                            color:
-                                                ProjectColors.blueButtonColor),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: ProjectColors.buttonColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: const EdgeInsets.all(5),
+                                child: ExpansionTile(
+                                  title: Text('Semestre ${index + 1}'),
+                                  children: [
+                                    if (semesterSubjects[index + 1] == null ||
+                                        semesterSubjects[index + 1]!.isEmpty)
+                                      TextButton(
+                                        onPressed: () {
+                                          _openSubjectsPopup(index + 1);
+                                        },
+                                        child: Text('Adicionar matéria'),
+                                      )
+                                    else
+                                      Column(
+                                        children: [
+                                          ...semesterSubjects[index + 1]!.map(
+                                            (subject) => ListTile(
+                                              title: Text(subject.nome ?? ''),
+                                              trailing: IconButton(
+                                                icon: const Icon(Icons.delete),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    semesterSubjects[index + 1]!
+                                                        .remove(subject);
+                                                    widget.subjectSemesters
+                                                        .removeWhere((element) =>
+                                                            element.idDisciplina ==
+                                                                subject.id &&
+                                                            element.ordinalSemestre ==
+                                                                index + 1);
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              _openSubjectsPopup(index + 1);
+                                            },
+                                            child: Text('Adicionar matéria'),
+                                          ),
+                                        ],
                                       ),
-                                    )),
-                              ],
+                                  ],
+                                ),
+                              ),
                             ),
                           )),
-                    );
-                  }),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: ButtonWidget(

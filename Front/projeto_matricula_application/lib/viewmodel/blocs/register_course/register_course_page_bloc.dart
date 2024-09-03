@@ -34,10 +34,10 @@ class RegisterCoursePageBloc extends Bloc<RegisterCoursePageEvent, RegisterCours
     numSemestres: event.course.numSemestres,
   );
 
-  var resp = await _service.createCourse(newCourse);
+  var resp = await _service.creatCourseWithSubject(newCourse, event.subjects);
 
-  if (resp?.id != null) {
-    emit(NewCourseRegisteredState(course: resp!));
+  if (resp != null && resp.isNotEmpty && resp[0] != null && resp[0].curso != null) {
+    emit(NewCourseRegisteredState(course: resp![0].curso!));
   } else {
     emit(NewCourseCreationErrorState());
   }

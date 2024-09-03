@@ -3,15 +3,50 @@ import 'package:projeto_matricula_application/domain/base_url.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:http/http.dart' as http;
 import 'package:projeto_matricula_application/domain/course/dtos/course_subjects_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_with_subjects_dto.dart';
+import 'package:projeto_matricula_application/domain/course/dtos/course_wrapper_dto.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/students_course_registration.dart';
 
 class CourseClient {
   CourseClient();
 
   final String baseUrl = BaseUrl.baseUrl;
+  Future<List<CourseSubjectsDTO>?> createCourseWithSubject(
+      CourseDTO course, List<SubjectsSemester> subjects) async {
+    final url = Uri.parse('$baseUrl/curso/novoCursoComDisciplinas');
 
-  Future<StudentsCourseRegistration> registerStudentOnCourse(String userId, String courseId) async {
-    final url = Uri.parse('$baseUrl/alunosPorCurso/matricularAlunoEmUmCurso?matriculaAluno=$userId,nomeCurso=$courseId');
+    final wrapper =
+        CourseWithSubjectsWrapper(course: course, subjects: subjects);
+
+    try {
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(wrapper.toJson()),
+      );
+
+      if (response.statusCode == 201) {
+        final jsonResponse = jsonDecode(response.body);
+        List<CourseSubjectsDTO> courseSubjects = (jsonResponse as List)
+            .map((json) => CourseSubjectsDTO.fromJson(json))
+            .toList();
+        return courseSubjects;
+      } else {
+        print('Failed to create course: ${response.statusCode}');
+        return null;
+      }
+    } catch (error) {
+      print('Error creating course: $error');
+      return null;
+    }
+  }
+
+  Future<StudentsCourseRegistration> registerStudentOnCourse(
+      String userId, String courseId) async {
+    final url = Uri.parse(
+        '$baseUrl/alunosPorCurso/matricularAlunoEmUmCurso?matriculaAluno=$userId,nomeCurso=$courseId');
 
     try {
       final response = await http.post(
@@ -24,7 +59,8 @@ class CourseClient {
       if (response.statusCode == 200) {
         final dynamic courseJson = jsonDecode(response.body);
 
-        final StudentsCourseRegistration course = StudentsCourseRegistration.fromJson(courseJson);
+        final StudentsCourseRegistration course =
+            StudentsCourseRegistration.fromJson(courseJson);
 
         return course;
       } else {
