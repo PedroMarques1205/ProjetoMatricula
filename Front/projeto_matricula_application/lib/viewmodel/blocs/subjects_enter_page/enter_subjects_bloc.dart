@@ -18,6 +18,7 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
     on<AssociateSubjectEvent>(_onAssociate);
     on<AssociateProfessorEvent>(_onAssociateProfessor);
     on<ProfessorIdChanged>(_onProfessorIdChanged);
+    on<ReloadingRegisterPageEvent>(_onReload);
   }
 
   Future<void> _onCreate(
@@ -25,18 +26,59 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
     await service.createSubject(event.subject);
   }
 
-  Future<void> _onList(ListSubjectsEvent event, Emitter<EnterSubjectsState> emit) async {
+  Future<void> _onReload(ReloadingRegisterPageEvent event,
+      Emitter<EnterSubjectsState> emit) async {
     try {
       var allSubjects = await service.listSubjects();
-      var course = await courseService.getCourseById(Context.currentUser.matricula!);
-      var mySubjects = await service.listStudentsSubjects(Context.currentUser.matricula!);
+      var course =
+          await courseService.getCourseById(Context.currentUser.matricula!);
+      var mySubjects =
+          await service.listStudentsSubjects(Context.currentUser.matricula!);
 
       if (course.nome != null) {
         var courseSubjects = await courseService.listCousesSubjects(course.id!);
         var filteredCourseSubjects = <CourseSubjectsDTO>[];
 
         for (final courseSubject in courseSubjects) {
-          var index = mySubjects.indexWhere((mySubject) => mySubject.id == courseSubject.disciplina!.id);
+          var index = mySubjects.indexWhere(
+              (mySubject) => mySubject.id == courseSubject.disciplina!.id);
+
+          if (index < 0) {
+            filteredCourseSubjects.add(courseSubject);
+          }
+        }
+
+        emit(SubjectListLoadedState(
+          subjects: allSubjects,
+          course: course,
+          mySubjects: mySubjects,
+          otherSubjects: filteredCourseSubjects,
+        ));
+      } else {
+        emit(SubjectListLoadingErrorState());
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(SubjectListLoadingErrorState());
+    }
+  }
+
+  Future<void> _onList(
+      ListSubjectsEvent event, Emitter<EnterSubjectsState> emit) async {
+    try {
+      var allSubjects = await service.listSubjects();
+      var course =
+          await courseService.getCourseById(Context.currentUser.matricula!);
+      var mySubjects =
+          await service.listStudentsSubjects(Context.currentUser.matricula!);
+
+      if (course.nome != null) {
+        var courseSubjects = await courseService.listCousesSubjects(course.id!);
+        var filteredCourseSubjects = <CourseSubjectsDTO>[];
+
+        for (final courseSubject in courseSubjects) {
+          var index = mySubjects.indexWhere(
+              (mySubject) => mySubject.id == courseSubject.disciplina!.id);
 
           if (index < 0) {
             filteredCourseSubjects.add(courseSubject);
@@ -62,6 +104,7 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
       AssociateSubjectEvent event, Emitter<EnterSubjectsState> emit) async {
     if (event.subject.nome != null && event.matricula.isNotEmpty) {
       await service.associateSubject(event.matricula, event.subject.nome!);
+      emit(ReloadingRegisterPageState());
     } else {
       print('Nome da disciplina ou matrícula está vazio');
     }
@@ -72,8 +115,8 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
     emit(EnterSubjectsWithProfessorIdState(professorId: event.professorId));
   }
 
-   Future<void> _onAssociateProfessor(
-    AssociateProfessorEvent event, Emitter<EnterSubjectsState> emit) async {
+  Future<void> _onAssociateProfessor(
+      AssociateProfessorEvent event, Emitter<EnterSubjectsState> emit) async {
     try {
       await service.associateProfessor(event.professorId, event.subjectName);
       emit(AssociationSuccessState());
@@ -81,6 +124,4 @@ class EnterSubjectsBloc extends Bloc<EnterSubjectsEvent, EnterSubjectsState> {
       emit(AssociationErrorState(message: e.toString()));
     }
   }
-
-  
 }

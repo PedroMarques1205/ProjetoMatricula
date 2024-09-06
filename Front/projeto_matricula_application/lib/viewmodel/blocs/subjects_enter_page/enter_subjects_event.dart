@@ -1,4 +1,3 @@
-// events.dart
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 
 abstract class EnterSubjectsEvent {}
@@ -12,6 +11,8 @@ class CreateNewSubjectsEvent extends EnterSubjectsEvent {
 
   CreateNewSubjectsEvent({required this.subject});
 }
+
+class ReloadingRegisterPageEvent extends EnterSubjectsEvent {}
 
 class AssociateSubjectEvent extends EnterSubjectsEvent {
   final SubjectDTO subject;

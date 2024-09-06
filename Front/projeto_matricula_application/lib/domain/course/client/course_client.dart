@@ -4,27 +4,27 @@ import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart
 import 'package:http/http.dart' as http;
 import 'package:projeto_matricula_application/domain/course/dtos/course_subjects_dto.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_with_subjects_dto.dart';
-import 'package:projeto_matricula_application/domain/course/dtos/course_wrapper_dto.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/students_course_registration.dart';
 
 class CourseClient {
   CourseClient();
 
   final String baseUrl = BaseUrl.baseUrl;
-  Future<List<CourseSubjectsDTO>?> createCourseWithSubject(
-      CourseDTO course, List<SubjectsSemester> subjects) async {
-    final url = Uri.parse('$baseUrl/curso/novoCursoComDisciplinas');
 
-    final wrapper =
-        CourseWithSubjectsWrapper(course: course, subjects: subjects);
+  Future<List<CourseSubjectsDTO>?> createCourseWithSubject(CourseDTO course, List<SubjectsSemester> subjects) async {
+    final url = Uri.parse('$baseUrl/curso/novoCursoComDisciplinas');
 
     try {
       final response = await http.post(
         url,
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
         },
-        body: jsonEncode(wrapper.toJson()),
+        body: jsonEncode({
+          'curso': course.toJson(),
+          'disciplinaComSemestre':
+              subjects.map((subject) => subject.toJson()).toList(),
+        }),
       );
 
       if (response.statusCode == 201) {
@@ -43,10 +43,8 @@ class CourseClient {
     }
   }
 
-  Future<StudentsCourseRegistration> registerStudentOnCourse(
-      String userId, String courseId) async {
-    final url = Uri.parse(
-        '$baseUrl/alunosPorCurso/matricularAlunoEmUmCurso?matriculaAluno=$userId,nomeCurso=$courseId');
+  Future<StudentsCourseRegistration> registerStudentOnCourse(String userId, String courseId) async {
+    final url = Uri.parse('$baseUrl/alunosPorCurso/matricularAlunoEmUmCurso?matriculaAluno=$userId,nomeCurso=$courseId');
 
     try {
       final response = await http.post(
@@ -72,8 +70,7 @@ class CourseClient {
   }
 
   Future<CourseDTO> courseByUserId(String userId) async {
-    final url = Uri.parse(
-        '$baseUrl/alunosPorCurso/obterCursoPorAluno?matriculaAluno=$userId');
+    final url = Uri.parse('$baseUrl/alunosPorCurso/obterCursoPorAluno?matriculaAluno=$userId');
 
     try {
       final response = await http.get(
@@ -98,8 +95,7 @@ class CourseClient {
   }
 
   Future<List<CourseSubjectsDTO>> listCourseSubjects(int courseId) async {
-    final url = Uri.parse(
-        '$baseUrl/disciplinascurso/gerarCurriculoDoCurso?idCurso=$courseId');
+    final url = Uri.parse('$baseUrl/disciplinascurso/gerarCurriculoDoCurso?idCurso=$courseId');
 
     try {
       final response = await http.get(

@@ -30,11 +30,12 @@ class AssociationErrorState extends EnterSubjectsState {
   AssociationErrorState({required this.message});
 }
 
-// Nova classe concreta que inclui professorId
 class EnterSubjectsWithProfessorIdState extends EnterSubjectsState {
   final String professorId;
 
   EnterSubjectsWithProfessorIdState({required this.professorId});
 }
+
+class ReloadingRegisterPageState extends EnterSubjectsState {} 
 
 

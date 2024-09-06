@@ -6,7 +6,10 @@ part 'course_wrapper_dto.g.dart';
 
 @JsonSerializable()
 class CourseWithSubjectsWrapper {
+  @JsonKey(name: 'curso')
   final CourseDTO course;
+
+  @JsonKey(name: 'disciplinaComSemestre')
   final List<SubjectsSemester> subjects;
 
   CourseWithSubjectsWrapper({

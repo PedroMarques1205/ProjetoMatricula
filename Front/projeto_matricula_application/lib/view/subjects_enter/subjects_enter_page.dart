@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_dto.dart';
 import 'package:projeto_matricula_application/domain/course/dtos/course_subjects_dto.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
@@ -19,6 +20,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
   late final EnterSubjectsBloc _bloc;
   final _matriculaController = TextEditingController();
   SubjectDTO? _selectedSubject;
+  bool _isOptative = false;
 
   List<SubjectDTO> mySubjects = [];
   List<CourseSubjectsDTO> courseSubjects = [];
@@ -69,6 +71,14 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
       body: BlocBuilder<EnterSubjectsBloc, EnterSubjectsState>(
         bloc: _bloc,
         builder: (context, state) {
+          if (state is ReloadingRegisterPageState) {
+            _bloc.add(ReloadingRegisterPageEvent());
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ProjectColors.primaryColor,
+              ),
+            );
+          }
           if (state is SubjectListLoadingErrorState) {
             return Center(
                 child: Padding(
@@ -93,7 +103,7 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
-                      itemCount: mySubjects.length + courseSubjects.length + 1,
+                      itemCount: mySubjects.length + courseSubjects.length + 2,
                       itemBuilder: (context, index) {
                         if (index == 0 && mySubjects.isNotEmpty) {
                           return Padding(
@@ -108,13 +118,16 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                             ),
                           );
                         }
+
                         if (index < mySubjects.length) {
                           return buildSubjectItem(
                               mySubjects[index],
                               index,
                               index == mySubjects.length - 1 ||
                                   index == mySubjects.length - 2);
-                        } else if (index == mySubjects.length) {
+                        }
+
+                        if (index == mySubjects.length) {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -131,10 +144,14 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                               ),
                             ],
                           );
-                        } else {
-                          int courseIndex = index - mySubjects.length - 1;
+                        }
+
+                        int courseIndex = index - mySubjects.length - 1;
+                        if (courseIndex < courseSubjects.length) {
                           return buildSubjectItemButWithOtherType(
                               courseSubjects[courseIndex], courseIndex);
+                        } else {
+                          return SizedBox.shrink();
                         }
                       },
                     ),
@@ -192,14 +209,14 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Período',
+                        'Período: 1',
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Turno',
+                        'Turno: Noite',
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                       const SizedBox(
@@ -292,7 +309,15 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (mySubjects.length >= 5) {
+                                    _showAlert('Número máximo de matrículas',
+                                        'Você atingiu o número máximo de 5 disciplinas matriculadas.');
+                                    return;
+                                  }
+                                  _selectedSubject = subject.disciplina;
+                                  _showOptativeDialog();
+                                },
                                 child: const Text(
                                   'Matricular-se',
                                   style: TextStyle(
@@ -308,88 +333,75 @@ class _SubjectsEnterPageState extends State<SubjectsEnterPage> {
         ));
   }
 
-  List<Color> generateRandomGradientColors(int index) {
-    if (index % 2 == 0) {
-      return [ProjectColors.subjectLight, ProjectColors.primaryLight];
-    } else {
-      return [ProjectColors.subjectCoolLight, ProjectColors.subjectCoolDark];
-    }
+  void _showOptativeDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Matéria Optativa'),
+          content:
+              const Text('Você deseja adicionar esta matéria como optativa?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _isOptative = false;
+                });
+                registerStudent();
+              },
+              child: const Text('Não'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _isOptative = true;
+                });
+                registerStudent();
+              },
+              child: const Text('Sim'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showAlert(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void registerStudent() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Cadastrar Aluno'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DropdownButtonFormField<SubjectDTO>(
-              value: _selectedSubject,
-              items: mySubjects.map((subject) {
-                return DropdownMenuItem<SubjectDTO>(
-                  value: subject,
-                  child: Text(subject.nome ?? 'Nome não disponível'),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedSubject = newValue;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Disciplina',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _matriculaController,
-              decoration: const InputDecoration(
-                labelText: 'Matrícula do Aluno',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-          ],
+    if (_selectedSubject != null) {
+      _bloc.add(
+        AssociateSubjectEvent(
+          subject: _selectedSubject!,
+          matricula: Context.current.matricula!,
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              final matricula = _matriculaController.text.trim();
-              if (_selectedSubject != null && matricula.isNotEmpty) {
-                _bloc.add(
-                  AssociateSubjectEvent(
-                    subject: _selectedSubject!,
-                    matricula: matricula,
-                  ),
-                );
-                Navigator.of(context).pop();
-                _matriculaController.clear();
-                setState(() {
-                  _selectedSubject = null;
-                });
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text('Por favor, preencha todos os campos.')),
-                );
-              }
-            },
-            child: const Text('Confirmar'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _matriculaController.clear();
-              setState(() {
-                _selectedSubject = null;
-              });
-            },
-            child: const Text('Cancelar'),
-          ),
-        ],
-      ),
-    );
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Matriculado(a) na disciplina ${_selectedSubject!.nome} como ${_isOptative ? "optativa" : "regular"}'),
+        ),
+      );
+    }
   }
 }

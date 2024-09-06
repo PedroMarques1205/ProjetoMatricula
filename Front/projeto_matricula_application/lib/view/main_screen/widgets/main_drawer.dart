@@ -4,6 +4,7 @@ import 'package:projeto_matricula_application/design/colors/project_colors.dart'
 import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart';
 import 'package:projeto_matricula_application/view/course_list/register_course_page.dart';
+import 'package:projeto_matricula_application/view/emitir_boleto_page/emitir_boleto_page.dart';
 import 'package:projeto_matricula_application/view/login/login_page.dart';
 import 'package:projeto_matricula_application/view/shared/button_widget.dart';
 import 'package:projeto_matricula_application/view/students_list.dart/register_student_page.dart';
@@ -217,13 +218,35 @@ class DrawerWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 child: ButtonWidget(
                   icon: HeroIcons.bookmark,
-                  text: 'Matricular Professor',
+                  text: 'Designar Professor',
                   width: 250,
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const AssociateProfessorPage()),
+                      (route) => false,
+                    );
+                  },
+                  backgroundColor: ProjectColors.buttonColor,
+                  textColor: Colors.grey[600],
+                ),
+              ),
+            ),
+          if (Context.current.tipoAcesso == UserTypeEnum.Secretaria)
+            Padding(
+              padding: const EdgeInsets.only(right: 5, left: 5, top: 10),
+              child: Align(
+                alignment: Alignment.center,
+                child: ButtonWidget(
+                  icon: HeroIcons.archiveBox,
+                  text: 'Emitir Boleto',
+                  width: 250,
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EmitirBoletoPage()),
                       (route) => false,
                     );
                   },

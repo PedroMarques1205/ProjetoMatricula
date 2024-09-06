@@ -1,11 +1,8 @@
-// teacher_client.dart
 import 'dart:convert';
 import 'package:projeto_matricula_application/domain/base_url.dart';
 import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:http/http.dart' as http;
-import 'package:injectable/injectable.dart';
 import 'package:projeto_matricula_application/domain/teacher/client/teacher_client.dart';
-import 'package:projeto_matricula_application/domain/subjects/dtos/subject_dto.dart';
 import 'package:projeto_matricula_application/domain/login/dtos/user_dto.dart'; 
 
 class TeacherService {

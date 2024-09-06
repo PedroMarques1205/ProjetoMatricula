@@ -26,10 +26,7 @@ class _CourseSemesterItemState extends State<CourseSemesterItem> {
   }
 
   void _filterSubjects() {
-    filteredSubjects = widget.subjects
-        .where((subject) =>
-            subject.id.toString() == widget.semesterIndex.toString())
-        .toList();
+    filteredSubjects = widget.subjects.where((subject) => subject.semestre?.id?.ordinal == widget.semesterIndex + 1).toList();
   }
 
   @override

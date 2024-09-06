@@ -40,6 +40,10 @@ class $AssetsImagesGen {
   AssetGenImage get pruMinasSymbol =>
       const AssetGenImage('assets/images/pruMinasSymbol.png');
 
+  /// File path: assets/images/pru_minas_with_circle.png
+  AssetGenImage get pruMinasWithCircle =>
+      const AssetGenImage('assets/images/pru_minas_with_circle.png');
+
   /// File path: assets/images/pruminas.png
   AssetGenImage get pruminas =>
       const AssetGenImage('assets/images/pruminas.png');
@@ -54,6 +58,7 @@ class $AssetsImagesGen {
         member2,
         member4,
         pruMinasSymbol,
+        pruMinasWithCircle,
         pruminas
       ];
 }

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projeto_matricula_application/design/colors/project_colors.dart';
+import 'package:projeto_matricula_application/domain/boleto/dtos/boleto_dto.dart';
+import 'package:projeto_matricula_application/domain/context/context.dart';
 import 'package:projeto_matricula_application/view/main_screen/main_screen.dart';
+import 'package:projeto_matricula_application/viewmodel/blocs/meus_boletos_bloc/meus_boletos_bloc.dart';
+import 'package:projeto_matricula_application/viewmodel/blocs/meus_boletos_bloc/meus_boletos_event.dart';
+import 'package:projeto_matricula_application/viewmodel/blocs/meus_boletos_bloc/meus_boletos_state.dart';
 
 class PagamentoAlert extends StatefulWidget {
   @override
@@ -8,25 +14,12 @@ class PagamentoAlert extends StatefulWidget {
 }
 
 class _PagamentoAlertState extends State<PagamentoAlert> {
-  Map<String, bool> paymentStatus = {
-    'Janeiro': false,
-    'Fevereiro': false,
-    'Março': false,
-    'Abril': false,
-    'Maio': false,
-    'Junho': false,
-    'Julho': false,
-    'Agosto': false,
-    'Setembro': false,
-    'Outubro': false,
-    'Novembro': false,
-    'Dezembro': false,
-  };
+  MeusBoletosBloc _bloc = MeusBoletosBloc();
 
-  void markAsPaid(String month) {
-    setState(() {
-      paymentStatus[month] = true;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _bloc.add(ListMeusBoletosEvent());
   }
 
   @override
@@ -41,9 +34,10 @@ class _PagamentoAlertState extends State<PagamentoAlert> {
         title: Text(
           'Emissão do Boleto Bancário',
           style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[600]),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey[600],
+          ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: ProjectColors.primaryLight),
@@ -55,70 +49,83 @@ class _PagamentoAlertState extends State<PagamentoAlert> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: paymentStatus.keys.map((month) {
-            bool isPaid = paymentStatus[month]!;
-            DateTime dueDate = DateTime(
-                2024, paymentStatus.keys.toList().indexOf(month) + 1, 1);
-            return Card(
-              color: ProjectColors.buttonColor,
-              elevation: 5,
-              margin: const EdgeInsets.only(bottom: 10.0),
-              child: Theme(
-                data: ThemeData(
-                  dividerColor: Colors.transparent,
-                ),
-                child: ExpansionTile(
-                  leading: Icon(Icons.file_copy, color: Colors.grey[800]),
-                  title: Text(
-                    '${month}/2024',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  trailing: Icon(
-                    isPaid ? Icons.check_circle : Icons.radio_button_unchecked,
-                    color: isPaid ? Colors.green : Colors.red,
-                  ),
-                  children: [
-                    if (!isPaid)
-                      ListTile(
-                        title: const Text(
-                          'Confirmar pagamento',
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        onTap: () => markAsPaid(month),
+      body: BlocConsumer<MeusBoletosBloc, MeusBoletosState>(
+        bloc: _bloc,
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is MeusBoletosLoadedState) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemCount: state.boletos.length,
+                itemBuilder: (context, index) {
+                  var boleto = BoletoDTO(
+                    alunoDevedor: Context.current,
+                    dataValidade: DateTime.now(),
+                    valor: 1500.0,
+                    pago: false,
+                    id: 8,
+                  );
+                  DateTime dueDate = boleto.dataValidade ?? DateTime.now();
+                  return Card(
+                    color: ProjectColors.buttonColor,
+                    elevation: 5,
+                    margin: const EdgeInsets.only(bottom: 10.0),
+                    child: Theme(
+                      data: ThemeData(
+                        dividerColor: Colors.transparent,
                       ),
-                    if (isPaid)
-                      const ListTile(
+                      child: ExpansionTile(
+                        leading: Icon(Icons.file_copy, color: Colors.grey[800]),
                         title: Text(
-                          'Pago',
-                          style: TextStyle(color: Colors.green),
+                          '${boleto.dataValidade?.month}/${boleto.dataValidade?.year}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[800],
+                          ),
                         ),
-                        leading: Icon(Icons.check_circle, color: Colors.green),
-                      ),
-                    ListTile(
-                      title: Text(
-                        'Vencimento: ${dueDate.toLocal().toString().split(' ')[0]}',
-                        style: TextStyle(color: Colors.grey[700]),
+                        trailing: Icon(
+                          Icons.print,
+                          color: Colors.blue,
+                        ),
+                        children: [
+                          ListTile(
+                            title: const Text(
+                              'Imprimir boleto',
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            onTap: () {
+                              print('Imprimir boleto ${boleto.id}');
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              'Vencimento: ${dueDate.toLocal().toString().split(' ')[0]}',
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                          ),
+                          ListTile(
+                            title: Text(
+                              'Pagador: ${boleto.alunoDevedor?.nome ?? 'Desconhecido'}',
+                              style: TextStyle(color: Colors.grey[700]),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      title: Text(
-                        'Pagador: Aluno',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             );
-          }).toList(),
-        ),
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ProjectColors.primaryColor,
+              ),
+            );
+          }
+        },
       ),
     );
   }
