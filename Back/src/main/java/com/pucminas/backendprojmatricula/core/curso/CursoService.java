@@ -85,7 +85,8 @@ public class CursoService {
     }
 
     public List<DisciplinasDoCurso> associarDisciplinasParaCurso(Curso curso, List<DisciplinaSemestreDTO> disciplinaSemestreDTO) {
-        salvaCurso(curso);
+        Curso cursoSalvo = salvaCurso(curso);
+        cursoSalvo = cursoRepository.findCursoWithMaxId();
         List<DisciplinasDoCurso> retorno = new ArrayList<>();
         for (DisciplinaSemestreDTO item : disciplinaSemestreDTO) {
             Long disciplinaId = item.getIdDisciplina();
@@ -93,14 +94,14 @@ public class CursoService {
             Disciplina disciplina = disciplinaRepository.findById(disciplinaId).isPresent() ? disciplinaRepository.findById(disciplinaId).get() : null;
             Semestre semestre = semestreRepository.findById(Semestre.SemestreId.builder()
                     .ordinal(semestreOrdinal)
-                    .curso(curso)
+                    .curso(cursoSalvo)
                     .build()).isPresent() ? semestreRepository.findById(Semestre.SemestreId.builder()
                     .ordinal(semestreOrdinal)
-                    .curso(curso)
+                    .curso(cursoSalvo)
                     .build()).get() : null;
 
             DisciplinasDoCurso disciplinasDoCurso = new DisciplinasDoCurso();
-            disciplinasDoCurso.setCurso(curso);
+            disciplinasDoCurso.setCurso(cursoSalvo);
             disciplinasDoCurso.setDisciplina(disciplina);
             disciplinasDoCurso.setSemestre(semestre);
 

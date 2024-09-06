@@ -3,6 +3,7 @@ package com.pucminas.backendprojmatricula.entrypoint.curso;
 import com.pucminas.backendprojmatricula.common.mapper.Mapper;
 import com.pucminas.backendprojmatricula.core.curso.dto.DisciplinaSemestreDTO;
 import com.pucminas.backendprojmatricula.entrypoint.curso.dto.CursoDTO;
+import com.pucminas.backendprojmatricula.entrypoint.curso.dto.RequestCriarCursoDisciplinaDTO;
 import com.pucminas.backendprojmatricula.entrypoint.curso.dto.RequestEditarCursoDTO;
 import com.pucminas.backendprojmatricula.model.Curso;
 import com.pucminas.backendprojmatricula.model.DisciplinasDoCurso;
@@ -61,13 +62,12 @@ public class CursoController {
     }
 
     @PutMapping("/editaCurso")
-    public ResponseEntity<CursoDTO> deletarCurso(@RequestBody RequestEditarCursoDTO curso) {
-        return ResponseEntity.ok(mapper.generalMapper(editarCursoUseCase.editarCurso(curso),
-                CursoDTO.class));
+    public ResponseEntity<Curso> deletarCurso(@RequestBody RequestEditarCursoDTO curso) {
+        return ResponseEntity.ok(editarCursoUseCase.editarCurso(curso));
     }
 
     @PostMapping("/novoCursoComDisciplinas")
-    public ResponseEntity<List<DisciplinasDoCurso>> salvarNovoCursoComDisciplinas(@RequestBody @Valid Curso curso, @RequestBody List<DisciplinaSemestreDTO> disciplinaComSemestre) {
-        return ResponseEntity.ok(salvarCursoUseCase.salvarCursoComDIsciplina(curso,disciplinaComSemestre));
+    public ResponseEntity<List<DisciplinasDoCurso>> salvarNovoCursoComDisciplinas(@RequestBody @Valid RequestCriarCursoDisciplinaDTO request) {
+        return ResponseEntity.ok(salvarCursoUseCase.salvarCursoComDIsciplina(request.getCurso(),request.getDisciplinaComSemestre()));
     }
 }

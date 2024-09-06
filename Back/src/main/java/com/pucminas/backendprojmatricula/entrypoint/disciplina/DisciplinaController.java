@@ -35,21 +35,18 @@ public class DisciplinaController {
     Mapper mapper;
 
     @PostMapping("/novaDisciplina")
-    public ResponseEntity<DisciplinaDTO> salvarNovaDisciplina(@RequestBody @Valid Disciplina disciplina) {
-        return ResponseEntity.ok(mapper.generalMapper(salvarDisciplinaUseCase.salvarDisciplina(disciplina),
-                DisciplinaDTO.class));
+    public ResponseEntity<Disciplina> salvarNovaDisciplina(@RequestBody @Valid Disciplina disciplina) {
+        return ResponseEntity.ok(salvarDisciplinaUseCase.salvarDisciplina(disciplina));
     }
 
     @GetMapping("/buscarDisciplina")
-    public ResponseEntity<DisciplinaDTO> buscarDisciplina(@RequestParam Long id) {
-        return ResponseEntity.ok(mapper.generalMapper(obterDisciplinaUseCase.obterDisciplina(id),
-                DisciplinaDTO.class));
+    public ResponseEntity<Disciplina> buscarDisciplina(@RequestParam Long id) {
+        return ResponseEntity.ok(obterDisciplinaUseCase.obterDisciplina(id));
     }
 
     @GetMapping("/obterTodasAsDisciplinas")
-    public ResponseEntity<List<DisciplinaDTO>> buscarTodasDisciplinas() {
-        return ResponseEntity.ok(mapper.mapCollection(obterDisciplinaUseCase.obterDisciplinas(),
-                DisciplinaDTO.class));
+    public ResponseEntity<List<Disciplina>> buscarTodasDisciplinas() {
+        return ResponseEntity.ok(obterDisciplinaUseCase.obterDisciplinas());
     }
 
     @DeleteMapping("/deletaDisciplina")
@@ -65,8 +62,7 @@ public class DisciplinaController {
     }
 
     @GetMapping("/obterDisciplinasPorEstudante")
-    public ResponseEntity<List<DisciplinaDTO>> buscarDisciplinas(String matriculaEstudante) {
-        return ResponseEntity.ok(mapper.mapCollection(obterDisciplinaUseCase.obterDisciplinasPorMatricula(matriculaEstudante),
-                DisciplinaDTO.class));
+    public ResponseEntity<List<Disciplina>> buscarDisciplinas(String matriculaEstudante) {
+        return ResponseEntity.ok(obterDisciplinaUseCase.obterDisciplinasPorMatricula(matriculaEstudante));
     }
 }
