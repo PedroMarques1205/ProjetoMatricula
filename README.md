@@ -10,9 +10,6 @@
 
 Aqui você pode conferir pequenos vídeos mostrando algumas funcionalidades do sistema de matrícula em funcionamento:
 
-1. [Demonstração: Cadastro de Matéria](videos/materia_do_aluno.mp4)
-2. [Demonstração: Função de Cancelamento](videos/cancelamento_disciplina.mp4)
-
 </div>
 
 ## Integrantes
