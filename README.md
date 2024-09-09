@@ -10,15 +10,8 @@
 
 Aqui você pode conferir pequenos vídeos mostrando algumas funcionalidades do sistema de matrícula em funcionamento:
 
-<video width="320" height="240" controls>
-  <source src="materia_do_aluno.mp4" type="video/mp4">
-  Seu navegador não suporta a exibição de vídeos.
-</video>
-
-<video width="320" height="240" controls>
-  <source src="materia_do_aluno.mp4" type="video/mp4">
-  Seu navegador não suporta a exibição de vídeos.
-</video>
+1. [Demonstração: Cadastro de Matéria](videos/materia_do_aluno.mp4)
+2. [Demonstração: Função de Cancelamento](videos/cancelamento_disciplina.mp4)
 
 </div>
 
