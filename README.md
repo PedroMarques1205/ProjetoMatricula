@@ -10,9 +10,9 @@
 
 Aqui você pode conferir pequenos vídeos mostrando algumas funcionalidades do sistema de matrícula em funcionamento:
 
-<div style="display: flex; justify-content: center; gap: 10px;">
-  <img src="Front/projeto_matricula_application/assets/images/materia_do_aluno.gif" width="300">
-  <img src="Front/projeto_matricula_application/assets/images/video_processo_matricula.gif" width="300">
+<div style="display: flex; justify-content: center; gap: 20px;">
+  <img src="Front/projeto_matricula_application/assets/images/materia_do_aluno.gif">
+  <img src="Front/projeto_matricula_application/assets/images/video_processo_matricula.gif">
 </div>
 
 </div>
