@@ -2,7 +2,7 @@
 
 # Projeto Matrícula
 
-<img src="Front/projeto_matricula_application/assets/images/pruminas.png" alt="Logo do Projeto" width="200">
+<img src="Front/projeto_matricula_application/assets/images/pru_minas_with_circle.png" width="200">
 
 ### Este repositório contém o trabalho em grupo realizado para a disciplina "Laboratório de Desenvolvimento de Software", do 4º período do curso de Engenharia de Software da PUC - Minas.
 
