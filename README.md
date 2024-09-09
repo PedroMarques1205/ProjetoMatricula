@@ -6,6 +6,20 @@
 
 ### Este repositório contém o trabalho em grupo realizado para a disciplina "Laboratório de Desenvolvimento de Software", do 4º período do curso de Engenharia de Software da PUC - Minas.
 
+## Vídeos de Demonstração
+
+Aqui você pode conferir pequenos vídeos mostrando algumas funcionalidades do sistema de matrícula em funcionamento:
+
+<video width="320" height="240" controls>
+  <source src="materia_do_aluno.mp4" type="video/mp4">
+  Seu navegador não suporta a exibição de vídeos.
+</video>
+
+<video width="320" height="240" controls>
+  <source src="materia_do_aluno.mp4" type="video/mp4">
+  Seu navegador não suporta a exibição de vídeos.
+</video>
+
 </div>
 
 ## Integrantes
