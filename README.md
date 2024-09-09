@@ -10,6 +10,11 @@
 
 Aqui você pode conferir pequenos vídeos mostrando algumas funcionalidades do sistema de matrícula em funcionamento:
 
+![Descrição do GIF](Front/projeto_matricula_application/assets/images/materia_do_aluno.gif)
+
+![Descrição do GIF](Front/projeto_matricula_application/assets/images/video_processo_matricula.gif)
+
+
 </div>
 
 ## Integrantes
